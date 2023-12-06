@@ -1,0 +1,11 @@
+name: data_literacy
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.11
+  - conda=23.11.0
+  - jupyterlab
+  - numpy
+  - pandas
+  - matplotlib
