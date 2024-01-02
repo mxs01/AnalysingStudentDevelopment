@@ -101,6 +101,11 @@ class Parser:
         totalMainSubject = list(chain.from_iterable([data.split(" ")[1:] for data in subjectData if re.match(constants.HF_PATTERN, data)]))[0:-1]
         totalMinorSubject = list(chain.from_iterable([data.split(" ")[1:] for data in subjectData if re.match(constants.NF_PATTERN, data)]))[0:-1]
         
+        if "HF" in totalMainSubject:
+            totalMainSubject = totalMainSubject[1:]
+        if "NF" in totalMinorSubject:
+            totalMinorSubject = totalMinorSubject[1:]
+        
         #check for empty main and minor subject
         if totalMainSubject == None or len(totalMainSubject) == 0:
             totalMainSubject = ["0" for _ in range(len(constants.SEMESTERS))]
