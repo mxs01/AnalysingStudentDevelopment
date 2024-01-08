@@ -1,5 +1,4 @@
 # Description: Constants used in the code
-
 import os
 import re
 
@@ -63,3 +62,4 @@ YEARS = [
     "SoSe 2023",
     "WiSe 2023/2024",
 ]
+
