@@ -7,8 +7,9 @@ PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(PROJECT_DIR, "data")
 GRADUATES_PATH = os.path.join(DATA_DIR, "graduates_germany.csv")
 SALLARY_PATH = os.path.join(DATA_DIR, "sallary_per_sector.csv")
+GENDER_DATA_PATH = os.path.join(DATA_DIR, "university_gender_divided_stem.xlsx")
 STUDENTS_PATH = os.path.join(DATA_DIR, "student_data_per_subject.xlsx")
-
+PLOT_DIR = os.path.join(PROJECT_DIR, 'plots')
 
 # REGEX Patterns
 DELIMETER_PATTERN = re.compile(r".*\s*Studienfachbelegung nach Abschlusszielen")
