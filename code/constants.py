@@ -8,6 +8,7 @@ DATA_DIR = os.path.join(PROJECT_DIR, "data")
 GRADUATES_PATH = os.path.join(DATA_DIR, "graduates_germany.csv")
 SALLARY_PATH = os.path.join(DATA_DIR, "sallary_per_sector.csv")
 STUDENTS_PATH = os.path.join(DATA_DIR, "student_data_per_subject.xlsx")
+PLOT_DIR = os.path.join(PROJECT_DIR, 'plots')
 
 
 # REGEX Patterns
@@ -62,4 +63,7 @@ YEARS = [
     "SoSe 2023",
     "WiSe 2023/2024",
 ]
+
+
+
 
