@@ -1,7 +1,7 @@
 """Utilities to load data into a pandas DataFrame."""
 
 import pandas as pd
-from constants import GRADUATES_PATH, STUDENTS_PATH, SALLARY_PATH
+from constants import GRADUATES_PATH, STUDENTS_PATH, SALLARY_PATH, INFLATION_PATH
 
 
 def getStudents() -> pd.DataFrame:
@@ -22,7 +22,7 @@ def getGraduates() -> pd.DataFrame:
         GRADUATES_PATH,
         encoding="ISO-8859-1",
         sep=";",
-        decimal=".",
+        decimal=",",
         skiprows=4,
         header=[1, 2, 3],
         skipfooter=3,
@@ -38,10 +38,26 @@ def getSallaries() -> pd.DataFrame:
         SALLARY_PATH,
         encoding="ISO-8859-1",
         sep=";",
-        decimal=".",
+        decimal=",",
         skiprows=5,
         header=[0, 1, 2, 3],
         skipfooter=4,
         index_col=[0, 1, 2, 3],
         engine="python")
     return sallaries
+
+
+def getInflation() -> pd.DataFrame:
+    """Load inflation data from csv file into a pandas DataFrame."""
+
+    inflation = pd.read_csv(
+        INFLATION_PATH,
+        encoding="ISO-8859-1",
+        sep=";",
+        decimal=",",
+        skiprows=4,
+        header=[0, 1],
+        index_col=[0],
+        skipfooter=3,
+        engine="python")
+    return inflation
