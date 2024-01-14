@@ -9,18 +9,19 @@ from statsmodels.tsa.stattools import adfuller
 from statsmodels.graphics.tsaplots import plot_pacf
 from statsmodels.graphics.tsaplots import plot_acf
 
-import os 
+import os
+
 
 def GetStudentsData():
-    
+
     PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     DATA_DIR = os.path.join(PROJECT_DIR, "dat")
     GRADUATES_PATH = os.path.join(DATA_DIR, "student_data_per_subject.csv")
 
-    #file_path = '/Users/abdallahabdul-latif/Desktop/Universität Tübingen/5.Semester/Data Literacy/StudentProject/AnalysingStudentDevelopment/data/student_data_per_subject.csv'
+    # file_path = '/Users/abdallahabdul-latif/Desktop/Universität Tübingen/5.Semester/Data Literacy/StudentProject/AnalysingStudentDevelopment/data/student_data_per_subject.csv'
     file_path = GRADUATES_PATH
 
-    students = pd.read_csv(file_path, encoding= "ISO-8859-1",sep=";", decimal=".", index_col=0, skiprows=0, skipfooter=0, engine="python")
+    students = pd.read_csv(file_path, encoding="ISO-8859-1", sep=";", decimal=".", index_col=0, skiprows=0, skipfooter=0, engine="python")
 
     # Get the list of columns in the DataFrame
     columns_list = students.columns.tolist()
@@ -58,10 +59,10 @@ def GetStudentsData():
     for i, start_index in enumerate(academic_year_indexes):
         # Add the academic year column name
         renamed_columns.append(columns_list[start_index])
-        
+
         # Determine the end index for this academic year's range of columns
         end_index = academic_year_indexes[i + 1] if i + 1 < len(academic_year_indexes) else len(columns_list)
-        
+
         # Generate the new Fachsemester names for the columns in this range
         for j in range(1, end_index - start_index):
             if j <= 12:
@@ -83,13 +84,12 @@ def GetStudentsData():
             column_series = pd.Series(students[col].squeeze())
             students[col] = pd.to_numeric(column_series, errors='coerce')
 
-
     for i, index in enumerate(academic_year_indexes):
         # Determine the range of columns for this academic year's Fachsemester
         # Start at the next column after the academic year column and end at the column before the next academic year column
         start = index + 1
         end = academic_year_indexes[i + 1] if i + 1 < len(academic_year_indexes) else len(students.columns)
-        
+
         # Sum the values across these Fachsemester columns
         students.iloc[:, index] = students.iloc[:, start:end].sum(axis=1)
 
@@ -109,7 +109,6 @@ def GetStudentsData():
     expanded_students.reset_index(inplace=True)
     expanded_students.rename(columns={'index': 'Semester', 0: 'Student Count'}, inplace=True)
 
-
     # Create a new DataFrame to store the doubled columns
     doubled_columns = pd.DataFrame()
 
@@ -122,7 +121,6 @@ def GetStudentsData():
     doubled_columns = doubled_columns.iloc[:, :-1]
 
     transposed_students_df = doubled_columns.transpose()
-
 
     # Get the list of columns in the DataFrame
     columns_list = transposed_students_df.columns.tolist()
@@ -138,9 +136,10 @@ def GetStudentsData():
     transposed_students_df.index = quarter_dates
 
     # Display the updated DataFrame
-    #print(transposed_students_df)
+    # print(transposed_students_df)
 
     return transposed_students_df
+
 
 def GetStudentsDataForecast():
 
@@ -149,7 +148,6 @@ def GetStudentsDataForecast():
     # Differencing the series once
     diff_series = time_series_data['Students'].diff(1).dropna()
 
-    
     # Augmented Dickey-Fuller Test (for d)
     result = adfuller(diff_series)
     print('ADF Statistic: %f' % result[0])
@@ -162,8 +160,6 @@ def GetStudentsDataForecast():
     # Autocorrelation Function (ACF) Plot (for q)
     plot_acf(diff_series, lags=20)
     plt.show()
-    
-
 
     """
     # Fit an ARIMA(1,0,0) model
@@ -174,11 +170,11 @@ def GetStudentsDataForecast():
 
     # Fit a SARIMA model
     # This means: p=1, d=1, q=0 for non-seasonal order, and P=1, D=1, Q=0 for seasonal order with s=4 (quarterly data)
-    #model = SARIMAX(time_series_data['Salary'], order=(1, 1, 0), seasonal_order=(1, 1, 0, 4))
+    # model = SARIMAX(time_series_data['Salary'], order=(1, 1, 0), seasonal_order=(1, 1, 0, 4))
     model = SARIMAX(time_series_data['Students'], order=(1, 0, 0), seasonal_order=(1, 0, 0, 4))
     model_fit = model.fit()
 
-    """ 
+    """
     # Summary of the model
     print(model_fit.summary())
     """
@@ -193,7 +189,6 @@ def GetStudentsDataForecast():
     forecast = model_fit.forecast(steps=8) # Forecasting next 5 periods
     """
 
-    
     plt.figure(figsize=(10, 6))
     plt.plot(time_series_data['Students'], label='Historical')
     plt.plot(forecast, label='Forecast')
@@ -201,9 +196,8 @@ def GetStudentsDataForecast():
     plt.show()
 
     plt.close()
-    
 
     return forecast
 
 
-#GetStudentsDataForecast()
+# GetStudentsDataForecast()

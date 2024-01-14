@@ -3,8 +3,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error
 
-import salaries 
-import students 
+import salaries
+import students
 import graduates
 
 import matplotlib.pyplot as plt
@@ -58,7 +58,6 @@ target_std = students_data['Students'].std()
 print("Standard Deviation of Target Variable:", target_std)
 
 
-
 # For forecasting future student numbers, you would predict using new salary and graduates data:
 future_salaries = salaries.GetSalaryDataForecast()
 future_graduates = graduates.GetGraduatesDataForecast()
@@ -87,4 +86,3 @@ ax2.set_ylabel('Salaries')
 ax2.legend(loc='upper left')
 
 plt.show()
-

@@ -8,7 +8,8 @@ from statsmodels.tsa.stattools import adfuller
 from statsmodels.graphics.tsaplots import plot_pacf
 from statsmodels.graphics.tsaplots import plot_acf
 
-import os 
+import os
+
 
 def GetGraduatesData():
 
@@ -23,9 +24,9 @@ def GetGraduatesData():
     PLOT_DIR = os.path.join(PROJECT_DIR, 'plots')
     """
 
-    #file_path = '/Users/abdallahabdul-latif/Desktop/Universität Tübingen/5.Semester/Data Literacy/StudentProject/AnalysingStudentDevelopment/data/graduates_germany.csv'
+    # file_path = '/Users/abdallahabdul-latif/Desktop/Universität Tübingen/5.Semester/Data Literacy/StudentProject/AnalysingStudentDevelopment/data/graduates_germany.csv'
     file_path = GRADUATES_PATH
-    data = pd.read_csv(file_path, encoding= "ISO-8859-1",sep=";", decimal=".", skiprows=4, skipfooter=3, engine="python")
+    data = pd.read_csv(file_path, encoding="ISO-8859-1", sep=";", decimal=".", skiprows=4, skipfooter=3, engine="python")
 
     # Now manually assign the first column as 'year' and the second as 'gender'
     data.columns = ['gender', 'year'] + ['state_' + str(i) for i in range(1, len(data.columns) - 1)]
@@ -37,7 +38,7 @@ def GetGraduatesData():
     data_with_years = data[data['year'].str.contains(r'20\d{2}/\d{2}', regex=True)]
 
     # Define the range of years we are interested in
-    desired_years = [str(year) + '/' + str(year+1)[-2:] for year in range(2006, 2022)]
+    desired_years = [str(year) + '/' + str(year + 1)[-2:] for year in range(2006, 2022)]
 
     # Now filter the DataFrame to only include the desired years
     data_years_filtered = data_with_years[data_with_years['year'].isin(desired_years)]
@@ -90,7 +91,7 @@ def GetGraduatesData():
     graduates.columns = columns_list
 
     # Display the final data with total male graduates per year, excluding the year with 0 graduates
-    #print(graduates)
+    # print(graduates)
 
     return graduates
 
@@ -117,7 +118,6 @@ def GetGraduatesDataForecast():
     plt.show()
     """
 
-
     """
     # Fit an ARIMA(1,0,0) model
     # This means: 1 autoregressive term (p=1), no differencing (d=0), and no moving average term (q=0)
@@ -127,11 +127,11 @@ def GetGraduatesDataForecast():
 
     # Fit a SARIMA model
     # This means: p=1, d=1, q=0 for non-seasonal order, and P=1, D=1, Q=0 for seasonal order with s=4 (quarterly data)
-    #model = SARIMAX(time_series_data['Salary'], order=(1, 1, 0), seasonal_order=(1, 1, 0, 4))
+    # model = SARIMAX(time_series_data['Salary'], order=(1, 1, 0), seasonal_order=(1, 1, 0, 4))
     model = SARIMAX(time_series_data['Graduates'], order=(1, 1, 1), seasonal_order=(1, 1, 1, 4))
     model_fit = model.fit()
 
-    """ 
+    """
     # Summary of the model
     print(model_fit.summary())
     """
@@ -146,8 +146,6 @@ def GetGraduatesDataForecast():
     forecast = model_fit.forecast(steps=8) # Forecasting next 5 periods
     """
 
-
-    
     plt.figure(figsize=(10, 6))
     plt.plot(time_series_data['Graduates'], label='Historical')
     plt.plot(forecast, label='Forecast')
@@ -155,7 +153,7 @@ def GetGraduatesDataForecast():
     plt.show()
 
     plt.close()
-    
+
     return forecast
 
 

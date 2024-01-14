@@ -8,7 +8,8 @@ from statsmodels.tsa.stattools import adfuller
 from statsmodels.graphics.tsaplots import plot_pacf
 from statsmodels.graphics.tsaplots import plot_acf
 
-import os 
+import os
+
 
 def GetSalaryData():
 
@@ -16,9 +17,9 @@ def GetSalaryData():
     DATA_DIR = os.path.join(PROJECT_DIR, "dat")
     GRADUATES_PATH = os.path.join(DATA_DIR, "sallary_per_sector.csv")
 
-    #file_path = '/Users/abdallahabdul-latif/Desktop/Universität Tübingen/5.Semester/Data Literacy/StudentProject/AnalysingStudentDevelopment/data/sallary_per_sector.csv'
+    # file_path = '/Users/abdallahabdul-latif/Desktop/Universität Tübingen/5.Semester/Data Literacy/StudentProject/AnalysingStudentDevelopment/data/sallary_per_sector.csv'
     file_path = GRADUATES_PATH
-    data = pd.read_csv(file_path, encoding= "ISO-8859-1",sep=";", decimal=".", skiprows=5, skipfooter=9, index_col=0, engine="python")
+    data = pd.read_csv(file_path, encoding="ISO-8859-1", sep=";", decimal=".", skiprows=5, skipfooter=9, index_col=0, engine="python")
 
     # Get the list of columns in the DataFrame
     columns_list = data.columns.tolist()
@@ -51,12 +52,18 @@ def GetSalaryData():
 
     # Preprocess the 'quarter' column to standard format
     # Assuming the original format is something like '1. Quartal', '2. Quartal', etc.
-    new_data_with_five_columns_male['quarter'] = new_data_with_five_columns_male['quarter'].str.extract('(\d)').astype(str)
-    new_data_with_five_columns_female['quarter'] = new_data_with_five_columns_female['quarter'].str.extract('(\d)').astype(str)
+    new_data_with_five_columns_male['quarter'] = new_data_with_five_columns_male['quarter'].str.extract('(\\d)').astype(str)
+    new_data_with_five_columns_female['quarter'] = new_data_with_five_columns_female['quarter'].str.extract('(\\d)').astype(str)
 
     # Now create the 'date' column
-    new_data_with_five_columns_male['date'] = pd.to_datetime(new_data_with_five_columns_male['year'].astype(str) + 'Q' + new_data_with_five_columns_male['quarter'])
-    new_data_with_five_columns_female['date'] = pd.to_datetime(new_data_with_five_columns_female['year'].astype(str) + 'Q' + new_data_with_five_columns_female['quarter'])
+    new_data_with_five_columns_male['date'] = pd.to_datetime(
+        new_data_with_five_columns_male['year'].astype(str) +
+        'Q' +
+        new_data_with_five_columns_male['quarter'])
+    new_data_with_five_columns_female['date'] = pd.to_datetime(
+        new_data_with_five_columns_female['year'].astype(str) +
+        'Q' +
+        new_data_with_five_columns_female['quarter'])
 
     # Reset the index of the DataFrame
     new_data_with_five_columns_male.reset_index(drop=True, inplace=True)
@@ -87,7 +94,7 @@ def GetSalaryData():
     # Slice away the last column
     time_series_data = time_series_data.iloc[3:, :]
 
-    #print(time_series_data)
+    # print(time_series_data)
 
     return time_series_data
 
@@ -98,7 +105,6 @@ def GetSalaryDataForecast():
 
     # Differencing the series once
     diff_series = time_series_data['Salary'].diff(1).dropna()
-
 
     # Tests for finding hyperparameter p,d and q
 
@@ -117,7 +123,6 @@ def GetSalaryDataForecast():
     plt.show()
     """
 
-
     """
     # Fit an ARIMA(1,0,0) model
     # This means: 1 autoregressive term (p=1), no differencing (d=0), and no moving average term (q=0)
@@ -127,11 +132,11 @@ def GetSalaryDataForecast():
 
     # Fit a SARIMA model
     # This means: p=1, d=1, q=0 for non-seasonal order, and P=1, D=1, Q=0 for seasonal order with s=4 (quarterly data)
-    #model = SARIMAX(time_series_data['Salary'], order=(1, 1, 0), seasonal_order=(1, 1, 0, 4))
+    # model = SARIMAX(time_series_data['Salary'], order=(1, 1, 0), seasonal_order=(1, 1, 0, 4))
     model = SARIMAX(time_series_data['Salary'], order=(1, 1, 1), seasonal_order=(1, 1, 1, 4))
     model_fit = model.fit()
 
-    """ 
+    """
     # Summary of the model
     print(model_fit.summary())
     """
@@ -159,5 +164,4 @@ def GetSalaryDataForecast():
     return forecast
 
 
-
-#GetSalaryData()
+# GetSalaryData()
