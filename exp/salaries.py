@@ -14,10 +14,10 @@ def GetSalaryData():
 
     PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     DATA_DIR = os.path.join(PROJECT_DIR, "dat")
-    GRADUATES_PATH = os.path.join(DATA_DIR, "sallary_per_sector.csv")
+    SALARY_PATH = os.path.join(DATA_DIR, "sallary_per_sector.csv")
 
     #file_path = '/Users/abdallahabdul-latif/Desktop/Universität Tübingen/5.Semester/Data Literacy/StudentProject/AnalysingStudentDevelopment/data/sallary_per_sector.csv'
-    file_path = GRADUATES_PATH
+    file_path = SALARY_PATH
     data = pd.read_csv(file_path, encoding= "ISO-8859-1",sep=";", decimal=".", skiprows=5, skipfooter=9, index_col=0, engine="python")
 
     # Get the list of columns in the DataFrame

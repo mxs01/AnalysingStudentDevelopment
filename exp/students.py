@@ -15,10 +15,10 @@ def GetStudentsData():
     
     PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     DATA_DIR = os.path.join(PROJECT_DIR, "dat")
-    GRADUATES_PATH = os.path.join(DATA_DIR, "student_data_per_subject.csv")
+    STUDENTS_PATH = os.path.join(DATA_DIR, "student_data_per_subject.csv")
 
     #file_path = '/Users/abdallahabdul-latif/Desktop/Universität Tübingen/5.Semester/Data Literacy/StudentProject/AnalysingStudentDevelopment/data/student_data_per_subject.csv'
-    file_path = GRADUATES_PATH
+    file_path = STUDENTS_PATH
 
     students = pd.read_csv(file_path, encoding= "ISO-8859-1",sep=";", decimal=".", index_col=0, skiprows=0, skipfooter=0, engine="python")
 
@@ -193,7 +193,7 @@ def GetStudentsDataForecast():
     forecast = model_fit.forecast(steps=8) # Forecasting next 5 periods
     """
 
-    
+    """
     plt.figure(figsize=(10, 6))
     plt.plot(time_series_data['Students'], label='Historical')
     plt.plot(forecast, label='Forecast')
@@ -202,6 +202,7 @@ def GetStudentsDataForecast():
 
     plt.close()
     
+    """
 
     return forecast
 

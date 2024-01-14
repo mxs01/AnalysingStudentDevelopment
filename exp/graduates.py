@@ -146,7 +146,7 @@ def GetGraduatesDataForecast():
     forecast = model_fit.forecast(steps=8) # Forecasting next 5 periods
     """
 
-
+    """
     
     plt.figure(figsize=(10, 6))
     plt.plot(time_series_data['Graduates'], label='Historical')
@@ -155,6 +155,7 @@ def GetGraduatesDataForecast():
     plt.show()
 
     plt.close()
+    """
     
     return forecast
 
