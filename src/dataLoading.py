@@ -1,7 +1,7 @@
 """Utilities to load data into a pandas DataFrame."""
 
 import pandas as pd
-from constants import GRADUATES_PATH, STUDENTS_PATH, SALLARY_PATH, INFLATION_PATH
+from .constants import GRADUATES_PATH, STUDENTS_PATH, SALLARY_PATH, INFLATION_PATH
 
 
 def getStudents() -> pd.DataFrame:
