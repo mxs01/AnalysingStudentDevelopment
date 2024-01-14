@@ -1,7 +1,8 @@
 """Utilities to load data into a pandas DataFrame."""
 
 import pandas as pd
-from .constants import GRADUATES_PATH, STUDENTS_PATH, SALLARY_PATH, INFLATION_PATH
+import numpy as np
+from .constants import GRADUATES_PATH, STUDENTS_PATH, SALLARY_PATH, INFLATION_PATH, YEARS, SEMESTERS
 
 
 def getStudents() -> pd.DataFrame:
@@ -61,3 +62,71 @@ def getInflation() -> pd.DataFrame:
         skipfooter=3,
         engine="python")
     return inflation
+
+
+def getAllCourses() -> list:
+    """Get all courses from student data."""
+
+    students = getStudents()
+    return students.index.levels[0].tolist()
+
+
+def getTotalStudentsFor(courses: list, years: list[str]) -> np.array:
+    students = getStudents()
+
+    studentsInCourseHF = np.empty((len(courses), 0))
+
+    for year in years:
+        data_for_year = students.loc[(courses, 'HF'), (year, SEMESTERS)].to_numpy(dtype=int).sum(axis=1)
+        data_for_year = data_for_year.reshape((len(courses), 1))
+        studentsInCourseHF = np.hstack((studentsInCourseHF, data_for_year))
+
+    studentsInCourseNF = np.empty((len(courses), 0))
+
+    for year in years:
+        data_for_year = students.loc[(courses, 'NF'), (year, SEMESTERS)].to_numpy(dtype=int).sum(axis=1)
+        data_for_year = data_for_year.reshape((len(courses), 1))
+        studentsInCourseNF = np.hstack((studentsInCourseNF, data_for_year))
+
+    return studentsInCourseHF.sum(axis=0) + studentsInCourseNF.sum(axis=0)
+
+
+def getBruttoSallary(sector) -> np.array:
+    sallaries = getSallaries()
+    SALLARY_YEARS = sallaries.index.levels[2]
+    QUARTALS = ['1. Quartal', '2. Quartal', '3. Quartal', '4. Quartal']
+
+    bruttoSallary = sallaries.loc[(sector[0], sector[1], SALLARY_YEARS, QUARTALS), ('Insgesamt', 'Insgesamt',
+                                                                                    'Durchschnittliche Bruttomonatsverdienste', 'EUR')].to_numpy(dtype=int)
+    bruttoSallary = bruttoSallary.reshape(-1, 2)
+    return bruttoSallary.mean(axis=1)
+
+
+def getGraduatesInBwFor(years: list) -> np.array:
+    graduates = getGraduates()
+    graduatesInBW = graduates.loc[('Insgesamt', years), ('Baden-Württemberg', 'Absolventen und Abgänger', 'Anzahl')].to_numpy()
+    graduatesInBW = np.where(graduatesInBW == '-', np.nan, graduatesInBW)
+    return graduatesInBW.astype(float)
+
+
+def getAllGraduatesYears() -> list[str]:
+    graduates = getGraduates()
+    return graduates.index.levels[1].tolist()
+
+
+def getInflationAdjustedBruttoSallary(sector) -> np.array:
+    inflation = getInflation()
+    inflation = inflation.loc[:, ('Veränderungsrate zum Vorjahr', 'Prozent')].to_numpy(dtype=float)
+
+    bruttoSallary = getBruttoSallary(sector)
+
+    cummulativeInflation = np.cumprod(1 + inflation / 100)
+    print('Create cummulative inflation:')
+    for a, b in zip(inflation, cummulativeInflation):
+        print(f'{a} -> {b}')
+
+    print('\nAdjust sallary for inflation:')
+    bruttoInflationSallary = bruttoSallary / cummulativeInflation.repeat(2)
+    for a, b in zip(bruttoSallary, bruttoInflationSallary):
+        print(f'{a} -> {b}')
+    return bruttoInflationSallary
