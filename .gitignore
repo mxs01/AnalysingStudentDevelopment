@@ -244,3 +244,6 @@ fabric.properties
 
 # Built Visual Studio Code Extensions
 *.vsix
+
+# Own stuff
+summary.txt
