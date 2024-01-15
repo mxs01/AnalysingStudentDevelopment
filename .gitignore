@@ -244,3 +244,13 @@ fabric.properties
 
 # Built Visual Studio Code Extensions
 *.vsix
+
+# custom for LaTeX
+*.aux
+*.blg
+*.fdb_latexmk
+*.fls
+paper.pdf
+paper.out
+*.synctex.gz
+fig/
