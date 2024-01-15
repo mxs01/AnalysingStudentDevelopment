@@ -252,5 +252,6 @@ fabric.properties
 *.fls
 paper.pdf
 paper.out
+paper.bbl
 *.synctex.gz
 fig/
