@@ -14,6 +14,9 @@ EXP_DIR = os.path.join(PROJECT_DIR, "exp")
 PAPER_DIR = os.path.join(PROJECT_DIR, "doc/DataLiteracyStudentProject")
 TEX_PATH = os.path.join(PAPER_DIR, "paper.tex")
 FIG_DIR = os.path.join(PAPER_DIR, "fig")
+# Create the folder if not present
+if not os.path.exists(FIG_DIR):
+    os.makedirs(FIG_DIR)
 
 
 # REGEX Patterns
