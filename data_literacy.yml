@@ -12,5 +12,7 @@ dependencies:
   - pip
 
   - pip:
+    - statsmodels
+    - openpyxl
     - nbconvert
     - seaborn

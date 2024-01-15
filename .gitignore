@@ -245,6 +245,7 @@ fabric.properties
 # Built Visual Studio Code Extensions
 *.vsix
 
+
 # custom for LaTeX
 *.aux
 *.blg
@@ -256,3 +257,6 @@ paper.bbl
 *.synctex.gz
 *.bib
 fig/
+
+# custom
+summary.txt

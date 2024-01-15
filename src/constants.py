@@ -8,6 +8,7 @@ DATA_DIR = os.path.join(PROJECT_DIR, "dat")
 GRADUATES_PATH = os.path.join(DATA_DIR, "graduates_germany.csv")
 SALLARY_PATH = os.path.join(DATA_DIR, "sallary_per_sector.csv")
 STUDENTS_PATH = os.path.join(DATA_DIR, "student_data_per_subject.xlsx")
+INFLATION_PATH = os.path.join(DATA_DIR, "inflation_germany.csv")
 EXP_DIR = os.path.join(PROJECT_DIR, "exp")
 
 # paths for the paper
@@ -71,4 +72,3 @@ YEARS = [
     "SoSe 2023",
     "WiSe 2023/2024",
 ]
-
