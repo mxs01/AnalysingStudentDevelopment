@@ -12,5 +12,6 @@ dependencies:
   - pip
 
   - pip:
+    - statsmodels
     - nbconvert
     - seaborn
