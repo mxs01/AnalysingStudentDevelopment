@@ -19,17 +19,16 @@ def getStudents() -> pd.DataFrame:
 def getGraduates() -> pd.DataFrame:
     """Load graduates data from csv file into a pandas DataFrame."""
 
-    graduates = pd.read_csv(
-        GRADUATES_PATH,
-        encoding="ISO-8859-1",
-        sep=";",
-        decimal=",",
-        skiprows=4,
-        header=[1, 2, 3],
-        skipfooter=3,
-        index_col=[0, 1],
-        engine="python")
-    return graduates
+    graduatesInBW = pd.read_csv(GRADUATES_PATH,
+                                sep=";",
+                                thousands=".",
+                                skiprows=1,
+                                header=[0, 1],
+                                skipfooter=10,
+                                index_col=0,
+                                na_values=["."],
+                                engine="python")
+    return graduatesInBW
 
 
 def getSallaries() -> pd.DataFrame:
@@ -103,14 +102,13 @@ def getBruttoSallary(sector) -> np.array:
 
 def getGraduatesInBwFor(years: list) -> np.array:
     graduates = getGraduates()
-    graduatesInBW = graduates.loc[('Insgesamt', years), ('Baden-Württemberg', 'Absolventen und Abgänger', 'Anzahl')].to_numpy()
-    graduatesInBW = np.where(graduatesInBW == '-', np.nan, graduatesInBW)
+    graduatesInBW = graduates.loc[years, ('Abiturienten insg', 'Anzahl')].to_numpy()
     return graduatesInBW.astype(float)
 
 
 def getAllGraduatesYears() -> list[str]:
     graduates = getGraduates()
-    return graduates.index.levels[1].tolist()
+    return graduates.index.tolist()
 
 
 def getInflationAdjustedBruttoSallary(sector) -> np.array:
