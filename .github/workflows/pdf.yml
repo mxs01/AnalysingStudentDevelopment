@@ -12,16 +12,13 @@ jobs:
     - name: Set up Conda
       uses: conda-incubator/setup-miniconda@v2
       with:
-        python-version: '3.11'
+        activate-environment: data_literacy
+        environment-file: data_literacy.yml
         auto-activate-base: false
-
-    - name: Create and activate Conda environment
-      run: |
-        conda env create -f data_literacy.yml
-        conda activate data_literacy
 
     - name: Run Python script
       run: python runAll.py
+      shell: bash -l {0}
 
     - name: Compile LaTeX documents
       uses: xu-cheng/latex-action@v3
