@@ -251,5 +251,6 @@ fabric.properties
 *.fdb_latexmk
 *.fls
 paper.pdf
+paper.out
 *.synctex.gz
 fig/
