@@ -20,11 +20,14 @@ jobs:
       run: python runAll.py
       shell: bash -l {0}
 
+    - name: Set working directory
+      run: cd doc/DataLiteracyStudentProject
+
     - name: Compile LaTeX documents
       uses: xu-cheng/latex-action@v3
       with:
         root_file: |
-          doc/DataLiteracyStudentProject/paper.tex
+          paper.tex
 
     - name: Upload PDFs
       uses: actions/upload-artifact@v2
