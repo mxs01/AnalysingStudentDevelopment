@@ -2,7 +2,7 @@
 
 import pandas as pd
 import numpy as np
-from .constants import GRADUATES_PATH, STUDENTS_PATH, SALLARY_PATH, INFLATION_PATH, YEARS, SEMESTERS
+from .constants import GRADUATES_PATH, STUDENTS_PATH, SALLARY_PATH, INFLATION_PATH, SEMESTERS
 
 
 def getStudents() -> pd.DataFrame:
@@ -96,8 +96,7 @@ def getBruttoSallary(sector) -> np.array:
     SALLARY_YEARS = sallaries.index.levels[2]
     QUARTALS = ['1. Quartal', '2. Quartal', '3. Quartal', '4. Quartal']
 
-    bruttoSallary = sallaries.loc[(sector[0], sector[1], SALLARY_YEARS, QUARTALS), ('Insgesamt', 'Insgesamt',
-                                                                                    'Durchschnittliche Bruttomonatsverdienste', 'EUR')].to_numpy(dtype=int)
+    bruttoSallary = sallaries.loc[(sector[0], sector[1], SALLARY_YEARS, QUARTALS), ('Insgesamt', 'Insgesamt', 'Durchschnittliche Bruttomonatsverdienste', 'EUR')].to_numpy(dtype=int)  # noqa: E501
     bruttoSallary = bruttoSallary.reshape(-1, 2)
     return bruttoSallary.mean(axis=1)
 
