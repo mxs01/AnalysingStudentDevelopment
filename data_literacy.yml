@@ -9,3 +9,8 @@ dependencies:
   - numpy
   - pandas
   - matplotlib
+  - pip
+
+  - pip:
+    - nbconvert
+    - seaborn
