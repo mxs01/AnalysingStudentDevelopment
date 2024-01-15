@@ -1,6 +1,6 @@
 name: Run Python script and create PDF
 
-on: push
+on: [push]
 
 jobs:
   build:
@@ -28,7 +28,7 @@ jobs:
           paper.tex
 
     - name: Upload PDFs
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
-        name: PDFs
-        path: ./*.pdf
+        name: PDF
+        path: doc/DataLiteracyStudentProject/paper.pdf
