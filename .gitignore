@@ -254,4 +254,5 @@ paper.pdf
 paper.out
 paper.bbl
 *.synctex.gz
+*.bib
 fig/
