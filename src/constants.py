@@ -4,10 +4,16 @@ import re
 
 # paths
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATA_DIR = os.path.join(PROJECT_DIR, "data")
+DATA_DIR = os.path.join(PROJECT_DIR, "dat")
 GRADUATES_PATH = os.path.join(DATA_DIR, "graduates_germany.csv")
 SALLARY_PATH = os.path.join(DATA_DIR, "sallary_per_sector.csv")
 STUDENTS_PATH = os.path.join(DATA_DIR, "student_data_per_subject.xlsx")
+EXP_DIR = os.path.join(PROJECT_DIR, "exp")
+
+# paths for the paper
+PAPER_DIR = os.path.join(PROJECT_DIR, "doc/DataLiteracyStudentProject")
+TEX_PATH = os.path.join(PAPER_DIR, "paper.tex")
+FIG_DIR = os.path.join(PAPER_DIR, "fig")
 
 
 # REGEX Patterns

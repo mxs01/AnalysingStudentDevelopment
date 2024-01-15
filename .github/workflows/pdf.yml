@@ -1,0 +1,36 @@
+name: Run Python script and create PDF
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Conda
+      uses: conda-incubator/setup-miniconda@v2
+      with:
+        python-version: '3.x'
+        auto-activate-base: false
+
+    - name: Create and activate Conda environment
+      run: |
+        conda env create -f data_literacy.yml
+        conda activate data_literacy
+
+    - name: Run Python script
+      run: python runAll.py
+
+    - name: Compile LaTeX documents
+      uses: xu-cheng/latex-action@v3
+      with:
+        root_file: |
+          doc/DataLiteracyStudentProject/paper.tex
+
+    - name: Upload PDFs
+      uses: actions/upload-artifact@v2
+      with:
+        name: PDFs
+        path: ./*.pdf
