@@ -9,6 +9,7 @@
 \usepackage{booktabs} % for professional tables
 
 \usepackage{tikz}
+\usepackage{enumitem}
 % Corporate Design of the University of Tübingen
 % Primary Colors
 \definecolor{TUred}{RGB}{165,30,55}
@@ -129,8 +130,13 @@
 
 %Put your abstract here. Abstracts typically start with a sentence motivating why the subject is interesting. Then mention the data, methodology or methods you are working with, and describe results. 
 \begin{abstract}
-As often mentioned in the news and in the daily life, people suggest that a higher 
-\end{abstract}
+As often mentioned in the news and in the daily life, people suggest that a higher expected salary is a strong pull factor for students 
+choosing their subject. We were curious if this is particullarily true for the scientific based subjects, because a majority of them have a 
+pretty high expected salary. We used the students data from the \href{https://uni-tuebingen.de/einrichtungen/verwaltung/iv-studierende/studierendenabteilung/statistiken/}{Statistics University of Tübingen}, 
+the high-school graduates data from the \href{https://www.statistik-bw.de/BildungKultur/SchulenAllgem/LRt0302.jsp}{Statistisches Landesamt Baden-Württemberg}
+and also the salary data from 2005 to 2023 from the \href{https://www-genesis.destatis.de/genesis//online?operation=table&code=62321-0001&bypass=true&levelindex=0&levelid=1702307320529#abreadcrumb}{Deutsches Statistisches Bundesamt}.
+We used a vector autoregressive model, to build a time series forecast and analysed the outcomes to find an optimal configuration for this type of model in our context.
+\textcolor{red}{result.}
 %Motivate the problem, situation or topic you decided to work on. 
 % Describe why it matters (is it of societal, economic, scientific value?). 
 % Outline the rest of the paper (use references, e.g.~to \Cref{sec:methods}: 
@@ -138,14 +144,14 @@ As often mentioned in the news and in the daily life, people suggest that a high
 % The point of the introduction is to make the reader want to read the rest of the paper.
 
 \section{Introduction}\label{sec:intro}
-As often mentioned in the news and in the daily life, people suggest that a higher expected salary influences the job aspirations of the youth. 
-We are curious about the underlying truth of thgis stetement. We have three Datasets, one Datset shows the Expected Salaries for various industrial sectors,
-the second one shows the amount of students in the STEM sector in Tübingen from the Wintersemester 2005/2006 to the Wintersemester 2023/2024. 
-The third dataset contains information about the amount of students, who finish high school in the certain year.
-We did a feature analysis of the three datasets to get a better understanding of the data but the main focus of our analysis is on predicting 
-the amount of students in the STEM sector for the next years. We used different approaches like a Random Forest approach with SARIMA
-and a Multivariate Autoregression Model to investigate which approach works best for our purpose.
-
+In the public eye, there is a strong correlation between the expected salary and the subject enrollment of students. We are curious if this statement is true or just a biased
+perception of the society. Our main focus is on the University of Tübingen and mainly on the STEM (scientific engineering technical and mathematical) subjects, because those degrees 
+are likely to have a pretty high expected salary after graduating. Furthermore we needed data of high-school graduates in Baden-Würrtemberg, to find a possible corellation between
+the amount of graduates and the new enrollments in the stem subjects. We just focused on Baden-Württemberg, this introduces a bias to our prediction, but we assumed that the 
+majority of students which are going to study in Tübingen come from Baden-Württemberg. The third datatset we used is about the salaries from 2005 to 2023 in the main 
+industrial sectors in Germany. The main focus of this paper is on a analysis of a vetor autoregressive model, to predict the upcoming numbers of students in the next semesters. We
+used various techniques to clean our data like removing the inflation or making our time series stationary to ensure that the predictions don't detect patterns which are inferred by 
+some noise in the data. Nevertheless we also used basic data science techniques to get a better understanding of the dirstributions and trends over the past years.
 
 % In this section, describe \emph{what you did}. Roughly speaking, 
 % explain what data you worked with, how or from where it was collected, it's structure and size.
@@ -157,37 +163,75 @@ and a Multivariate Autoregression Model to investigate which approach works best
 % If you are using a standard tool, it may still help to briefly outline it. Cite relevant works. 
 % You can use the \verb|\citep| and \verb|\citet| commands for this purpose \citep{mackay2003information}.
 \section{Data and Methods}\label{sec:methods}
-We used three different pre collected datasets, our University data was collected by the Statistics Department from the University of Tuebingen. 
-They used the immatriculation data from the students to create this dataset, which leads to
-a quite accurate data which is necessary for the usage in our models.
-\textcolor{red}{// HERE WE NEED MORE INFORMATION ABOUT THE DATA FROM THE OTHER DATASETS//}\\
-The first step was to do some basic feature engineering on the datasets. We used various plots like line graphs, bar charts and pie charts
-to get a better understanding of the data and detect trends. 
-After we finished the basic feauture engineering we started the main analysis of the Vector Autoregressive Model (VAR). 
-To get the most of this model, we wrote a parser, which parses text data generated from a PDF. This parser basically uses regular expressions to extract the amount of students
-per years divided into the semesters and created a new dataset with the usage of pandas.\\
-We've chosen the vector autoregressive model, because we have multivariate data and want to get a deeper understanding, if one of the datasets affects the others, 
-so that we are able to predict one time series with another. A vector autoregressive model doesn't predict a single time series analyses, 
-but multiple. Each time series is a linear combination which consists of n lags and an error term. A lag is the data from the past which we use to estimate
-a new data point. We define the amount of lags in the hyperparameter p which defines the maxamount of lags which are used in the linear combination.
-This linear combination also uses an error term, because we can't guarantee that our model predicts the correct output.\\
-\textcolor{red}{One crucial step in the usage of those AR models, is that we have to ensure that our data is stationary. 
-Data is stationary if those three attributes are fulfilled
-\begin{enumerate}
+In our research we used three datasets, which are divided as follows: The first dataset is from the \href{https://uni-tuebingen.de/einrichtungen/verwaltung/iv-studierende/studierendenabteilung/statistiken/}{Statistics Bureau of theUniversity of Tübingen}., which contains the
+total amount of students from the winter semester 2005/2006 to the winter semester 2023/2024. The data was collected from the enrollments of students, which registered 
+for a study in Tübingen.
+The second dataset is from the \href{https://www.statistik-bw.de/BildungKultur/SchulenAllgem/LRt0302.jsp}{Statistisches Landesamt Baden-Württemberg} which contains data about the high-school graduates from 1970 to 2023.
+Our third and last dataset is from the \href{https://www-genesis.destatis.de/genesis//online?operation=table&code=62321-0001&bypass=true&levelindex=0&levelid=1702307320529#abreadcrumb}{Deutsches Statistisches Bundesamt} and contains the salaries of the large industrial sectors in Germany from 2005 to 2021. 
+One main problem with the mapping between university subjects and actual jobs is that there exists no perfect one-to-one mapping. 
+We also removed the inflation from the salaries to get the real wage, because the inflation could 
+cause a false pattern detection in our autoregressive model. 
+To reduce the amount of bias introduced in this step, we also used the Inflation data from the Deutsches Statistisches Bundesamt over the years.\\
+
+\textcolor{red}{To get the most of this model, we wrote a parser, which parses text data generated from a PDF. This parser basically uses regular expressions to extract the amount of students
+per years divided into the semesters and created a new dataset with the usage of pandas.\\}
+
+Our first steps involved some feauture engineering on the three different datasets to get a better understanding of the data and also detect patterns in the data like trends and distributions over time.
+After we finished the basic feauture engineering step we started the main analysis of the Vector Autoregressive Model (VAR). 
+We've chosen the vector autoregressive model, because we have multivariate data and we assumes that there is a correlation between the given time series.
+A VAR model don't predict a single time series but one for each input series. Those modles have one hyperparameter \textcolor{red}{p} which define the amount 
+of previous data points which should be represented in the output series. Each prediction is a linear combination with the form  $S_n = C_{1} \cdot S_{n-1}+ C_{2} \dots+ C_i \cdot  S_{n-i} + \epsilon$ for
+$i \in \{1,...,|lags|\}$. In our case we have three incoming time series which also leads to three outgoing time series. Our outgoing prediction for the data point n based on lags 
+is represented as
+\begin{equation*}
+    \resizebox{\linewidth}{!}{%
+        $\begin{bmatrix}
+            S_{1,n}\\
+            S_{2,n}\\
+            S_{3,n}
+        \end{bmatrix} = 
+        \begin{bmatrix}
+            C_{1,1} & C_{1,2} & \dots &C_{1,n-1}\\
+            C_{2,1} & C_{2,2} &\dots & C_{2,n-1}\\
+            C_{3,1} & C_{3,2} &\dots &C_{3,n-1}\\
+        \end{bmatrix} + 
+        \begin{bmatrix}
+            S_{1,1} & S_{1,2} & \dots & S_{1,n-1}\\
+            S_{2,1} & S_{2,2} & \dots & S_{2,n-1}\\
+            S_{3,1} & S_{3,2} & \dots & S_{3,n-1}\\
+        \end{bmatrix}+
+        \begin{bmatrix}
+            \epsilon_{1}\\
+            \epsilon_{2}\\
+            \epsilon_{3}
+        \end{bmatrix}$%
+    }
+    \end{equation*}
+Each time series $S_n$ $\forall i \in \{1,2,3\}$ describes the n-th data point for the input time series i. The term $\epsilon$ is added to approximate an error, which is 
+induced by the model.\\
+We need to assure that our model is stationary, which means that the the stochastic process doesn't change over time. \textcolor{red}{WHY?}.
+Our data is stationary if we are able to assure this for all our time series data inputs:
+\begin{enumerate}[label=\Roman*]
     \item The mean $\mu$ is constant
     \item The standard deviation is constant
     \item There is no seasonality in the data
 \end{enumerate}
-// CHECK IF OUR DATA FULFILLS THOSE THREE ATTRIBUTES ///\\
-After we ensured this, we did a PCAF to find statistically significant lags which we could use to find an optimal hyperparameter p of our vector autoregressive model.
-A PCAF only represents the direct influence of the past datapoint $S_{n-i}$ for $i \in \{0,1,...,n\}$  to $S_n$. This gives us a graphical visualization with an error band of non statistical significant
-lags in // GIVE A RANGE //.\\
-After we used this PCAF we tried the different amount of lags, which looked like they have a significant input on the current datapoint $S_n$.
-With the optimal lag we did a Granger Causality Test to get an understanding if one timeseries really influences another. The Granger Causality Test, does a t-Test and F-Test
-checks if we can predict $S_i$ with $i \in \{2,3\}$ the time series $S_j$ $i\neq j$. The Granger Causality Test internally injects lags from the time series $S_J$ 
-into the linear combination of $S_i$, then it does a t-Test and an F-test. As soon as one of those terms is verified by both tests,
-then the test result is true.
-}
+
+After we ensured, that our data is stationary, we used a PACF plot to find lags which could be statistically significant. 
+The main reason why we choose PACF in contrast to ACF is that we only want to look at direct influences from $S_{n-1}$ to $S_{n}$ and not from $S_{n-3}$ to $S_n$.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth,height=\textheight, keepaspectratio]{fig/pacf_plot.pdf}
+    \caption{PACF Plot for our VAR Model}
+    \label{fig:enter-label}
+\end{figure}
+\textcolor{red}{// CONCLUSION FOR PACF // }\\
+
+After we found the optimal lag configuration of our model, we used a Granger Causality Test, to statistically prove that the salary time series really influences the student decision.
+The main idea of Granger Causality is that we are able to predict the data point $S_{i,n}$ directly with one or multiple other time serieses. The Granger Causality Test uses exactly this
+idea, by inserting data points $S*:=S_{j,m}$ for $j\in i:j\neq i$  and $m<n$. After we inserted a couple of terms we do a t-Test and an F-Test on this new $S*$ and as soon as both tests
+return statistical significance for the same S* we can assure that the three time series are Granger Causal.
+
 
 
 
