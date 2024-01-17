@@ -30,6 +30,5 @@ def plot(data, forecast, years) -> plt.Figure:
 
 
 def modifySalary(data, func) -> np.ndarray:
-    modified_data = np.copy(data)
-    modified_data[:, 1] = np.array([func(d) for d in data[:, 1]])
-    return modified_data
+    data[:, 1] = np.array([func(d) for d in data[:, 1]])
+    return data
