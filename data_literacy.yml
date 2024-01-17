@@ -16,3 +16,4 @@ dependencies:
     - openpyxl
     - nbconvert
     - seaborn
+    - tueplots
