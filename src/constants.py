@@ -1,6 +1,7 @@
 # Description: Constants used in the code
 import os
 import re
+from tueplots.constants.color import rgb
 
 # paths
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -19,6 +20,9 @@ FIG_DIR = os.path.join(PAPER_DIR, "fig")
 if not os.path.exists(FIG_DIR):
     os.makedirs(FIG_DIR)
 
+# colors
+STUDENT_COLOR = rgb.tue_blue
+SALARY_COLOR = rgb.tue_red
 
 # REGEX Patterns
 DELIMETER_PATTERN = re.compile(r".*\s*Studienfachbelegung nach Abschlusszielen")
