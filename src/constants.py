@@ -21,7 +21,7 @@ if not os.path.exists(FIG_DIR):
     os.makedirs(FIG_DIR)
 
 # colors
-STUDENT_COLOR = rgb.tue_blue
+STUDENT_COLOR = rgb.tue_lightblue
 SALARY_COLOR = rgb.tue_red
 
 # REGEX Patterns
