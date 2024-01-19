@@ -1,12 +1,13 @@
 # Description: Constants used in the code
 import os
 import re
+from tueplots.constants.color import rgb
 
 # paths
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(PROJECT_DIR, "dat")
 GRADUATES_PATH = os.path.join(DATA_DIR, "graduates_BW.csv")
-SALLARY_PATH = os.path.join(DATA_DIR, "sallary_per_sector.csv")
+SALARY_PATH = os.path.join(DATA_DIR, "salary_per_sector.csv")
 STUDENTS_PATH = os.path.join(DATA_DIR, "student_data_per_subject.xlsx")
 INFLATION_PATH = os.path.join(DATA_DIR, "inflation_germany.csv")
 EXP_DIR = os.path.join(PROJECT_DIR, "exp")
@@ -19,6 +20,11 @@ FIG_DIR = os.path.join(PAPER_DIR, "fig")
 if not os.path.exists(FIG_DIR):
     os.makedirs(FIG_DIR)
 
+# colors
+COL_STUDENT = rgb.tue_lightblue
+COL_STUDENT_PRED = rgb.tue_blue
+COL_SALARY = rgb.tue_red
+COL_SALARY_PRED = rgb.tue_orange
 
 # REGEX Patterns
 DELIMETER_PATTERN = re.compile(r".*\s*Studienfachbelegung nach Abschlusszielen")

@@ -2,7 +2,7 @@
 
 import pandas as pd
 import numpy as np
-from .constants import GRADUATES_PATH, STUDENTS_PATH, SALLARY_PATH, INFLATION_PATH, SEMESTERS
+from .constants import GRADUATES_PATH, STUDENTS_PATH, SALARY_PATH, INFLATION_PATH, SEMESTERS
 
 
 def getStudents() -> pd.DataFrame:
@@ -31,11 +31,11 @@ def getGraduates() -> pd.DataFrame:
     return graduatesInBW
 
 
-def getSallaries() -> pd.DataFrame:
-    """Load sallary data from csv file into a pandas DataFrame."""
+def getSalaries() -> pd.DataFrame:
+    """Load salary data from csv file into a pandas DataFrame."""
 
-    sallaries = pd.read_csv(
-        SALLARY_PATH,
+    salaries = pd.read_csv(
+        SALARY_PATH,
         encoding="ISO-8859-1",
         sep=";",
         decimal=",",
@@ -44,7 +44,7 @@ def getSallaries() -> pd.DataFrame:
         skipfooter=4,
         index_col=[0, 1, 2, 3],
         engine="python")
-    return sallaries
+    return salaries
 
 
 def getInflation() -> pd.DataFrame:
@@ -90,14 +90,14 @@ def getTotalStudentsFor(courses: list, years: list[str]) -> np.array:
     return studentsInCourseHF.sum(axis=0) + studentsInCourseNF.sum(axis=0)
 
 
-def getBruttoSallary(sector) -> np.array:
-    sallaries = getSallaries()
-    SALLARY_YEARS = sallaries.index.levels[2]
+def getBruttoSalary(sector) -> np.array:
+    salaries = getSalaries()
+    SALARY_YEARS = salaries.index.levels[2]
     QUARTALS = ['1. Quartal', '2. Quartal', '3. Quartal', '4. Quartal']
 
-    bruttoSallary = sallaries.loc[(sector[0], sector[1], SALLARY_YEARS, QUARTALS), ('Insgesamt', 'Insgesamt', 'Durchschnittliche Bruttomonatsverdienste', 'EUR')].to_numpy(dtype=int)  # noqa: E501
-    bruttoSallary = bruttoSallary.reshape(-1, 2)
-    return bruttoSallary.mean(axis=1)
+    bruttoSalary = salaries.loc[(sector[0], sector[1], SALARY_YEARS, QUARTALS), ('Insgesamt', 'Insgesamt', 'Durchschnittliche Bruttomonatsverdienste', 'EUR')].to_numpy(dtype=int)  # noqa: E501
+    bruttoSalary = bruttoSalary.reshape(-1, 2)
+    return bruttoSalary.mean(axis=1)
 
 
 def getGraduatesInBwFor(years: list) -> np.array:
@@ -111,19 +111,19 @@ def getAllGraduatesYears() -> list[str]:
     return graduates.index.tolist()
 
 
-def getInflationAdjustedBruttoSallary(sector) -> np.array:
+def getInflationAdjustedBruttoSalary(sector) -> np.array:
     inflation = getInflation()
     inflation = inflation.loc[:, ('Veränderungsrate zum Vorjahr', 'Prozent')].to_numpy(dtype=float)
 
-    bruttoSallary = getBruttoSallary(sector)
+    bruttoSalary = getBruttoSalary(sector)
 
     cummulativeInflation = np.cumprod(1 + inflation / 100)
     print('Create cummulative inflation:')
     for a, b in zip(inflation, cummulativeInflation):
         print(f'{a} -> {b}')
 
-    print('\nAdjust sallary for inflation:')
-    bruttoInflationSallary = bruttoSallary / cummulativeInflation.repeat(2)
-    for a, b in zip(bruttoSallary, bruttoInflationSallary):
+    print('\nAdjust salary for inflation:')
+    bruttoInflationSalary = bruttoSalary / cummulativeInflation.repeat(2)
+    for a, b in zip(bruttoSalary, bruttoInflationSalary):
         print(f'{a} -> {b}')
-    return bruttoInflationSallary
+    return bruttoInflationSalary
