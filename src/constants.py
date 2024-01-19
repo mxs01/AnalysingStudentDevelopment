@@ -21,8 +21,10 @@ if not os.path.exists(FIG_DIR):
     os.makedirs(FIG_DIR)
 
 # colors
-STUDENT_COLOR = rgb.tue_lightblue
-SALARY_COLOR = rgb.tue_red
+COL_STUDENT = rgb.tue_lightblue
+COL_STUDENT_PRED = rgb.tue_blue
+COL_SALARY = rgb.tue_red
+COL_SALARY_PRED = rgb.tue_violet
 
 # REGEX Patterns
 DELIMETER_PATTERN = re.compile(r".*\s*Studienfachbelegung nach Abschlusszielen")
