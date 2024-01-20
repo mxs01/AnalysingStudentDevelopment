@@ -9,6 +9,13 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Check commit message for [skip-ci]
+      run: |
+        if [[ "$(git log --format=%B -n 1)" == *"[skip-ci]"* ]]; then
+          echo "Commit message contains [skip-ci]. Skipping the workflow."
+          exit 78  # Exit with a neutral status to skip the workflow
+        fi
+
     - name: Set up Conda
       uses: conda-incubator/setup-miniconda@v2
       with:
@@ -32,3 +39,16 @@ jobs:
       with:
         name: PDF
         path: doc/DataLiteracyStudentProject/paper.pdf
+
+    - name: Check commit message for [PDF]
+      run: |
+        if [[ "$(git log --format=%B -n 1)" == *"[PDF]"* ]]; then
+          echo "Commit message contains [PDF]. Creating a new commit with the PDF."
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add doc/DataLiteracyStudentProject/paper.pdf
+          git commit -m "Add PDF [skip-ci]"
+          git push
+        else
+          echo "Commit message does not contain [PDF]. Skipping commit creation."
+        fi
