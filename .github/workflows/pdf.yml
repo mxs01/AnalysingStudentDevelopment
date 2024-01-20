@@ -47,7 +47,7 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add doc/DataLiteracyStudentProject/paper.pdf
-          git commit -m "Add PDF [skip-ci]"
+          git commit -m "Compile PDF [skip-ci]"
           git push
         else
           echo "Commit message does not contain [PDF]. Skipping commit creation."
