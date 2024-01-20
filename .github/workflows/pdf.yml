@@ -13,11 +13,11 @@ jobs:
       uses: conda-incubator/setup-miniconda@v2
       with:
         activate-environment: data_literacy
-        environment-file: data_literacy.yml
+        environment-file: conda_env.yml
         auto-activate-base: false
 
     - name: Run Python script
-      run: python runAll.py
+      run: python run_notebooks.py
       shell: bash -l {0}
 
     - name: Compile LaTeX documents
