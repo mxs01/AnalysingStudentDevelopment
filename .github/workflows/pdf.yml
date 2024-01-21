@@ -54,4 +54,4 @@ jobs:
           echo "Commit message does not contain [PDF]. Skipping commit creation."
         fi
       env:
-        GITHUB_TOKEN: ${{ secrets.GitHubActionsToken }}
+        GH_TOKEN: ${{ secrets.GitHubActionsToken }}
