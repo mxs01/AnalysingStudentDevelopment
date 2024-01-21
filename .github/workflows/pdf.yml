@@ -1,26 +1,39 @@
-name: Run Python script and create PDF
+name: Create figures and create PDF
 
 on: [push]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
     - uses: actions/checkout@v2
+    
+
+    - name: Check commit message for [skip-ci]
+      run: |
+        if [[ "$(git log --format=%B -n 1)" == *"[skip-ci]"* ]]; then
+          echo "Commit message contains [skip-ci]. Skipping the workflow."
+          echo "::set-output name=skip::true"
+        fi
 
     - name: Set up Conda
+      if: steps.check_skip.outputs.skip != 'true'
       uses: conda-incubator/setup-miniconda@v2
       with:
         activate-environment: data_literacy
-        environment-file: data_literacy.yml
+        environment-file: conda_env.yml
         auto-activate-base: false
 
     - name: Run Python script
-      run: python runAll.py
+      if: steps.check_skip.outputs.skip != 'true'
+      run: python run_notebooks.py
       shell: bash -l {0}
 
     - name: Compile LaTeX documents
+      if: steps.check_skip.outputs.skip != 'true'
       uses: xu-cheng/latex-action@v3
       with:
         working_directory: doc/DataLiteracyStudentProject
@@ -28,7 +41,17 @@ jobs:
           paper.tex
 
     - name: Upload PDFs
+      if: steps.check_skip.outputs.skip != 'true'
       uses: actions/upload-artifact@v3
       with:
         name: PDF
         path: doc/DataLiteracyStudentProject/paper.pdf
+
+    - name: Git Auto Commit latest PDF
+      if: steps.check_skip.outputs.skip != 'true' && contains(github.event.head_commit.message, '[PDF]')
+      uses: stefanzweifel/git-auto-commit-action@v5.0.0
+      with:
+        commit_message: "Add PDF [skip-ci]"
+        file_pattern: doc/DataLiteracyStudentProject/paper.pdf
+        commit_user_name: PDF GitHub Actions Bot
+        commit_user_email: actions@github.com
