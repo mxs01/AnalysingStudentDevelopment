@@ -10,17 +10,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    
-
-    - name: Check commit message for [skip-ci]
-      run: |
-        if [[ "$(git log --format=%B -n 1)" == *"[skip-ci]"* ]]; then
-          echo "Commit message contains [skip-ci]. Skipping the workflow."
-          echo "::set-output name=skip::true"
-        fi
 
     - name: Set up Conda
-      if: steps.check_skip.outputs.skip != 'true'
       uses: conda-incubator/setup-miniconda@v2
       with:
         activate-environment: data_literacy
@@ -28,12 +19,10 @@ jobs:
         auto-activate-base: false
 
     - name: Run Python script
-      if: steps.check_skip.outputs.skip != 'true'
       run: python run_notebooks.py
       shell: bash -l {0}
 
     - name: Compile LaTeX documents
-      if: steps.check_skip.outputs.skip != 'true'
       uses: xu-cheng/latex-action@v3
       with:
         working_directory: doc/DataLiteracyStudentProject
@@ -41,14 +30,13 @@ jobs:
           paper.tex
 
     - name: Upload PDFs
-      if: steps.check_skip.outputs.skip != 'true'
       uses: actions/upload-artifact@v3
       with:
         name: PDF
         path: doc/DataLiteracyStudentProject/paper.pdf
 
     - name: Git Auto Commit latest PDF
-      if: steps.check_skip.outputs.skip != 'true' && contains(github.event.head_commit.message, '[PDF]')
+      if: contains(github.event.head_commit.message, '[PDF]')
       uses: stefanzweifel/git-auto-commit-action@v5.0.0
       with:
         commit_message: "Add PDF [skip-ci]"
