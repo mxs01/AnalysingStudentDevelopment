@@ -14,7 +14,7 @@ jobs:
       run: |
         if [[ "$(git log --format=%B -n 1)" == *"[skip-ci]"* ]]; then
           echo "Commit message contains [skip-ci]. Skipping the workflow."
-          exit 78  # Exit with a neutral status to skip the workflow
+          exit 0  # Exit with a sucess to skip the workflow
         fi
 
     - name: Set up Conda

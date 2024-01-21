@@ -12,7 +12,7 @@ jobs:
 
       - name: Print GITHUB_TOKEN
         run: |
-            echo "GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}"
+            echo "GITHUB_TOKEN: ${{ secrets.GitHubActionsToken }}"
         env:
           GH_TOKEN: ${{ secrets.GitHubActionsToken }}
     
