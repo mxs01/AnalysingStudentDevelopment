@@ -8,6 +8,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    
 
     - name: Check commit message for [skip-ci]
       run: |
@@ -52,3 +53,5 @@ jobs:
         else
           echo "Commit message does not contain [PDF]. Skipping commit creation."
         fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GitHubActionsToken }}

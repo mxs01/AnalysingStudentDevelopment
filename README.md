@@ -10,18 +10,20 @@ This project utilizes a Vector Autorregressive Model (VAR) to predict the amount
 The project uses the following structure.
 ```
 .
-├── README.md
-├── conda_env.yml
 ├── dat
 │   └── <Raw data>
 ├── doc
 │   └── DataLiteracyStudentProject
+│       ├── paper.pdf
+│       └── paper.tex
 ├── exp
 │   └── <Experiments notebooks>
+├── src
+│   └── <Small helper functions>
+├── README.md
+├── conda_env.yml
 ├── install_env.sh
-├── run_notebooks.py
-└── src
-    └── <Small helper functions>
+└── run_notebooks.py
 ```
 
 ### Installation
@@ -66,3 +68,5 @@ To deactivate the environemnt, use: `conda deactivate`.
 If you want to delete the added conda environment from your system, you can run `conda remove -n data_literacy --all`.
 
 `conda env list` lists all your environments. Note the `*` symbol next to the currently active env.
+
+## tbd
