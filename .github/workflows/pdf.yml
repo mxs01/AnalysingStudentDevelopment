@@ -1,4 +1,4 @@
-name: Run Python script and create PDF
+name: Create figures and create PDF
 
 on: [push]
 
@@ -58,7 +58,7 @@ jobs:
       if: steps.check_skip.outputs.skip != 'true' && contains(github.event.head_commit.message, '[PDF]')
       uses: stefanzweifel/git-auto-commit-action@v5.0.0
       with:
-        commit_message: "Add PDF [skip-ci]]"
+        commit_message: "Add PDF [skip-ci]"
         file_pattern: doc/DataLiteracyStudentProject/paper.pdf
         commit_user_name: PDF GitHub Actions Bot
         commit_user_email: actions@github.com
