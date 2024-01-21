@@ -2,8 +2,8 @@
 
 This project utilizes a Vector Autorregressive Model (VAR) to predict the amount of students enrolled at the [University of Tübingen](https://uni-tuebingen.de) for specified courses, based on three different time-series datasets:
 - [past enrolled students](https://uni-tuebingen.de/einrichtungen/verwaltung/iv-studierende/studierendenabteilung/statistiken/) at Eberhard Karls University Tuebingen
-- [salary expectations](https://www.statistik-bw.de/BildungKultur/SchulenAllgem/LRt0302.jsp) in certain sectors
-- [high-school graduates in BW](https://www-genesis.destatis.de/genesis//online?operation=table&code=62321-0001&bypass=true&levelindex=0&levelid=1702307320529#abreadcrumb)
+- [salary expectations](https://www-genesis.destatis.de/genesis//online?operation=table&code=62321-0001&bypass=true&levelindex=0&levelid=1702307320529#abreadcrumb) in certain sectors
+- [high-school graduates in BW](https://www.statistik-bw.de/BildungKultur/SchulenAllgem/LRt0302.jsp)
 
 ## Get started
 ### Overview
@@ -77,7 +77,7 @@ If you want to delete the added conda environment from your system, you can run 
 - Exp 1 - Regression: Build the VAR model
 - Exp 2 - Analyses: Look into properties of the computed model
 - Exp 3 - Modifying data: What happens when there is sudden change in salray ecxpectations
-- Exp 4 - Visualisation: Visualise computed parameters of the model.
+- Exp 4 - Visualisation: Visualise computed parameters of the model
 
 
 ## The Paper
