@@ -47,13 +47,6 @@ jobs:
         name: PDF
         path: doc/DataLiteracyStudentProject/paper.pdf
 
-    - name: Check commit message for [PDF]
-      if: steps.check_skip.outputs.skip != 'true'
-      run: |
-        if [[ "$(git log --format=%B -n 1)" == *"[PDF]"* ]]; then
-          echo "Commit message contains [PDF]. Creating a new commit with the PDF."
-        fi
-
     - name: Git Auto Commit latest PDF
       if: steps.check_skip.outputs.skip != 'true' && contains(github.event.head_commit.message, '[PDF]')
       uses: stefanzweifel/git-auto-commit-action@v5.0.0
