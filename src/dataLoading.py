@@ -28,6 +28,13 @@ def getGraduates() -> pd.DataFrame:
                                 index_col=0,
                                 na_values=["."],
                                 engine="python")
+    # Flatten data anamoly due to shift from G9 to G8 in 2012
+    newVal = (graduatesInBW.loc[2011, ('Abiturienten insg', 'Anzahl')] + graduatesInBW.loc[2013, ('Abiturienten insg', 'Anzahl')]) / 2
+    diff = graduatesInBW.loc[2012, ('Abiturienten insg', 'Anzahl')] - newVal
+    graduatesInBW.loc[2012, ('Abiturienten insg', 'Anzahl')] = newVal + diff / 4
+    graduatesInBW.loc[2013, ('Abiturienten insg', 'Anzahl')] += diff / 4
+    graduatesInBW.loc[2014, ('Abiturienten insg', 'Anzahl')] += + diff / 4
+    graduatesInBW.loc[2015, ('Abiturienten insg', 'Anzahl')] += + diff / 4
     return graduatesInBW
 
 
