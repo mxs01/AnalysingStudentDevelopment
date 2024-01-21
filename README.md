@@ -32,7 +32,9 @@ To get started follow these steps:
 This project uses [conda](https://conda.io/projects/conda/en/latest/index.html) as the package manager. Make sure you have conda installed on your system.
 You can verify that by running `conda -V` in your terminal. It should print your current version installed.
 ```sh
-% conda -V
+conda -V
+```
+```sh
 conda 23.11.0
 ```
 If the comand fails, please install conda using this [guide](https://conda.io/projects/conda/en/latest/user-guide/install/index.html#regular-installation).
@@ -42,7 +44,9 @@ If the comand fails, please install conda using this [guide](https://conda.io/pr
 To set up the environment needed, run the `install_env.sh` script in your terminal. This process can take a while.
 When the script finishes you should see this in your terminal.
 ```sh
-% ./install_env.sh
+./install_env.sh
+```
+```sh
 ...
 done
 #
@@ -58,9 +62,9 @@ done
 #### 3. Activate environment
 All that's left is activating the environment.
 ```sh
-% conda activate data_literacy
+conda activate data_literacy
 ```
-You are now all set 🚀.
+That's it. You are all set now 🚀.
 
 #### Notes
 To deactivate the environemnt, use: `conda deactivate`.
@@ -69,4 +73,18 @@ If you want to delete the added conda environment from your system, you can run 
 
 `conda env list` lists all your environments. Note the `*` symbol next to the currently active env.
 
-## tbd
+## Experiments
+- Exp 1 - Regression: Build the VAR model
+- Exp 2 - Analyses: Look into properties of the computed model
+- Exp 3 - Modifying data: What happens when there is sudden change in salray ecxpectations
+- Exp 4 - Visualisation: Visualise computed parameters of the model.
+
+
+## The Paper
+This project uses GitHub-Actions to compile the latest `paper.tex` file to a PDF.
+### Big versions
+If the commit message contains `[PDF]` the PDF gets compiled and added to the Project in a new commit. Look out for a commit message `Add PDF [skip-ci]`. If this is the latet commit, the PDF is up to date.
+Otherwise read through the next section.
+
+### Small increments
+To see the PDF for the current commit navigate to the `Actions` tab. Select the `Create figures and create PDF` workflow. Click on the workflow run at the top, under `Artefacts` there is the PDF ready download.
