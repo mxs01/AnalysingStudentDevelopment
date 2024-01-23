@@ -17,3 +17,5 @@ dependencies:
     - nbconvert
     - seaborn
     - tueplots
+    - networkx
+    - reportlab
