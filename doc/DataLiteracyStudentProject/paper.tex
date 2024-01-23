@@ -220,11 +220,9 @@ Our data is stationary if we are able to assure this for all our time series dat
 
 After we ensured, that our data is stationary, we used a PACF plot to find lags which could be statistically significant. 
 The main reason why we choose PACF in contrast to ACF is that we only want to look at direct influences from $S_{n-1}$ to $S_{n}$ and not from $S_{n-3}$ to $S_n$.
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\linewidth,height=\textheight, keepaspectratio]{fig/pacf_plot.pdf}
+\begin{figure}
+    \includegraphics{fig/pacf_plot.pdf}
     \caption{PACF Plot for our VAR Model}
-    \label{fig:enter-label}
 \end{figure}
 \textcolor{red}{// CONCLUSION FOR PACF // }\\
 
@@ -259,6 +257,11 @@ return statistical significance for the same S* we can assure that the three tim
 
 In this section outline your results. At this point, you are just stating the outcome of your analysis. 
 You can highlight important aspects (``we observe a significantly higher value of $x$ over $y$''), but leave interpretation and opinion to the next section. This section absoultely \emph{has} to include at least two figures.
+
+\begin{figure*}
+    \includegraphics{fig/params.pdf}
+    \caption{This is a figure caption. Write this, if we end up using that fig ;-)}
+\end{figure*}
 
 \section{Discussion \& Conclusion}\label{sec:conclusion}
 
