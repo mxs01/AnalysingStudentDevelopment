@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from src.constants import COL_STUDENT, COL_STUDENT_PRED, COL_SALARY, COL_SALARY_PRED
 from tueplots import bundles
+import copy
 
 
 def plot(data, forecast, years) -> plt.Figure:
@@ -42,5 +43,6 @@ def plot(data, forecast, years) -> plt.Figure:
 
 
 def modifySalary(data, func) -> np.ndarray:
-    data[:, 1] = np.array([func(d) for d in data[:, 1]])
-    return data
+    newData = copy.deepcopy(data)
+    newData[:, 1] = np.array([func(d) for d in newData[:, 1]])
+    return newData
