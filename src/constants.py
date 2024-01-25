@@ -11,7 +11,9 @@ SALARY_PATH = os.path.join(DATA_DIR, "salary_per_sector.csv")
 STUDENTS_PATH = os.path.join(DATA_DIR, "student_data_per_subject.xlsx")
 INFLATION_PATH = os.path.join(DATA_DIR, "inflation_germany.csv")
 EXP_DIR = os.path.join(PROJECT_DIR, "exp")
+DOC_PATH = os.path.join(PROJECT_DIR, "doc", "DataLiteracyStudentProject")
 
+FIG_DIR = os.path.join(DOC_PATH, "fig")
 # paths for the paper
 PAPER_DIR = os.path.join(PROJECT_DIR, "doc/DataLiteracyStudentProject")
 TEX_PATH = os.path.join(PAPER_DIR, "paper.tex")

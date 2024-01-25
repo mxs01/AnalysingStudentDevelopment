@@ -1,11 +1,14 @@
 import matplotlib.pyplot as plt
-import numpy as np
-from src.constants import COL_STUDENT, COL_STUDENT_PRED, COL_SALARY, COL_SALARY_PRED
-from tueplots import bundles
+
 import copy
+import os
+
+import numpy as np
+from src.constants import COL_STUDENT, COL_STUDENT_PRED, COL_SALARY, COL_SALARY_PRED, FIG_DIR
+from tueplots import bundles
 
 
-def plot(data, forecast, years) -> plt.Figure:
+def plot(data, forecast, years, name, lags) -> plt.Figure:
     dataWithForecast = np.vstack((data, forecast))
     yearsWithForecast = np.append(years, [f"{i+1}" for i in range(forecast.shape[0])])
 
@@ -26,11 +29,11 @@ def plot(data, forecast, years) -> plt.Figure:
     ax2.set_ylabel('Sallary', color=COL_SALARY)
 
     # Plot main data
-    ax2.plot(yearsWithForecast[:-len(forecast)], dataWithForecast[:-len(forecast), 1], color=COL_SALARY, label='Average brutto salary')
+    ax2.plot(yearsWithForecast[:-len(forecast)], dataWithForecast[:-len(forecast), 1], color=COL_SALARY, label='Average salary after tax')
 
     # Plot forecast with a different color
     ax2.plot(yearsWithForecast[-len(forecast) - 1:], dataWithForecast[-len(forecast) - 1:, 1],
-             color=COL_SALARY_PRED, label='Average brutto salary forecast')
+             color=COL_SALARY_PRED, label='Average salary after tax forecast')
 
     # Create one legend for both subplots
     lines, labels = ax1.get_legend_handles_labels()
@@ -40,6 +43,7 @@ def plot(data, forecast, years) -> plt.Figure:
     # Get current ticks, keep only every second tick
     locs, labels = plt.xticks()
     plt.xticks(locs[::2], labels[::2])
+    fig.savefig(os.path.join(FIG_DIR, f"{name}_{lags}.pdf"))
 
 
 def modifySalary(data, func) -> np.ndarray:
