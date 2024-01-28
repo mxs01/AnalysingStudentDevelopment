@@ -125,10 +125,10 @@
 % The \icmlEqualContribution command is standard text for equal contribution.
 % Remove it (just {}) if you do not need this facility.
 
-%\printAffiliationsAndNotice{}  % leave blank if no need to mention equal contribution
+%\printAffiliationsAndNotice{}  % leave blank if no need to mention the equal contribution
 \printAffiliationsAndNotice{\icmlEqualContribution} % otherwise use the standard text.
 
-%Put your abstract here. Abstracts typically start with a sentence motivating why the subject is interesting. Then mention the data, methodology, or methods you are working with, and describe results. 
+%Put your abstract here. Abstracts typically start with a sentence motivating why the subject is interesting. Then mention the data, methodology, or methods you are working with, and describe the results. 
 \begin{abstract}
 This paper investigates the role of expected salary in influencing the choice of academic majors among
 students in the STEM field at the University of Tübingen.
@@ -146,18 +146,44 @@ This implies a sensitivity in enrollment trends to changes in expected salary, h
 \end{abstract}
 
 \section{Introduction}\label{sec:intro}
-The trend in recent years shows that more and more pupils are taking their high-school diploma and then going to university. Many assume that one of the reasons for this is better salary prospects. We are interested in whether this is actually true. To investigate this, we used three data sets. The first data set is from the \href{https://uni-tuebingen.de/einrichtungen/verwaltung/iv-studierende/studierendenabteilung/statistiken/}{Statistics Bureau of the University of Tübingen}. This can be used to determine how many students there are in which semester and in which subject in Tübingen. We limit ourselves to the STEM field because this area promises a high and growing salary. We also use the data from Tübingen because the STEM field is well represented here. This university can therefore be used as a representative. However, this can lead to a bias in our prediction. We obtained our second data set from the \href{https://www.statistik-bw.de/BildungKultur/SchulenAllgem/LRt0302.jsp}{Statistisches Landesamt Baden-Württemberg}. It contains the number of high-school graduates from Baden-Württemberg for the past years. We restrict ourselves to Baden-Württemberg, as it can be assumed that most students in Tübingen come from Baden-Württemberg. As this does not apply to all students, there is also a bias. The last data set we need was obtained from the \href{https://www-genesis.destatis.de/genesis//online?operation=table&code=62321-0001&bypass=true&levelindex=0&levelid=1702307320529#abreadcrumb}{Deutsches Statistisches Bundesamt}. It contains the salaries of different industrial sectors in Germany. Here we have used the sectors that are relevant for the STEM field. We extracted the relevant data from the three datasets and analysed them with the vector autoregressive model and a PACF (\Cref{sec:methods}). This results in a model that can be used to predict how many students there will be in the STEM field in the next two years and how the expected salary will develop. We can also analyse the interplay of the three parameters and predict what will happen if we modify the salary. (\Cref{sec:results})
+In recent years, a growing number of high school graduates have chosen the path of higher education.
+Science, technology, engineering, and mathematics, known as STEM, make up a large proportion of all students, although
+this academic career is known for being one of the most demanding.
+This paper aims to explore the potential influence of financial incentives.
+
+% This is some text that I like but does not fit here. Maybe I find some place to put it.
+
+% Our central contribution is a Vector autoregressive model (VAR) (\Cref{sec:methods}) that, combined with a
+% Partial autocorrelation function (PACF) (\Cref{sec:methods}), predicts the salary and number
+% of students enrolled in STEM courses at the University of Tübingen.
+
+The analysis relies on three underlying datasets.
+The first dataset captures the historical enrollment figures of students at the University of Tübingen. 
+It contains the total number of students for each semester, for all study programs. This dataset is maintained and published by the
+\href{https://uni-tuebingen.de/einrichtungen/verwaltung/iv-studierende/studierendenabteilung/statistiken/}{Statistics Bureau of the University of Tübingen}.
+The University of Tübingen makes a good candidate to discover potential structure in the number
+of enrollments because STEM programs are strongly represented here. % TODO: I think mentioning the potential risk of BIAS could be in the Discussion-part
+To quantify the salary expectations, a dataset from the \href{https://www-genesis.destatis.de/genesis//online?operation=table&code=62321-0001&bypass=true&levelindex=0&levelid=1702307320529#abreadcrumb}{Deutsches Statistisches Bundesamt} is used.
+It contains the salary trend for all major industrial sectors in Germany. This dataset does not adjust for inflation,
+therefore an additional \href{https://www-genesis.destatis.de/genesis//online?operation=table&code=61121-0001&bypass=true&levelindex=0&levelid=1706446467491#abreadcrumb}{dataset} from the Deutsches Statistisches Bundesamt is used to account for that. It contains the inflation rate in Germany for each year.
+The number of students is also limited by a further parameter. Namely the quantity of people eligible for an academic career.
+The \href{https://www.statistik-bw.de/BildungKultur/SchulenAllgem/LRt0302.jsp}{Statistisches Landesamt Baden-Württemberg} provides
+data about high school graduates in Baden-Württemberg for every year. We will not take other states into account, under
+the assumption that the number of students leaving Baden-Württemberg, to study elsewhere, cancels out with others moving to the University of Tübingen.
+We extracted the relevant parts of each dataset, to suit our analysis with a VAR model (\Cref{sec:methods}).
+
 
 % In this section, describe \emph{what you did}. Roughly speaking, 
-% explain what data you worked with, how or from where it was collected, it's structure and size.
-%  Explain your analysis, and any specific choices you made in it. Depending on the nature of your project,
-% you may focus more or less on certain aspects. If you collected data yourself, explain the collection process in detail.
+% explain what data you worked with, how or from where it was collected, its structure, and size.
+% Explain your analysis and any specific choices you made in it. Depending on the nature of your project,
+% you may focus more or less on certain aspects. If you collect data yourself, explain the collection process in detail.
 % If you downloaded data from the net, show an exploratory analysis that builds
 % intuition for the data, and shows that you know the data well. 
 % If you are doing a custom analysis, explain how it works and why it is the right choice.
 % If you are using a standard tool, it may still help to briefly outline it. Cite relevant works. 
 % You can use the \verb|\citep| and \verb|\citet| commands for this purpose \citep{mackay2003information}.
 \section{Data and Methods}\label{sec:methods}
+
 In our research we used three datasets, which are divided as follows: The first dataset is from the \href{https://uni-tuebingen.de/einrichtungen/verwaltung/iv-studierende/studierendenabteilung/statistiken/}{Statistics Bureau of theUniversity of Tübingen}., which contains the
 total amount of students from the winter semester 2005/2006 to the winter semester 2023/2024. The data was collected from the enrollments of students, which registered 
 for a study in Tübingen.
