@@ -3,6 +3,7 @@
 import pandas as pd
 import numpy as np
 from .constants import GRADUATES_PATH, STUDENTS_PATH, SALARY_PATH, INFLATION_PATH, SEMESTERS
+import os 
 
 
 def getStudents() -> pd.DataFrame:
@@ -49,9 +50,9 @@ def getSalaries() -> pd.DataFrame:
         skiprows=5,
         header=[0, 1, 2, 3],
         skipfooter=4,
-        index_col=[0, 1, 2, 3],
+        index_col=[1, 2, 3],
         engine="python")
-    return salaries
+    return salaries.drop(salaries.columns[0], axis=1)
 
 
 def getInflation() -> pd.DataFrame:
@@ -98,13 +99,14 @@ def getTotalStudentsFor(courses: list, years: list[str]) -> np.array:
 
 
 def getBruttoSalary(sector) -> np.array:
-    salaries = getSalaries()
-    SALARY_YEARS = salaries.index.levels[2]
+    salaries = getSalaries()    
+    SALARY_YEARS = salaries.index.levels[1]
     QUARTALS = ['1. Quartal', '2. Quartal', '3. Quartal', '4. Quartal']
 
-    bruttoSalary = salaries.loc[(sector[0], sector[1], SALARY_YEARS, QUARTALS), ('Insgesamt', 'Insgesamt', 'Durchschnittliche Bruttomonatsverdienste', 'EUR')].to_numpy(dtype=int)  # noqa: E501
-    bruttoSalary = bruttoSalary.reshape(-1, 2)
-    return bruttoSalary.mean(axis=1)
+    bruttoSalaryNP = salaries.loc[(sector, SALARY_YEARS, QUARTALS), ('Insgesamt', 'Insgesamt', 'Durchschnittliche Bruttomonatsverdienste', 'EUR')].to_numpy(dtype=int) # noqa: E501
+    bruttoSalaryMeanForYears = bruttoSalaryNP.reshape(-1, 2).mean(axis=1)
+    bruttoSalary = bruttoSalaryMeanForYears.reshape(-1,30).mean(axis=0)
+    return bruttoSalary
 
 
 def getGraduatesInBwFor(years: list) -> np.array:
@@ -134,3 +136,34 @@ def getInflationAdjustedBruttoSalary(sector) -> np.array:
     for a, b in zip(bruttoSalary, bruttoInflationSalary):
         print(f'{a} -> {b}')
     return bruttoInflationSalary
+
+
+def getInflationAdjustedBruttoSalaries(sectors: list) -> np.array:
+    inflation = getInflation()
+    inflation = inflation.loc[:, ('Veränderungsrate zum Vorjahr', 'Prozent')].to_numpy(dtype=float)
+    
+    cummulativeInflation = np.cumprod(1 + inflation / 100)
+    print('Create cummulative inflation:')
+    for a, b in zip(inflation, cummulativeInflation):
+        print(f'{a} -> {b}')
+
+    # Initialize an array to store the sum of salaries for all sectors
+    sum_bruttoInflationSalary = np.zeros_like(cummulativeInflation).repeat(2)
+
+    # Iterate over each sector and sum the inflation-adjusted salaries
+    for sector in sectors:
+        bruttoSalary = getBruttoSalary(sector)
+        bruttoInflationSalary = bruttoSalary / cummulativeInflation.repeat(2)
+        sum_bruttoInflationSalary += bruttoInflationSalary  # Sum the salaries
+        print('\nAdjust salary for inflation:')
+        for a, b in zip(bruttoSalary, bruttoInflationSalary):
+            print(f'{a} -> {b}')
+
+    # Calculate the average inflation-adjusted salary
+    avg_bruttoInflationSalary = sum_bruttoInflationSalary / len(sectors)
+
+    return avg_bruttoInflationSalary
+
+
+
+
