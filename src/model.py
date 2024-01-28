@@ -27,22 +27,23 @@ def fitVarModel(students: np.ndarray, salary: np.ndarray, graduates: np.ndarray,
     return results
 
 
-def predict(results: VARResultsWrapper, steps: int) -> np.ndarray:
+def fitVarModelCompleteDataset(dataset: np.ndarray, lags: int) -> VARResultsWrapper:
     """
-    Makes a prediction using the fitted VAR model.
+    Fits a Vector Autoregression (VAR) model to the given data.
 
     Parameters:
-    results (VARResultsWrapper): The results of the fitted VAR model.
-    steps (int): The number of steps ahead to forecast.
+    dataset (array-like): The dataset to fit the model to.
+    lags (int): The maximum number of lags to use in the model.
 
     Returns:
-    array: The forecasted values.
+    VARResultsWrapper: The results of the fitted VAR model.
     """
-    prediction, _, _ = predictWithStderr(results, steps)
-    return prediction
+    model = VAR(dataset)
+    results = model.fit(maxlags=lags)
+    return results
 
 
-def predictWithStderr(results: VARResultsWrapper, steps: int) -> tuple:
+def predict(results: VARResultsWrapper, steps: int) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
     Makes a prediction using the fitted VAR model and also returns the standard error.
 
@@ -54,4 +55,19 @@ def predictWithStderr(results: VARResultsWrapper, steps: int) -> tuple:
     tuple: A tuple containing the forecasted values, the lower bound of the forecast interval, and the upper bound of the forecast interval.
     """
     forecast = results.forecast_interval(results.endog, steps=steps, alpha=0.05)
+    return forecast
+
+
+def predictWithData(results: VARResultsWrapper, data, steps: int) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """
+    Makes a prediction using the fitted VAR model and also returns the standard error.
+
+    Parameters:
+    results (VARResultsWrapper): The results of the fitted VAR model.
+    steps (int): The number of steps ahead to forecast.
+
+    Returns:
+    tuple: A tuple containing the forecasted values, the lower bound of the forecast interval, and the upper bound of the forecast interval.
+    """
+    forecast = results.forecast_interval(data, steps=steps, alpha=0.05)
     return forecast
