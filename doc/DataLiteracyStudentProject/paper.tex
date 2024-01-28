@@ -164,7 +164,7 @@ some noise in the data. Nevertheless we also used basic data science techniques 
 % If you are using a standard tool, it may still help to briefly outline it. Cite relevant works. 
 % You can use the \verb|\citep| and \verb|\citet| commands for this purpose \citep{mackay2003information}.
 \section{Data and Methods}\label{sec:methods}
-In our research we used three datasets, which are divided as follows: The first dataset is from the \href{https://uni-tuebingen.de/einrichtungen/verwaltung/iv-studierende/studierendenabteilung/statistiken/}{Statistics Bureau of theUniversity of Tübingen}., which contains the
+In our research we used three datasets, which are divided as follows: The first dataset is from the \href{https://uni-tuebingen.de/einrichtungen/verwaltung/iv-studierende/studierendenabteilung/statistiken/}{Statistics Bureau of the University of Tübingen}., which contains the
 total amount of students from the winter semester 2005/2006 to the winter semester 2023/2024. The data was collected from the enrollments of students, which registered 
 for a study in Tübingen.
 The second dataset is from the \href{https://www.statistik-bw.de/BildungKultur/SchulenAllgem/LRt0302.jsp}{Statistisches Landesamt Baden-Württemberg} which contains data about the high-school graduates from 1970 to 2023.
@@ -174,62 +174,70 @@ We also removed the inflation from the salaries to get the real wage, because th
 cause a false pattern detection in our autoregressive model. 
 To reduce the amount of bias introduced in this step, we also used the Inflation data from the Deutsches Statistisches Bundesamt over the years.\\
 
-\textcolor{red}{To get the most of this model, we wrote a parser, which parses text data generated from a PDF. This parser basically uses regular expressions to extract the amount of students
-per years divided into the semesters and created a new dataset with the usage of pandas.\\}
-
-Our first steps involved some feauture engineering on the three different datasets to get a better understanding of the data and also detect patterns in the data like trends and distributions over time.
-After we finished the basic feauture engineering step we started the main analysis of the Vector Autoregressive Model (VAR). 
-We've chosen the vector autoregressive model, because we have multivariate data and we assumes that there is a correlation between the given time series.
-A VAR model don't predict a single time series but one for each input series. Those modles have one hyperparameter \textcolor{red}{p} which define the amount 
-of previous data points which should be represented in the output series. Each prediction is a linear combination with the form  $S_n = C_{1} \cdot S_{n-1}+ C_{2} \dots+ C_i \cdot  S_{n-i} + \epsilon$ for
-$i \in \{1,...,|lags|\}$. In our case we have three incoming time series which also leads to three outgoing time series. Our outgoing prediction for the data point n based on lags 
-is represented as
+Our main goal was to find a correlation between the salary, the graduates and the resulting amount of students enrolling a subject in the STEM field. For this problem we use a vector autoregressive model, which predicts a time series 
+for each input time series. The model creates a linear combination for each prediction which could be expressed in a matrix-vector notation.
 \begin{equation*}
     \resizebox{\linewidth}{!}{%
         $\begin{bmatrix}
             S_{1,n}\\
             S_{2,n}\\
-            S_{3,n}
+            \vdots \\
+            S_{m,n}
         \end{bmatrix} = 
         \begin{bmatrix}
             C_{1,1} & C_{1,2} & \dots &C_{1,n-1}\\
             C_{2,1} & C_{2,2} &\dots & C_{2,n-1}\\
-            C_{3,1} & C_{3,2} &\dots &C_{3,n-1}\\
-        \end{bmatrix} + 
+            \vdots & \vdots  & \ddots &\vdots\\
+            C_{m,1} & C_{m,2} &\dots &C_{m,n-1}\\
+        \end{bmatrix} \cdot
         \begin{bmatrix}
             S_{1,1} & S_{1,2} & \dots & S_{1,n-1}\\
             S_{2,1} & S_{2,2} & \dots & S_{2,n-1}\\
-            S_{3,1} & S_{3,2} & \dots & S_{3,n-1}\\
+            \vdots & \vdots  & \ddots &\vdots\\
+            S_{m,1} & S_{m,2} & \dots & S_{m,n-1}\\
         \end{bmatrix}+
         \begin{bmatrix}
             \epsilon_{1}\\
             \epsilon_{2}\\
-            \epsilon_{3}
+            \vdots\\
+            \epsilon_{n}\\
         \end{bmatrix}$%
     }
-    \end{equation*}
-Each time series $S_n$ $\forall i \in \{1,2,3\}$ describes the n-th data point for the input time series i. The term $\epsilon$ is added to approximate an error, which is 
-induced by the model.\\
-We need to assure that our model is stationary, which means that the the stochastic process doesn't change over time. \textcolor{red}{WHY?}.
-Our data is stationary if we are able to assure this for all our time series data inputs:
+\end{equation*}
+The $\epsilon$ vector approximates an error, which is induced by the model. One main benefit of the VAR model is that it also assumes that $S_{i,j}$ is also influenced by $S_{k,l}$ 
+$i,k \in \{1,\dots, m\}: i\neq k$ and $j,l \in \{1,\dots, n-1\}: j\neq l$.
+In our case, we have three input time series, the students, salary and graduates data from the Winter Semester 2007 to the Summer Semester 2021. This model has one hyperparameter which describes
+the amount of past data that should be included in our models prediction. 
+The vector autoregressive model heavily depends on the stationarity assumption which ensures that the stochastical process stays the same over time. 
+In this context, this is assured by the following three axioms
 \begin{enumerate}[label=\Roman*]
     \item The mean $\mu$ is constant
     \item The standard deviation is constant
     \item There is no seasonality in the data
 \end{enumerate}
-
-After we ensured, that our data is stationary, we used a PACF plot to find lags which could be statistically significant. 
-The main reason why we choose PACF in contrast to ACF is that we only want to look at direct influences from $S_{n-1}$ to $S_{n}$ and not from $S_{n-3}$ to $S_n$.
-\begin{figure}
-    \includegraphics{fig/pacf_plot.pdf}
-    \caption{PACF Plot for our VAR Model}
-\end{figure}
-\textcolor{red}{// CONCLUSION FOR PACF // }\\
-
-After we found the optimal lag configuration of our model, we used a Granger Causality Test, to statistically prove that the salary time series really influences the student decision.
-The main idea of Granger Causality is that we are able to predict the data point $S_{i,n}$ directly with one or multiple other time serieses. The Granger Causality Test uses exactly this
-idea, by inserting data points $S*:=S_{j,m}$ for $j\in i:j\neq i$  and $m<n$. After we inserted a couple of terms we do a t-Test and an F-Test on this new $S*$ and as soon as both tests
-return statistical significance for the same S* we can assure that the three time series are Granger Causal.
+We assume that our time series is mostly stationary, and this is enough for our case because we are only predicting 2 data points in the future.
+In order to find the optimal hyperparameter we used two well-established methods, the PACF and also an information-based criteria particularly the AIC and 
+BIC. The PACF only considers the impact of the previous data point $S_{n-1}$ onto $S_{n}$, and then it builds a $(1-\alpha)$ confidence interval. We choose $\alpha = 5\%$ and get
+get a 95\% Confidence Interval 
+\begin{figure*}
+    \includegraphics{fig/prediction_lag_1.pdf}
+    \caption{Prediction based on lag order 1}
+\end{figure*}
+As you can see, the prediction of the average salary after tax is almost linear, but the true average salary after tax has a totally different shape. After further analysis, we decided to use the hyperparameter p based
+on an information criterion namely AIC and BIC. The abbreviation AIC stands for Akaike information criterion and tries to find an optimum between the complexity of the model and fitting the data, which should pretend overfitting. 
+BIC is an abbreviation for Bayesian Information Criterion and the main difference between AIC and BIC is that BIC penalizes more complex models, which overall leads to less complicated models than the ones from AIC.
+The optimal lag based on AIC is 5, while for BIC it is 1, which aligns with the PACF.
+\begin{figure*}
+    \includegraphics{fig/prediction_lag_5.pdf}
+    \caption{Prediction based on lag order 5}
+\end{figure*}
+As you can see the lag order 5 mimics the average salary after tax better than the lag order 1.\\
+Another quite important aspect in the correlation analysis is the Granger Causality Test which we did on the output. 
+Granger Causal implies that one time series is the result of another shifted time series.
+In our case, we try to find out if e.g. the salary time series is just a shifted version of the students or the graduates time series.
+The Granger causality test does exactly this, it uses the time series $S_i$ and tries to insert data points from $S_j$ or $S_k$ $i \neq j\neq k$
+to predict the outcome of the model. After inserting the data points the test performs a t-test and a F-test, if both of these tests return statistically significant,
+then we showed that $S_i$ could be expressed by a shifted input time series $S_j$ with $j\neq i$
 
 
 
