@@ -167,7 +167,7 @@ the assumption that the number of students leaving Baden-Württemberg, to study 
 
 Our central contribution is a Vector autoregressive model (VAR) discussed in \Cref{sec:methods:var} that is built using just mentioned data. Combined with a
 Partial autocorrelation function (PACF) the optimal value for lag
-is determined, see \Cref{sec:methods:pacf}, to ensure that relevant structure in the data is captured by the model.
+is determined, see \Cref{sec:methods:lag}, to ensure that relevant structure in the data is captured by the model.
 After verifying that the VAR model functions as expected and testing the model on a test set, \Cref{sec:methods} \textcolor{red}{subsection}, we
 can predict all three input time series. As we are only interested in the number of students enrolled and the development of the salary, our research is 
 focused on these two instances.
@@ -251,7 +251,7 @@ Since we are only interested in predicting two time steps into the future, which
 we can safely assume that our data is stationary.
 
 
-\subsection{PACF}\label{sec:methods:pacf}
+\subsection{Choosing lag}\label{sec:methods:lag}
 To find the optimal hyperparameter we used two well-established methods, the PACF and information-based criteria. Particularly the AIC and 
 BIC. The PACF only considers the impact of the previous data point $S_{n-1}$ on $S_{n}$ to build a $(1-\alpha)$ confidence interval.
 We choose $\alpha = 5\%$ and get get a 95\% Confidence Interval 
@@ -285,19 +285,19 @@ The optimal lag based on AIC is 6, while for BIC it is 1, which is consistent wi
     \caption{Percentage difference between the true value and predicted value for students, salary, and graduates. Lag set to 5.}
 \end{table}
 
+The percentage errors show that there is a significant improvement in the prediction of student numbers compared to the lag order of 1.
+Setting lag to 5 results in even better errors for the domains of our interest, predicting students.
+
+\subsection{Test for causality}\label{sec:methods:causality}
+To ensure that the model does not try to find structure in the data, where there is none, we applied the Granger causality test.
+Granger causal implies that one time series is the result of another shifted time series.
+In this case, we try to find out if e.g. the salary time series is just a shifted version of the student's or the graduate's time series.
+The test does verifies this by using series $S_i$ and trying to insert data points from $S_j$ or $S_k$ $i \neq j\neq k$
+to predict the outcome of the model. After inserting the data points a t-test and a F-test are performed. If both
+tests return statistical significance, then we showed that $S_i$ could be expressed by a shifted input time series $S_j$ with $j\neq i$.
+\textcolor{red}{OK, and did we show that?}
+
 % I am currently here
-
-As you can see there is a major improvement in the prediction for the students in comparison to lag order 1. We decided to use lag 5, because the main focus of our 
-of our research is to predict the students based on salary and graduates.
-Another quite important aspect in the correlation analysis is the Granger Causality Test which we did on the output. 
-Granger Causal implies that one time series is the result of another shifted time series.
-In our case, we try to find out if e.g. the salary time series is just a shifted version of the students or the graduates time series.
-The Granger causality test does exactly this, it uses the time series $S_i$ and tries to insert data points from $S_j$ or $S_k$ $i \neq j\neq k$
-to predict the outcome of the model. After inserting the data points the test performs a t-test and a F-test, if both of these tests return statistically significant,
-then we showed that $S_i$ could be expressed by a shifted input time series $S_j$ with $j\neq i$
-
-
-
 
 
 
