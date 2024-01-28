@@ -79,7 +79,7 @@
 \begin{document}
 
 \twocolumn[
-\icmltitle{My Data Literacy Project\\ (Replace this with your Project Title)}
+\icmltitle{All just Greedy for Money? - An Prediction and Analysis of the interplay between Graduate Statistics and Salary Prospects in the STEM Field}
 
 % It is OKAY to include author information, even for blind
 % submissions: the style file will automatically remove it for you
@@ -105,7 +105,7 @@
 
 % fill in your matrikelnummer, email address, degree, for each group member
 \icmlaffiliation{first}{Matrikelnummer 5977981, abdallah.abdul-latif@student.uni-tuebingen.de, MSc Computer Science}
-\icmlaffiliation{second}{Matrikelnummer 12345678, first.last@student.uni-tuebingen.de, MSc Computer Science}
+\icmlaffiliation{second}{Matrikelnummer 4189024, lisa-maria.fritsch@student.uni-tuebingen.de, MSc Computer Science}
 \icmlaffiliation{third}{Matrikelnummer 12345678, first.last@student.uni-tuebingen.de, MSc Media Informatics}
 \icmlaffiliation{fourth}{Matrikelnummer 6040570, maximilian.schnitt@student.uni-tuebingen.de, BSc Computer Science}
 
@@ -130,13 +130,7 @@
 
 %Put your abstract here. Abstracts typically start with a sentence motivating why the subject is interesting. Then mention the data, methodology or methods you are working with, and describe results. 
 \begin{abstract}
-As often mentioned in the news and in the daily life, people suggest that a higher expected salary is a strong pull factor for students 
-choosing their subject. We were curious if this is particullarily true for the scientific based subjects, because a majority of them have a 
-pretty high expected salary. We used the students data from the \href{https://uni-tuebingen.de/einrichtungen/verwaltung/iv-studierende/studierendenabteilung/statistiken/}{Statistics University of Tübingen}, 
-the high-school graduates data from the \href{https://www.statistik-bw.de/BildungKultur/SchulenAllgem/LRt0302.jsp}{Statistisches Landesamt Baden-Württemberg}
-and also the salary data from 2005 to 2023 from the \href{https://www-genesis.destatis.de/genesis//online?operation=table&code=62321-0001&bypass=true&levelindex=0&levelid=1702307320529#abreadcrumb}{Deutsches Statistisches Bundesamt}.
-We used a vector autoregressive model, to build a time series forecast and analysed the outcomes to find an optimal configuration for this type of model in our context.
-\textcolor{red}{result.}
+This paper examines whether the expected salary plays a role in which subject graduates choose to study. We have limited ourselves to the STEM (science, technology, engineering and maths) field. We analyse the influence of the three parameters: number of Graduates, of Students and Expected Salary, have on each other. Therefore we use the Vector autoregressive model and a PACF. This showed that the expected salary has an \textcolor{red}{or has no?} influence on how many school leavers decide to study in the STEM field. We were also able to make the prediction that the expected salary and the number of students in the next two years will be similar to the current situation, but slightly reduced. If the salary is increased or decreased in the analysis, it can be seen that the number of students goes up or down accordingly.(\textcolor{red}{or else?})
 %Motivate the problem, situation or topic you decided to work on. 
 % Describe why it matters (is it of societal, economic, scientific value?). 
 % Outline the rest of the paper (use references, e.g.~to \Cref{sec:methods}: 
@@ -145,14 +139,7 @@ We used a vector autoregressive model, to build a time series forecast and analy
 \end{abstract}
 
 \section{Introduction}\label{sec:intro}
-In the public eye, there is a strong correlation between the expected salary and the subject enrollment of students. We are curious if this statement is true or just a biased
-perception of the society. Our main focus is on the University of Tübingen and mainly on the STEM (scientific engineering technical and mathematical) subjects, because those degrees 
-are likely to have a pretty high expected salary after graduating. Furthermore we needed data of high-school graduates in Baden-Würrtemberg, to find a possible corellation between
-the amount of graduates and the new enrollments in the stem subjects. We just focused on Baden-Württemberg, this introduces a bias to our prediction, but we assumed that the 
-majority of students which are going to study in Tübingen come from Baden-Württemberg. The third datatset we used is about the salaries from 2005 to 2023 in the main 
-industrial sectors in Germany. The main focus of this paper is on a analysis of a vetor autoregressive model, to predict the upcoming numbers of students in the next semesters. We
-used various techniques to clean our data like removing the inflation or making our time series stationary to ensure that the predictions don't detect patterns which are inferred by 
-some noise in the data. Nevertheless we also used basic data science techniques to get a better understanding of the dirstributions and trends over the past years.
+The trend in recent years shows that more and more pupils are taking their high-school diploma and then going to university. Many assume that one of the reasons for this is better salary prospects. We are interested in whether this is actually true. To investigate this, we used three data sets. The first data set is from the \href{https://uni-tuebingen.de/einrichtungen/verwaltung/iv-studierende/studierendenabteilung/statistiken/}{Statistics Bureau of the University of Tübingen}. This can be used to determine how many students there are in which semester and in which subject in Tübingen. We limit ourselves to the STEM field because this area promises a high and growing salary. We also use the data from Tübingen because the STEM field is well represented here. This university can therefore be used as a representative. However, this can lead to a bias in our prediction. We obtained our second data set from the \href{https://www.statistik-bw.de/BildungKultur/SchulenAllgem/LRt0302.jsp}{Statistisches Landesamt Baden-Württemberg}. It contains the number of high-school graduates from Baden-Württemberg for the past years. We restrict ourselves to Baden-Württemberg, as it can be assumed that most students in Tübingen come from Baden-Württemberg. As this does not apply to all students, there is also a bias. The last data set we need was obtained from the \href{https://www-genesis.destatis.de/genesis//online?operation=table&code=62321-0001&bypass=true&levelindex=0&levelid=1702307320529#abreadcrumb}{Deutsches Statistisches Bundesamt}. It contains the salaries of different industrial sectors in Germany. Here we have used the sectors that are relevant for the STEM field. We extracted the relevant data from the three datasets and analysed them with the vector autoregressive model and a PACF (\Cref{sec:methods}). This results in a model that can be used to predict how many students there will be in the STEM field in the next two years and how the expected salary will develop. We can also analyse the interplay of the three parameters and predict what will happen if we modify the salary. (\Cref{sec:results})
 
 % In this section, describe \emph{what you did}. Roughly speaking, 
 % explain what data you worked with, how or from where it was collected, it's structure and size.
