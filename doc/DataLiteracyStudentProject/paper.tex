@@ -241,9 +241,9 @@ The optimal lag based on AIC is 6, while for BIC it is 1, which aligns with the 
     \begin{tabular}{c|c|c|c}
         & students & salary & graduates \\
         \hline
-        Prediciton 1 & 0.48413863 & 0.41885829 & 0.11117345 \\
+        Prediciton 1 & 0.48413863\% & 0.41885829\% & 0.11117345\% \\
         \hline
-        Prediciton 2 & 1.34596809 & 0.30583828 & 0.93859448
+        Prediciton 2 & 1.34596809\% & 0.30583828\% & 0.93859448\%
     \end{tabular}
     \caption{Percentage difference between true value and predicted value for students, salary and graduates for lag 5}
 \end{table}
@@ -283,10 +283,10 @@ The hyperparameter optimization is always a trade-off between several optimal va
 Our main goal was to predict the students who enroll in study subjects in the STEM sector when using the salary and the
 graduates of the given years as prior knowledge. For this reason, we used a lag of 5, because the overall percentage error
 was the lowest for the students.
-\begin{figure}[ht]
+\begin{figure*}
     \includegraphics{fig/prediction_5.pdf}
     \caption{VAR Model Prediction with hyperparameter p=5}
-\end{figure}
+\end{figure*}
 During our analysis, we found out, that the salary has a major influence on our prediction. If our model works correctly, then the amount
 of predicted students should go down, because fewer students imply that there is a lack of qualified workers on the job market.
 This on the other hand leads to an increase in the salary. Now we manipulated the salary data with a fixed $\alpha\in \mathbb{N}$ to increase
