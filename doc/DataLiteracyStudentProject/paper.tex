@@ -165,9 +165,9 @@ The \href{https://www.statistik-bw.de/BildungKultur/SchulenAllgem/LRt0302.jsp}{S
 data about high school graduates in Baden-Württemberg for every year. We will not take other states into account, under
 the assumption that the number of students leaving Baden-Württemberg, to study elsewhere, cancels out with others moving to the University of Tübingen.
 
-Our central contribution is a Vector autoregressive model (VAR) discussed in \Cref{sec:methods} that is built using just mentioned data. Combined with a
+Our central contribution is a Vector autoregressive model (VAR) discussed in \Cref{sec:methods:var} that is built using just mentioned data. Combined with a
 Partial autocorrelation function (PACF) the optimal value for lag
-is determined, see \Cref{sec:methods} \textcolor{red}{subsection}, to ensure that relevant structure in the data is captured by the model.
+is determined, see \Cref{sec:methods:pacf}, to ensure that relevant structure in the data is captured by the model.
 After verifying that the VAR model functions as expected and testing the model on a test set, \Cref{sec:methods} \textcolor{red}{subsection}, we
 can predict all three input time series. As we are only interested in the number of students enrolled and the development of the salary, our research is 
 focused on these two instances.
@@ -192,14 +192,22 @@ and see how the students would likely react (\Cref{sec:results}).
 % I.e. inflation adjustment
 % flattening G8 G9 conflict
 
+\subsection{Data Processing}\label{sec:methods:processing}
 Each data set used in the analysis had to be processed, to work for our analysis.
 The university data is only available in PDF format to download. To process the data, it had
 to be transformed into a more versatile format, using two steps. First, it has been transformed into CSV, which resulted in a corrupted file.
 A custom-written parser was then used, to restore the original data structure.
-% I am currently writing here
+In the year 2012, two years of high school graduates finished, due to the transition from G9 to G8 in
+Baden-Württemberg. This outlier in the data had to be flattened out to ensure the VAR model could be fitted correctly.
+The model uses the mean square error as a loss function, which makes outliers influence the data disproportionately.
+Half the number of students from the year 2012 has been spread over the next four years to flatten the data.
+The Deutsches Statistisches Bundesamt from which the average gross salary is obtained, does not account for inflation in its data set.
+Since we need to maintain comparability between past years, the salary has been adjusted for a yearly cumulative inflation rate.
 
-Our main goal was to find a correlation between the salary, the graduates and the resulting amount of students enrolling a subject in the STEM field. For this problem we use a vector autoregressive model, which predicts a time series 
-for each input time series. The model creates a linear combination for each prediction which could be expressed in a matrix-vector notation.
+
+\subsection{Model creation}\label{sec:methods:var}
+A vector autoregressive model is used to analyze relationships between multiple time series.
+The model creates a linear combination for each prediction which can be expressed in a matrix-vector notation.
 \begin{equation*}
     \resizebox{\linewidth}{!}{%
         $\begin{bmatrix}
@@ -228,47 +236,57 @@ for each input time series. The model creates a linear combination for each pred
         \end{bmatrix}$%
     }
 \end{equation*}
-The $\epsilon$ vector approximates an error, which is induced by the model. One main benefit of the VAR model is that it also assumes that $S_{i,j}$ is also influenced by $S_{k,l}$ 
-$i,k \in \{1,\dots, m\}: i\neq k$ and $j,l \in \{1,\dots, n-1\}: j\neq l$.
-In our case, we have three input time series, the students, salary and graduates data from the Winter Semester 2007 to the Summer Semester 2021. This model has one hyperparameter which describes
-the amount of past data that should be included in our models prediction. 
+The $\epsilon$ vector approximates an error, which is induced by the model. One main benefit of the VAR model is that it also assumes
+that $S_{i,j}$ is also influenced by $S_{k,l}$ $i,k \in \{1,\dots, m\}: i\neq k$ and $j,l \in \{1,\dots, n-1\}: j\neq l$.
+A VAR model has one major advantage, over other possible approaches, which is its simplicity. Therefore its results remain interpretable.
+This model only uses one hyperparameter which describes the amount of past data that is used to make a prediction. This parameter is called the lag.
 The vector autoregressive model heavily depends on the stationarity assumption which ensures that the stochastical process stays the same over time. 
-In this context, this is assured by the following three axioms
+In this context, this is assured by the following three axioms:
 \begin{enumerate}[label=\Roman*]
     \item The mean $\mu$ is constant
     \item The standard deviation is constant
     \item There is no seasonality in the data
 \end{enumerate}
-We assume that our time series is mostly stationary, and this is enough for our case because we are only predicting 2 data points in the future.
-In order to find the optimal hyperparameter we used two well-established methods, the PACF and also an information-based criteria particularly the AIC and 
-BIC. The PACF only considers the impact of the previous data point $S_{n-1}$ onto $S_{n}$, and then it builds a $(1-\alpha)$ confidence interval. We choose $\alpha = 5\%$ and get
-get a 95\% Confidence Interval 
+Since we are only interested in predicting two time steps into the future, which is equivalent to one year,
+we can safely assume that our data is stationary.
+
+
+\subsection{PACF}\label{sec:methods:pacf}
+To find the optimal hyperparameter we used two well-established methods, the PACF and information-based criteria. Particularly the AIC and 
+BIC. The PACF only considers the impact of the previous data point $S_{n-1}$ on $S_{n}$ to build a $(1-\alpha)$ confidence interval.
+We choose $\alpha = 5\%$ and get get a 95\% Confidence Interval 
 \begin{table}[H]
     \centering
     \begin{tabular}{c|c|c|c}
         & students & salary & graduates \\
         \hline
-        Prediciton 1 & 1.25723662 & 1.27163776 & 3.94417629 \\
+        Prediciton 1 & 1.257\% & 1.271\% & 3.944\% \\
         \hline
-        Prediciton 2 & 4.84256257 & 0.11922267 & 1.72230067
+        Prediciton 2 & 4.843\% & 0.119\% & 1.722\%
     \end{tabular}
-    \caption{Percentage difference between true value and predicted value for students, salary and graduates for lag 1}
+    \caption{Difference in percent between the true value and predicted value for students, salary, and graduates. Lag set to 1.}
 \end{table}
-As you can see, the percent difference between the true values especially for the students are quite high, becasue of that we tried the AIC and BIC to find a better lag for the 
-hyperparameter p.  The abbreviation AIC stands for Akaike Information Criterion and tries to find an optimum between the complexity of the model and fitting the data, which should pretend overfitting. 
-BIC is an abbreviation for Bayesian Information Criterion and the main difference between AIC and BIC is that BIC penalizes more complex models, which overall leads to less complicated models than the ones from AIC.
-The optimal lag based on AIC is 6, while for BIC it is 1, which aligns with the PACF.
+The percentage differences between the true values especially for the students are quite high. To get better results
+the AIC and BIC are used to find a better lag for the hyperparameter $p$ \textcolor{red}{is $p$ = lag?}. The abbreviation AIC
+stands for Akaike Information Criterion and tries to find an optimum between the complexity of the model and fitting the data.
+This should prevent overfitting. 
+BIC is short for Bayesian Information Criterion and penalizes more complex models.
+Therefore BIC leads to less complicated models than the ones from AIC, which sets the two apart.
+The optimal lag based on AIC is 6, while for BIC it is 1, which is consistent with the PACF.
 \begin{table}[H]
     \centering
     \begin{tabular}{c|c|c|c}
         & students & salary & graduates \\
         \hline
-        Prediciton 1 & 0.48413863\% & 0.41885829\% & 0.11117345\% \\
+        Prediciton 1 & 0.484\% & 0.419\% & 0.111\% \\
         \hline
-        Prediciton 2 & 1.34596809\% & 0.30583828\% & 0.93859448\%
+        Prediciton 2 & 1.346\% & 0.306\% & 0.939\%
     \end{tabular}
-    \caption{Percentage difference between true value and predicted value for students, salary and graduates for lag 5}
+    \caption{Percentage difference between the true value and predicted value for students, salary, and graduates. Lag set to 5.}
 \end{table}
+
+% I am currently here
+
 As you can see there is a major improvement in the prediction for the students in comparison to lag order 1. We decided to use lag 5, because the main focus of our 
 of our research is to predict the students based on salary and graduates.
 Another quite important aspect in the correlation analysis is the Granger Causality Test which we did on the output. 
