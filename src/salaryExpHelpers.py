@@ -14,7 +14,7 @@ def plot(data, forecast, years, name, lags) -> plt.Figure:
 
     plt.rcParams.update(bundles.icml2022(column="half", nrows=1, ncols=1, usetex=False))
     fig, ax1 = plt.subplots()
-    plt.title('University Data Over the Years')
+    plt.title('Enrolled students with altered salary')
     plt.xticks(rotation=30)
 
     ax1.set_ylim([0, 10000])
