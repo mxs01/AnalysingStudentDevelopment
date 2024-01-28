@@ -365,12 +365,20 @@ manipulated salary has an inverse relationship to the amount of students.
 % Use this section to briefly summarize the entire text. Highlight limitations and problems, 
 % but also make clear statements where they are possible and supported by the analysis. 
 \section{Discussion \& Conclusion}\label{sec:conclusion}
-
+In our research, we used a vector autoregressive model to predict the amount of students in the next semester. 
+We used the salary data from the past 15 years and data about high school graduates in Baden-Würrtemberg as a prior. We optimized our Model to the best possible capacity,
+but there are strict limitations because vector autoregressive models are only able to detect linear patterns in the data. This occurs, because we only have linear combinations,
+based on values $S_{i,j}$ and coefficients to scale those values. If we wanted to improve our prediction we have to replace our model with other machine learning applications.
+A possible option for this would be Random Forests.\\
+Our model is a great way to show insight information about the relation of students, graduates and the expected average salary after their university degree.
+Unlike our main assumption, that the salary expectation is the striving factor for students to go into the STEM Sector it just shows a small correlation,
+between the predicted students and the salary. It seems like the main factor for a change in the students is mainly influenced by the amount of graduating high school students.
+This insight gives us hope, that most of the STEM students do what they love not for the sake of money.
 
 
 \section*{Contribution Statement}
-
 Explain here, in one sentence per person, what each group member contributed. For example, you could write: Max Mustermann collected and prepared data. Gabi Musterfrau and John Doe performed the data analysis. Jane Doe produced visualizations. All authors will jointly wrote the text of the report. Note that you, as a group, a collectively responsible for the report. Your contributions should be roughly equal in amount and difficulty.
+
 
 \section*{Notes} 
 
