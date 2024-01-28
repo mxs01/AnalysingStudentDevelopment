@@ -4,6 +4,8 @@ import pandas as pd
 import numpy as np
 from .constants import GRADUATES_PATH, STUDENTS_PATH, SALARY_PATH, INFLATION_PATH, SEMESTERS
 
+DEBUG = False
+
 
 def getStudents() -> pd.DataFrame:
     """Load student data from excel file into a pandas DataFrame."""
@@ -142,9 +144,10 @@ def getInflationAdjustedGrossSalaries(sectors: list) -> np.array:
     inflation = inflation.loc[:, ('Veränderungsrate zum Vorjahr', 'Prozent')].to_numpy(dtype=float)
 
     cummulativeInflation = np.cumprod(1 + inflation / 100)
-    print('Create cummulative inflation:')
-    for a, b in zip(inflation, cummulativeInflation):
-        print(f'{a} -> {b}')
+    if DEBUG:
+        print('Create cummulative inflation:')
+        for a, b in zip(inflation, cummulativeInflation):
+            print(f'{a} -> {b}')
 
     # Initialize an array to store the sum of salaries for all sectors
     sum_grossInflationSalary = np.zeros_like(cummulativeInflation).repeat(2)
@@ -154,9 +157,10 @@ def getInflationAdjustedGrossSalaries(sectors: list) -> np.array:
         grossSalary = getGrossSalary(sector)
         grossInflationSalary = grossSalary / cummulativeInflation.repeat(2)
         sum_grossInflationSalary += grossInflationSalary  # Sum the salaries
-        print('\nAdjust salary for inflation:')
-        for a, b in zip(grossSalary, grossInflationSalary):
-            print(f'{a} -> {b}')
+        if DEBUG:
+            print('\nAdjust salary for inflation:')
+            for a, b in zip(grossSalary, grossInflationSalary):
+                print(f'{a} -> {b}')
 
     # Calculate the average inflation-adjusted salary
     avg_grossInflationSalary = sum_grossInflationSalary / len(sectors)
