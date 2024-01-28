@@ -12,11 +12,12 @@ def plot(data, forecast, years, name, lags) -> plt.Figure:
     dataWithForecast = np.vstack((data, forecast))
     yearsWithForecast = np.append(years, [f"{i+1}" for i in range(forecast.shape[0])])
 
-    plt.rcParams.update(bundles.icml2022(column="full", nrows=1, ncols=1, usetex=False))
+    plt.rcParams.update(bundles.icml2022(column="half", nrows=1, ncols=1, usetex=False))
     fig, ax1 = plt.subplots()
     plt.title('University Data Over the Years')
     plt.xticks(rotation=30)
 
+    ax1.set_ylim([0, 10000])
     ax1.set_ylabel('Total students', color=COL_STUDENT)
     # Plot main data
     ax1.bar(yearsWithForecast[:-len(forecast)], dataWithForecast[:-len(forecast), 0], color=COL_STUDENT, label='Enrolled students')
@@ -29,11 +30,11 @@ def plot(data, forecast, years, name, lags) -> plt.Figure:
     ax2.set_ylabel('Sallary', color=COL_SALARY)
 
     # Plot main data
-    ax2.plot(yearsWithForecast[:-len(forecast)], dataWithForecast[:-len(forecast), 1], color=COL_SALARY, label='Average salary after tax')
+    ax2.plot(yearsWithForecast[:-len(forecast)], dataWithForecast[:-len(forecast), 1], color=COL_SALARY, label='Average salary gross')
 
     # Plot forecast with a different color
     ax2.plot(yearsWithForecast[-len(forecast) - 1:], dataWithForecast[-len(forecast) - 1:, 1],
-             color=COL_SALARY_PRED, label='Average salary after tax forecast')
+             color=COL_SALARY_PRED, label='Average salary gross forecast')
 
     # Create one legend for both subplots
     lines, labels = ax1.get_legend_handles_labels()

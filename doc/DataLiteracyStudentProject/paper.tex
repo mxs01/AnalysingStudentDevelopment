@@ -192,6 +192,11 @@ and see how the students would likely react (\Cref{sec:results}).
 % I.e. inflation adjustment
 % flattening G8 G9 conflict
 
+\begin{figure*}
+    \includegraphics{fig/prediction_5.pdf}
+    \caption{VAR Model Prediction with optimal lag value of 5 on the test data set.}
+\end{figure*}
+
 \subsection{Data Processing}\label{sec:methods:processing}
 Each data set used in the analysis had to be processed, to work for our analysis.
 The university data is only available in PDF format to download. To process the data, it had
@@ -209,7 +214,7 @@ Since we need to maintain comparability between past years, the salary has been 
 A vector autoregressive model is used to analyze relationships between multiple time series.
 The model creates a linear combination for each prediction which can be expressed in a matrix-vector notation.
 \begin{equation*}
-    \resizebox{\linewidth}{!}{%
+    \resizebox{\linewidth}{!}{
         $\begin{bmatrix}
             S_{1,n}\\
             S_{2,n}\\
@@ -323,10 +328,13 @@ The hyperparameter optimization is always a trade-off between several optimal va
 Our main goal was to predict the students who enroll in study subjects in the STEM sector when using the salary and the
 graduates of the given years as prior knowledge. For this reason, we used a lag of 5, because the overall percentage error
 was the lowest for the students.
-\begin{figure*}
-    \includegraphics{fig/prediction_5.pdf}
-    \caption{VAR Model Prediction with hyperparameter p=5}
-\end{figure*}
+
+\begin{figure}
+    \includegraphics{fig/params_Students.pdf}
+    \caption{Coefficients of VAR model to predict students time-series
+    for $t$. $t_1$ to $t_5$ are the values of each time series respectively at the lagged time step.
+    $t_1$ is the most recent value.}
+\end{figure}
 During our analysis, we found out, that the salary has a major influence on our prediction. If our model works correctly, then the amount
 of predicted students should go down, because fewer students imply that there is a lack of qualified workers on the job market.
 This on the other hand leads to an increase in the salary. Now we manipulated the salary data with a fixed $\alpha\in \mathbb{N}$ to increase
@@ -354,7 +362,7 @@ manipulated salary has an inverse relationship to the amount of students.
 \begin{figure}[H]
     \centering
     \includegraphics{fig/prediction_modified_10p_increase_lags_5.pdf}
-    \caption{Increased salary by 10 \% in Var(5) model}
+    \caption{Increased salary by 10\%}
 \end{figure}
 
 
