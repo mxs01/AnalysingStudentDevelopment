@@ -163,6 +163,8 @@ some noise in the data. Nevertheless we also used basic data science techniques 
 % If you are doing a custom analysis, explain how it works and why it is the right choice.
 % If you are using a standard tool, it may still help to briefly outline it. Cite relevant works. 
 % You can use the \verb|\citep| and \verb|\citet| commands for this purpose \citep{mackay2003information}.
+
+
 \section{Data and Methods}\label{sec:methods}
 In our research we used three datasets, which are divided as follows: The first dataset is from the \href{https://uni-tuebingen.de/einrichtungen/verwaltung/iv-studierende/studierendenabteilung/statistiken/}{Statistics Bureau of the University of Tübingen}., which contains the
 total amount of students from the winter semester 2005/2006 to the winter semester 2023/2024. The data was collected from the enrollments of students, which registered 
@@ -219,19 +221,34 @@ We assume that our time series is mostly stationary, and this is enough for our 
 In order to find the optimal hyperparameter we used two well-established methods, the PACF and also an information-based criteria particularly the AIC and 
 BIC. The PACF only considers the impact of the previous data point $S_{n-1}$ onto $S_{n}$, and then it builds a $(1-\alpha)$ confidence interval. We choose $\alpha = 5\%$ and get
 get a 95\% Confidence Interval 
-\begin{figure*}
-    \includegraphics{fig/prediction_lag_1.pdf}
-    \caption{Prediction based on lag order 1}
-\end{figure*}
-As you can see, the prediction of the average salary after tax is almost linear, but the true average salary after tax has a totally different shape. After further analysis, we decided to use the hyperparameter p based
-on an information criterion namely AIC and BIC. The abbreviation AIC stands for Akaike information criterion and tries to find an optimum between the complexity of the model and fitting the data, which should pretend overfitting. 
+\begin{table}[H]
+    \centering
+    \begin{tabular}{c|c|c|c}
+        & students & salary & graduates \\
+        \hline
+        Prediciton 1 & 1.25723662 & 1.27163776 & 3.94417629 \\
+        \hline
+        Prediciton 2 & 4.84256257 & 0.11922267 & 1.72230067
+    \end{tabular}
+    \caption{Percentage difference between true value and predicted value for students, salary and graduates for lag 1}
+\end{table}
+As you can see, the percent difference between the true values especially for the students are quite high, becasue of that we tried the AIC and BIC to find a better lag for the 
+hyperparameter p.  The abbreviation AIC stands for Akaike Information Criterion and tries to find an optimum between the complexity of the model and fitting the data, which should pretend overfitting. 
 BIC is an abbreviation for Bayesian Information Criterion and the main difference between AIC and BIC is that BIC penalizes more complex models, which overall leads to less complicated models than the ones from AIC.
-The optimal lag based on AIC is 5, while for BIC it is 1, which aligns with the PACF.
-\begin{figure*}
-    \includegraphics{fig/prediction_lag_5.pdf}
-    \caption{Prediction based on lag order 5}
-\end{figure*}
-As you can see the lag order 5 mimics the average salary after tax better than the lag order 1.\\
+The optimal lag based on AIC is 6, while for BIC it is 1, which aligns with the PACF.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{c|c|c|c}
+        & students & salary & graduates \\
+        \hline
+        Prediciton 1 & 0.48413863 & 0.41885829 & 0.11117345 \\
+        \hline
+        Prediciton 2 & 1.34596809 & 0.30583828 & 0.93859448
+    \end{tabular}
+    \caption{Percentage difference between true value and predicted value for students, salary and graduates for lag 5}
+\end{table}
+As you can see there is a major improvement in the prediction for the students in comparison to lag order 1. We decided to use lag 5, because the main focus of our 
+of our research is to predict the students based on salary and graduates.
 Another quite important aspect in the correlation analysis is the Granger Causality Test which we did on the output. 
 Granger Causal implies that one time series is the result of another shifted time series.
 In our case, we try to find out if e.g. the salary time series is just a shifted version of the students or the graduates time series.
@@ -262,18 +279,54 @@ then we showed that $S_i$ could be expressed by a shifted input time series $S_j
 % \end{figure}
 
 \section{Results}\label{sec:results}
+The hyperparameter optimization is always a trade-off between several optimal values for different parameters. 
+Our main goal was to predict the students who enroll in study subjects in the STEM sector when using the salary and the
+graduates of the given years as prior knowledge. For this reason, we used a lag of 5, because the overall percentage error
+was the lowest for the students.
+\begin{figure}[ht]
+    \includegraphics{fig/prediction_5.pdf}
+    \caption{VAR Model Prediction with hyperparameter p=5}
+\end{figure}
+During our analysis, we found out, that the salary has a major influence on our prediction. If our model works correctly, then the amount
+of predicted students should go down, because fewer students imply that there is a lack of qualified workers on the job market.
+This on the other hand leads to an increase in the salary. Now we manipulated the salary data with a fixed $\alpha\in \mathbb{N}$ to increase
+the whole time series by a constant factor. We used this approach because the vector autoregressive model internally uses Mean Squared Error as loss function.
+The Mean Squared Error squares the difference between the data points, which leads to a stronger influence of large differences.
+This high error leads to a wrong minimization, which gives wrong coefficients.
+Another more important point is that we don't want to violate stationarity, which ensures that our model predicts in a good manner.\\
+\begin{table}[H]
+    \centering
+    \begin{tabular}{c|c|c|c}
+        & students & salary & graduates\\
+        \hline
+        students & 1.000000 & -0.115442 &  0.111069\\
+        \hline
+        salary & -0.115442 & 1.000000 & -0.902321\\
+        \hline
+        graduates & 0.111069 & -0.902321 &  1.000000\\
+    \end{tabular}
+    \caption{Correlation Matrix of Var(5) model}
+\end{table}
 
-In this section outline your results. At this point, you are just stating the outcome of your analysis. 
-You can highlight important aspects (``we observe a significantly higher value of $x$ over $y$''), but leave interpretation and opinion to the next section. This section absoultely \emph{has} to include at least two figures.
+As you can see the correlation matrix, tells us that the model also takes the relationship into account, that a 
+manipulated salary has an inverse relationship to the amount of students.
 
-\begin{figure*}
-    \includegraphics{fig/params.pdf}
-    \caption{This is a figure caption. Write this, if we end up using that fig ;-)}
-\end{figure*}
+\begin{figure}[H]
+    \centering
+    \includegraphics{fig/prediction_modified_10\%_increase_lags_5.pdf}
+    \caption{Increased salary by 10 \% in Var(5) model}
+\end{figure}
 
+
+
+
+
+
+% Use this section to briefly summarize the entire text. Highlight limitations and problems, 
+% but also make clear statements where they are possible and supported by the analysis. 
 \section{Discussion \& Conclusion}\label{sec:conclusion}
 
-Use this section to briefly summarize the entire text. Highlight limitations and problems, but also make clear statements where they are possible and supported by the analysis. 
+
 
 \section*{Contribution Statement}
 
