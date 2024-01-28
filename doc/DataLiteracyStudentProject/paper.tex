@@ -151,12 +151,6 @@ Science, technology, engineering, and mathematics, known as STEM, make up a larg
 this academic career is known for being one of the most demanding.
 This paper aims to explore the potential influence of financial incentives.
 
-% This is some text that I like but does not fit here. Maybe I find some place to put it.
-
-% Our central contribution is a Vector autoregressive model (VAR) (\Cref{sec:methods}) that, combined with a
-% Partial autocorrelation function (PACF) (\Cref{sec:methods}), predicts the salary and number
-% of students enrolled in STEM courses at the University of Tübingen.
-
 The analysis relies on three underlying datasets.
 The first dataset captures the historical enrollment figures of students at the University of Tübingen. 
 It contains the total number of students for each semester, for all study programs. This dataset is maintained and published by the
@@ -170,7 +164,16 @@ The number of students is also limited by a further parameter. Namely the quanti
 The \href{https://www.statistik-bw.de/BildungKultur/SchulenAllgem/LRt0302.jsp}{Statistisches Landesamt Baden-Württemberg} provides
 data about high school graduates in Baden-Württemberg for every year. We will not take other states into account, under
 the assumption that the number of students leaving Baden-Württemberg, to study elsewhere, cancels out with others moving to the University of Tübingen.
-We extracted the relevant parts of each dataset, to suit our analysis with a VAR model (\Cref{sec:methods}).
+
+Our central contribution is a Vector autoregressive model (VAR) discussed in \Cref{sec:methods} that is built using just mentioned data. Combined with a
+Partial autocorrelation function (PACF) the optimal value for lag
+is determined, see \Cref{sec:methods} \textcolor{red}{subsection}, to ensure that relevant structure in the data is captured by the model.
+After verifying that the VAR model functions as expected and testing the model on a test set, \Cref{sec:methods} \textcolor{red}{subsection}, we
+can predict all three input time series. As we are only interested in the number of students enrolled and the development of the salary, our research is 
+focused on these two instances.
+This allows us to conclude that salary has a significant impact on the amount of STEM students. Further, we can model different salary development scenarios, 
+and see how the students would likely react (\Cref{sec:results}).
+
 
 
 % In this section, describe \emph{what you did}. Roughly speaking, 
@@ -189,16 +192,11 @@ We extracted the relevant parts of each dataset, to suit our analysis with a VAR
 % I.e. inflation adjustment
 % flattening G8 G9 conflict
 
-In our research we used three datasets, which are divided as follows: The first dataset is from the \href{https://uni-tuebingen.de/einrichtungen/verwaltung/iv-studierende/studierendenabteilung/statistiken/}{Statistics Bureau of theUniversity of Tübingen}., which contains the
-
-total amount of students from the winter semester 2005/2006 to the winter semester 2023/2024. The data was collected from the enrollments of students, which registered 
-for a study in Tübingen.
-The second dataset is from the \href{https://www.statistik-bw.de/BildungKultur/SchulenAllgem/LRt0302.jsp}{Statistisches Landesamt Baden-Württemberg} which contains data about the high-school graduates from 1970 to 2023.
-Our third and last dataset is from the \href{https://www-genesis.destatis.de/genesis//online?operation=table&code=62321-0001&bypass=true&levelindex=0&levelid=1702307320529#abreadcrumb}{Deutsches Statistisches Bundesamt} and contains the salaries of the large industrial sectors in Germany from 2005 to 2021. 
-One main problem with the mapping between university subjects and actual jobs is that there exists no perfect one-to-one mapping. 
-We also removed the inflation from the salaries to get the real wage, because the inflation could 
-cause a false pattern detection in our autoregressive model. 
-To reduce the amount of bias introduced in this step, we also used the Inflation data from the Deutsches Statistisches Bundesamt over the years.\\
+Each data set used in the analysis had to be processed, to work for our analysis.
+The university data is only available in PDF format to download. To process the data, it had
+to be transformed into a more versatile format, using two steps. First, it has been transformed into CSV, which resulted in a corrupted file.
+A custom-written parser was then used, to restore the original data structure.
+% I am currently writing here
 
 Our main goal was to find a correlation between the salary, the graduates and the resulting amount of students enrolling a subject in the STEM field. For this problem we use a vector autoregressive model, which predicts a time series 
 for each input time series. The model creates a linear combination for each prediction which could be expressed in a matrix-vector notation.
