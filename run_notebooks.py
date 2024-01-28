@@ -9,3 +9,5 @@ notebooks = [f for f in os.listdir(EXP_DIR) if f.endswith('.ipynb')]
 for notebook in notebooks:
     print(f"\nRunning {notebook}...\n\n")
     subprocess.check_call(["jupyter", "nbconvert", "--execute", "--inplace", os.path.join(EXP_DIR, notebook)])
+
+print("\n\nAll notebooks have been executed!\n")
