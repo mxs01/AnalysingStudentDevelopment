@@ -160,13 +160,13 @@ of enrollments because STEM programs are strongly represented here. % TODO: I th
 To quantify the salary expectations, a dataset from the \href{https://www-genesis.destatis.de/genesis//online?operation=table&code=62321-0001&bypass=true&levelindex=0&levelid=1702307320529#abreadcrumb}{Deutsches Statistisches Bundesamt} is used.
 It contains the salary trend for all major industrial sectors in Germany. This dataset does not adjust for inflation,
 therefore an additional \href{https://www-genesis.destatis.de/genesis//online?operation=table&code=61121-0001&bypass=true&levelindex=0&levelid=1706446467491#abreadcrumb}{dataset} from the Deutsches Statistisches Bundesamt is used to account for that. It contains the inflation rate in Germany for each year.
-The number of students is also limited by a further parameter. Namely the quantity of people eligible for an academic career.
+The number of students is also limited by a further parameter. Namely the number of people eligible for an academic career.
 The \href{https://www.statistik-bw.de/BildungKultur/SchulenAllgem/LRt0302.jsp}{Statistisches Landesamt Baden-Württemberg} provides
 data about high school graduates in Baden-Württemberg for every year. We will not take other states into account, under
 the assumption that the number of students leaving Baden-Württemberg, to study elsewhere, cancels out with others moving to the University of Tübingen.
 
 Our central contribution is a Vector autoregressive model (VAR) discussed in \Cref{sec:methods:var} that is built using just mentioned data. Combined with a
-Partial autocorrelation function (PACF) the optimal value for lag
+Partial autocorrelation function (PACF) the optimal value for the lag
 is determined, see \Cref{sec:methods:lag}, to ensure that relevant structure in the data is captured by the model.
 After verifying that the VAR model functions as expected and testing the model on a test set, \Cref{sec:methods} \textcolor{red}{subsection}, we
 can predict all three input time series. As we are only interested in the number of students enrolled and the development of the salary, our research is 
@@ -188,9 +188,11 @@ and see how the students would likely react (\Cref{sec:results}).
 
 
 \section{Data and Methods}\label{sec:methods}
-% Mabe focus here on what we did with the data
-% I.e. inflation adjustment
-% flattening G8 G9 conflict
+
+\begin{figure*}
+    \includegraphics{fig/prediction_5.pdf}
+    \caption{VAR model Prediction with optimal lag value of $5$ on the test data set.}
+\end{figure*}
 
 \subsection{Data Processing}\label{sec:methods:processing}
 Each data set used in the analysis had to be processed, to work for our analysis.
@@ -209,7 +211,7 @@ Since we need to maintain comparability between past years, the salary has been 
 A vector autoregressive model is used to analyze relationships between multiple time series.
 The model creates a linear combination for each prediction which can be expressed in a matrix-vector notation.
 \begin{equation*}
-    \resizebox{\linewidth}{!}{%
+    \resizebox{\linewidth}{!}{
         $\begin{bmatrix}
             S_{1,n}\\
             S_{2,n}\\
@@ -282,11 +284,11 @@ The optimal lag based on AIC is 6, while for BIC it is 1, which is consistent wi
         \hline
         Prediciton 2 & 1.346\% & 0.306\% & 0.939\%
     \end{tabular}
-    \caption{Percentage difference between the true value and predicted value for students, salary, and graduates. Lag set to 5.}
+    \caption{Percentage difference between the true value and predicted value for students, salary, and graduates. Lag set to $5$.}
 \end{table}
 
 The percentage errors show that there is a significant improvement in the prediction of student numbers compared to the lag order of 1.
-Setting lag to 5 results in even better errors for the domains of our interest, predicting students.
+Setting lag to $5$ results in even better errors for the domains of our interest, predicting students.
 
 \subsection{Test for causality}\label{sec:methods:causality}
 To ensure that the model does not try to find structure in the data, where there is none, we applied the Granger causality test.
@@ -297,9 +299,51 @@ to predict the outcome of the model. After inserting the data points a t-test an
 tests return statistical significance, then we showed that $S_i$ could be expressed by a shifted input time series $S_j$ with $j\neq i$.
 \textcolor{red}{OK, and did we show that?}
 
-% I am currently here
+
+\subsection{Fitted model}\label{sec:methods:fit}
+\begin{figure}
+    \includegraphics{fig/params_Students.pdf}
+    \caption{Coefficients of VAR model to predict students time-series
+    for $t_0$. $t_{-1}$ to $t_{-5}$ are the values of each time series respectively at the lagged time step.
+    $t_{-1}$ is the most recent value.}
+    \label{fig:student coefficients}
+\end{figure}
 
 
+With the correct lag chosen, the model fits the data by minimizing the mean square error.
+The returned coefficients describe the impact of a specific lagged value from one time series
+on predicting the next value. \ref{fig:student coefficients} visualizes all coefficients
+relevant for predicting the number of students in the next semester. 
+Notably, salary is the most relevant information for the prediction. All five
+coefficient values for each time step are non-zero, indicating a strong correlation.
+Graduates, on the other hand, are not as relevant, recognizable by values close to zero.
+
+The suggested lag value of $5$, earlier obtained in \Cref{sec:methods:lag} is retrievable as well.
+The absolute value of the coefficient for predicting students on $t_{-5}$ is the third largest, adding
+a lot of information to the model.
+
+To further understand the data underlying correlations, one can look at the correlation matrix
+of residuals in table \ref{table:correlation matrix}.
+This matrix describes the degree to which the model's errors, called residuals, are related to each other.
+High correlations between errors can indicate a not fully captured underlying structure.
+Values close to zero, like $-0.115$ between salary and graduates, indicate that the errors
+in predicting the salary variable are not related to the errors in predicting the graduates variable.
+
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{c|c|c|c}
+        & students & salary & graduates\\
+        \hline
+        students & 1.000 & -0.115 &  0.111\\
+        \hline
+        salary & -0.115 & 1.000000 & -0.902\\
+        \hline
+        graduates & 0.111 & -0.902 &  1.000\\
+    \end{tabular}
+    \caption{Correlation matrix of residuals using $5$ lags.}
+    \label{table:correlation matrix}
+\end{table}
 
 % This is the template for a figure from the original ICML submission pack. In lecture 10 we will discuss plotting in detail.
 % Refer to this lecture on how to include figures in this text.
@@ -319,42 +363,29 @@ tests return statistical significance, then we showed that $S_i$ could be expres
 % \end{figure}
 
 \section{Results}\label{sec:results}
-The hyperparameter optimization is always a trade-off between several optimal values for different parameters. 
-Our main goal was to predict the students who enroll in study subjects in the STEM sector when using the salary and the
-graduates of the given years as prior knowledge. For this reason, we used a lag of 5, because the overall percentage error
-was the lowest for the students.
-\begin{figure*}
-    \includegraphics{fig/prediction_5.pdf}
-    \caption{VAR Model Prediction with hyperparameter p=5}
-\end{figure*}
-During our analysis, we found out, that the salary has a major influence on our prediction. If our model works correctly, then the amount
-of predicted students should go down, because fewer students imply that there is a lack of qualified workers on the job market.
-This on the other hand leads to an increase in the salary. Now we manipulated the salary data with a fixed $\alpha\in \mathbb{N}$ to increase
-the whole time series by a constant factor. We used this approach because the vector autoregressive model internally uses Mean Squared Error as loss function.
-The Mean Squared Error squares the difference between the data points, which leads to a stronger influence of large differences.
-This high error leads to a wrong minimization, which gives wrong coefficients.
-Another more important point is that we don't want to violate stationarity, which ensures that our model predicts in a good manner.\\
-\begin{table}[H]
-    \centering
-    \begin{tabular}{c|c|c|c}
-        & students & salary & graduates\\
-        \hline
-        students & 1.000000 & -0.115442 &  0.111069\\
-        \hline
-        salary & -0.115442 & 1.000000 & -0.902321\\
-        \hline
-        graduates & 0.111069 & -0.902321 &  1.000000\\
-    \end{tabular}
-    \caption{Correlation Matrix of Var(5) model}
-\end{table}
+It is not possible to find a lag value that gives the best results for all three time series.
+However one can set the optimal lag value such that it suits forecasting students best (\Cref{sec:methods:lag}).
+With the obtained insights into the relation between the number of enrolled students, salary expectations, and number of graduates,
+it is now possible to make predictions on different scenarios.
 
-As you can see the correlation matrix, tells us that the model also takes the relationship into account, that a 
-manipulated salary has an inverse relationship to the amount of students.
+The training of the model stays set, and the whole dataset available is used. It is now possible to 
+generate a new data set with a 10\% increase in salary expectations and set it as the new model input, figure \ref{fig:altered salary}.
+The observed change in the prediction supports the obtained results in \Cref{sec:methods:fit}. There is a significant
+dependence between salary expectations and the number of students enrolled in STEM courses. As soon as the salary
+increases, there is also an upward trend visible in student numbers. The observed change is not massive which can be explained
+by the fact that the mass of students are students in higher semesters. The only direct major influence on
+the total number of enrolled students is made by people deciding to start this year. There won't be a lot of people changing subjects
+halfway through their academic careers.
+
+This also explains the huge spike in predicting the average gross salary. In the first few semesters,
+the amount of new students is not high enough, to capture the need for new people. Therefore the model suggests raising the
+salary even higher, to accommodate for that.
 
 \begin{figure}[H]
     \centering
     \includegraphics{fig/prediction_modified_10p_increase_lags_5.pdf}
-    \caption{Increased salary by 10 \% in Var(5) model}
+    \caption{Predict the number of students enrolled in STEM courses using an increased salary by 10\%.}
+    \label{fig:altered salary}
 \end{figure}
 
 
@@ -367,22 +398,30 @@ manipulated salary has an inverse relationship to the amount of students.
 \section{Discussion \& Conclusion}\label{sec:conclusion}
 In our research, we used a vector autoregressive model to predict the amount of students in the next semester. 
 We used the salary data from the past 15 years and data about high school graduates in Baden-Würrtemberg as a prior. We optimized our Model to the best possible capacity,
-but there are strict limitations because vector autoregressive models are only able to detect linear patterns in the data. This occurs, because we only have linear combinations,
-based on values $S_{i,j}$ and coefficients to scale those values. If we wanted to improve our prediction we have to replace our model with other machine learning applications.
-A possible option for this would be Random Forests.\\
-Our model is a great way to show insight information about the relation of students, graduates and the expected average salary after their university degree.
-Unlike our main assumption, that the salary expectation is the striving factor for students to go into the STEM Sector it just shows a small correlation,
-between the predicted students and the salary. It seems like the main factor for a change in the students is mainly influenced by the amount of graduating high school students.
-This insight gives us hope, that most of the STEM students do what they love not for the sake of money.
+but there are strict limitations that can not be overcome. Vector autoregressive models are only capable of detecting linear patterns in the data.
+This occurs, because we only have linear combinations, based on values $S_{i,j}$ and coefficients to scale those values. If we wanted to improve
+our prediction we had to replace our model with other machine learning applications.
+A promising approach for this could be to implement a Random Forest algorithm.\\
+Our model on the other hand compensates for any potential lag in accuracy by being easily interpretable. Each parameter of the model influences exactly
+one part of the predictions and is therefore transparent in its process.
+Also worth mentioning is that our predictions are only based on three different inputs. There are certainly other 
+variables impacting the number of students enrolled in courses at a university. Especially ones, that are not easily quantifiable and are subject to
+personal preferences. However, we are confident that our selected set of data captures the main aspects, as our model performs great on the provided test set.
 
 
 \section*{Contribution Statement}
-Explain here, in one sentence per person, what each group member contributed. For example, you could write: Max Mustermann collected and prepared data. Gabi Musterfrau and John Doe performed the data analysis. Jane Doe produced visualizations. All authors will jointly wrote the text of the report. Note that you, as a group, a collectively responsible for the report. Your contributions should be roughly equal in amount and difficulty.
+\textcolor{red}{TODO}
+Abdallah Abdul-Latif analyzed the optimal parameter lag and mapped courses to salary sectors.
+Lisa-Maria Fritsch
+Paul Kaifler 
+Maximilian Schnitt parsed university data and analyzed optimal parameter lag.
+All authors jointly did the analyses of the data and wrote the text of the report.
+% Max Mustermann collected and prepared data. Gabi Musterfrau and John Doe performed the data analysis. Jane Doe produced visualizations. All authors will jointly wrote the text of the report. Note that you, as a group, a collectively responsible for the report. Your contributions should be roughly equal in amount and difficulty.
 
 
-\section*{Notes} 
+% \section*{Notes} 
 
-Your entire report has a \textbf{hard page limit of 4 pages} excluding references. (I.e. any pages beyond page 4 must only contain references). Appendices are \emph{not} possible. But you can put additional material, like interactive visualizations or videos, on a githunb repo (use \href{https://github.com/pnkraemer/tueplots}{links} in your pdf to refer to them). Each report has to contain \textbf{at least three plots or visualizations}, and \textbf{cite at least two references}. More details about how to prepare the report, inclucing how to produce plots, cite correctly, and how to ideally structure your github repo, will be discussed in the lecture, where a rubric for the evaluation will also be provided.
+% Your entire report has a \textbf{hard page limit of 4 pages} excluding references. (I.e. any pages beyond page 4 must only contain references). Appendices are \emph{not} possible. But you can put additional material, like interactive visualizations or videos, on a githunb repo (use \href{https://github.com/pnkraemer/tueplots}{links} in your pdf to refer to them). Each report has to contain \textbf{at least three plots or visualizations}, and \textbf{cite at least two references}. More details about how to prepare the report, inclucing how to produce plots, cite correctly, and how to ideally structure your github repo, will be discussed in the lecture, where a rubric for the evaluation will also be provided.
 
 
 \bibliography{bibliography}
