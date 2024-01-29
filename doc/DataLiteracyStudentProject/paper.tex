@@ -398,13 +398,15 @@ salary even higher, to accommodate for that.
 \section{Discussion \& Conclusion}\label{sec:conclusion}
 In our research, we used a vector autoregressive model to predict the amount of students in the next semester. 
 We used the salary data from the past 15 years and data about high school graduates in Baden-Würrtemberg as a prior. We optimized our Model to the best possible capacity,
-but there are strict limitations because vector autoregressive models are only able to detect linear patterns in the data. This occurs, because we only have linear combinations,
-based on values $S_{i,j}$ and coefficients to scale those values. If we wanted to improve our prediction we have to replace our model with other machine learning applications.
-A possible option for this would be Random Forests.\\
-Our model is a great way to show insight information about the relation of students, graduates, and the expected average salary after their university degree.
-Unlike our main assumption, that the salary expectation is the striving factor for students to go into the STEM Sector it just shows a small correlation,
-between the predicted students and the salary. It seems like the main factor for a change in the students is mainly influenced by the amount of graduating high school students.
-This insight gives us hope, that most of the STEM students do what they love not for the sake of money.
+but there are strict limitations that can not be overcome. Vector autoregressive models are only capable of detecting linear patterns in the data.
+This occurs, because we only have linear combinations, based on values $S_{i,j}$ and coefficients to scale those values. If we wanted to improve
+our prediction we had to replace our model with other machine learning applications.
+A promising approach for this could be to implement a Random Forest algorithm.\\
+Our model on the other hand compensates for any potential lag in accuracy by being easily interpretable. Each parameter of the model influences exactly
+one part of the predictions and is therefore transparent in its process.
+Also worth mentioning is that our predictions are only based on three different inputs. There are certainly other 
+variables impacting the number of students enrolled in courses at a university. Especially ones, that are not easily quantifiable and are subject to
+personal preferences. However, we are confident that our selected set of data captures the main aspects, as our model performs great on the provided test set.
 
 
 \section*{Contribution Statement}
