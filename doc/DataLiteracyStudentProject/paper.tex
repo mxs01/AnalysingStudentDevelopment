@@ -79,7 +79,7 @@
 \begin{document}
 
 \twocolumn[
-\icmltitle{A prediction and Analysis of the interplay between Graduate Statistics and Salary Prospects in the STEM Field}
+\icmltitle{A Prediction and Analysis of the interplay between Graduates and Salary Prospects in the STEM Field}
 
 % It is OKAY to include author information, even for blind
 % submissions: the style file will automatically remove it for you
@@ -149,19 +149,19 @@ This implies a sensitivity in enrollment trends to changes in expected salary, h
 In recent years, a growing number of high school graduates have chosen the path of higher education.
 Science, technology, engineering, and mathematics, known as STEM, make up a large proportion of all students, although
 this academic career is known for being one of the most demanding.
-This paper aims to explore the potential influence of financial incentives.
+This paper aims to explore the potential influence of financial incentives, uncovering hidden relations.
 
 The analysis is built on three underlying datasets.
 The first dataset captures the historical enrollment figures of students at the University of Tübingen. 
-It contains the total number of students for each semester, for all study programs. This dataset is maintained and published by the
+It contains the total number of students for each semester, for all study programs ever offered. This dataset is maintained and published by the
 \href{https://uni-tuebingen.de/einrichtungen/verwaltung/iv-studierende/studierendenabteilung/statistiken/}{Statistics Bureau of the University of Tübingen}.
 The University of Tübingen makes a good candidate to discover potential structure in the number
-of enrollments because STEM programs are strongly represented here. % TODO: I think mentioning the potential risk of BIAS could be in the Discussion-part
+of enrollments because STEM programs are strongly represented here.
 To quantify the salary expectations, a dataset from the \href{https://www-genesis.destatis.de/genesis//online?operation=table&code=62321-0001&bypass=true&levelindex=0&levelid=1702307320529#abreadcrumb}{Deutsches Statistisches Bundesamt} is used.
 It contains the salary trend for all major industrial sectors in Germany. This dataset does not adjust for inflation,
 therefore an additional \href{https://www-genesis.destatis.de/genesis//online?operation=table&code=61121-0001&bypass=true&levelindex=0&levelid=1706446467491#abreadcrumb}{dataset}
-from the Deutsches Statistisches Bundesamt is used to account for that (\Cref{sec:methods:processing}). It contains the inflation rate in Germany for each year.
-The number of students is also limited by a further parameter. Namely the number of people eligible for an academic career.
+from the Deutsches Statistisches Bundesamt is used to account for that (\Cref{sec:methods:processing}). It contains the yearly inflation rate in Germany.
+The number of students is also limited by a further parameter. Namely the number of people eligible for an academic career, hence all high school graduates.
 The \href{https://www.statistik-bw.de/BildungKultur/SchulenAllgem/LRt0302.jsp}{Statistisches Landesamt Baden-Württemberg} provides
 data about high school graduates in Baden-Württemberg for every year. We will not take other states into account, under
 the assumption that the number of students leaving Baden-Württemberg, to study elsewhere, cancels out with others moving to the University of Tübingen.
@@ -174,9 +174,6 @@ can predict all three input time series. As we are only interested in the number
 focused on these two instances.
 This allows us to conclude in \Cref{sec:methods:causality} that salary has a significant impact on the amount of STEM students. Further, we can model different salary development scenarios, 
 and see how the students would likely react (\Cref{sec:results}).
-
-
-A repository containing the complete analyses and results can be found \href{https://github.com/mxs01/AnalysingStudentDevelopment}{here}.
 
 
 % In this section, describe \emph{what you did}. Roughly speaking, 
@@ -243,22 +240,24 @@ The model creates a linear combination for each prediction which can be expresse
     }
 \end{equation*}
 The $\epsilon$ vector approximates an error, which is induced by the model. One main benefit of the VAR model is that it also assumes
-that $S_{i,j}$ is also influenced by $S_{k,l}$ $i,k \in \{1,\dots, m\}: i\neq k$ and $j,l \in \{1,\dots, n-1\}: j\neq l$. As mentioned in \citep{kot}
+that $S_{i,j}$ is also influenced by $S_{k,l}$ $i,k \in \{1,\dots, m\}: i\neq k$ and $j,l \in \{1,\dots, n-1\}: j\neq l$. As mentioned in \citep{var}
 A VAR model has one major advantage, over other possible approaches, which is its simplicity. Therefore its results remain interpretable.
 This model only uses one hyperparameter which describes the amount of past data that is used to make a prediction. This parameter is called the lag.
 The vector autoregressive model heavily depends on the stationarity assumption which ensures that the stochastical process stays the same over time. 
 In this context, this is assured by the following three axioms:
+\begin{samepage}
 \begin{enumerate}[label=\Roman*]
     \item The mean $\mu$ is constant
     \item The standard deviation is constant
     \item There is no seasonality in the data
-\end{enumerate}
+\end{enumerate}    
+\end{samepage}
 Since we are only interested in predicting two time steps into the future, which is equivalent to one year,
 we can safely assume that our data is stationary.
 
 
 \subsection{Choosing lag}\label{sec:methods:lag}
-To find the optimal hyperparameter we used two well-established methods, the PACF and information-based criteria. Particularly the AIC and 
+To find the optimal hyperparameter we used two well-established methods, the PACF and information-based criteria as descriped in \citep{pacf}. Particularly the AIC and 
 BIC. The PACF only considers the impact of the previous data point $S_{n-1}$ on $S_{n}$ to build a $(1-\alpha)$ confidence interval.
 We choose $\alpha = 5\%$ and get a 95\% Confidence Interval. The optimal value according to PACF is $3$.
 \begin{table}[H]
@@ -276,7 +275,7 @@ We choose $\alpha = 5\%$ and get a 95\% Confidence Interval. The optimal value a
 The percentage differences between the true values and the predicted ones, especially for the students, are quite high, see \Cref{tab:resid1}.
 To get better results
 the AIC and BIC are used to find a better lag for the hyperparameter $p$, which is the lag. The abbreviation AIC
-stands for Akaike Information Criterion and tries to find an optimum between the complexity of the model and fitting the data.
+stands for Akaike Information Criterion and it tries to find an optimum between the complexity of the model and fitting the data.
 This should prevent overfitting. 
 BIC is short for Bayesian Information Criterion and penalizes more complex models.
 Therefore BIC leads to less complicated models than the ones from AIC, which sets the two apart.
@@ -302,22 +301,28 @@ compared to the lag order of $3$ from \Cref{tab:resid1}.
 To ensure that the model does not try to find structure in the data, where there is none, we applied the Granger causality test.
 Granger causal implies that one time series is the result of another shifted time series.
 In this case, we try to find out if e.g. the salary time series is just a shifted version of the student's or the graduate's time series.
-The test does verifies this by using series $S_i$ and trying to insert data points from $S_j$ or $S_k$ $i \neq j\neq k$
-to predict the outcome of the model. After inserting the data points a t-test and a F-test are performed. If both
-tests return statistical significance, then we showed that $S_i$ could be expressed by a shifted input time series $S_j$ with $j\neq i$.
-% tbd notebook 2
-\textcolor{red}{TBD}
+The test verifies this by using series $S_i$ and trying to insert data points from $S_j$ or $S_k$ $i \neq j\neq k$
+to predict the outcome of the model.
+A t-test and an F-test are performed, if both tests return statistical significance, one time series can be constructed by another.
+The Granger causality test reports back no statistical significance for our data set, which means that predicting is a nontrivial
+operation.
 
+
+
+% After inserting the data points a t-test and a F-test are performed.
+
+% If both tests return statistical significance, then we showed that $S_i$ could be expressed by a shifted input time series $S_j$ with $j\neq i$.
+% tbd notebook 2
+% \textc olor{red}{TBD}
 
 \subsection{Fitted model}\label{sec:methods:fit}
-\begin{figure}
+\begin{figure}[t]
     \includegraphics{fig/params_Students.pdf}
     \caption{Coefficients of VAR model to predict students time-series
     for $t_0$. $t_{-1}$ to $t_{-5}$ are the values of each time series respectively at the lagged time step, which is equal to one semester.
     $t_{-1}$ is the most recent value.}
     \label{fig:student coefficients}
 \end{figure}
-
 
 With the correct lag chosen, the model fits the data by minimizing the mean square error.
 The returned coefficients describe the impact of a specific lagged value from one time series
@@ -337,7 +342,6 @@ This matrix describes the degree to which the model's errors, called residuals, 
 High correlations between errors can indicate a not fully captured underlying structure.
 Values close to zero, like $-0.115$ between salary and graduates, indicate that the errors
 in predicting the salary variable are not related to the errors in predicting the graduates variable.
-
 
 \begin{table}[H]
     \centering
@@ -390,13 +394,11 @@ This also explains the huge spike in predicting the average gross salary. In the
 the amount of new students is not high enough, to capture the need for new people. Therefore the model suggests raising the
 salary even higher, to accommodate for that.
 
-\begin{figure}[H]
-    \centering
+\begin{figure}
     \includegraphics{fig/prediction_modified_10p_increase_lags_5.pdf}
     \caption{Predict the number of students enrolled in STEM courses using an increased salary by 10\%.}
     \label{fig:altered salary}
 \end{figure}
-
 
 
 
@@ -416,6 +418,8 @@ one part of the predictions and is therefore transparent in its process.
 Also worth mentioning is that our predictions are only based on three different inputs. There are certainly other 
 variables impacting the number of students enrolled in courses at a university. Especially ones, that are not easily quantifiable and are subject to
 personal preferences. However, we are confident that our selected set of data captures the main aspects, as our model performs great on the provided test set.
+
+A repository containing the complete analyses and results can be found on \href{https://github.com/mxs01/AnalysingStudentDevelopment}{GitHub}.
 
 
 \section*{Contribution Statement}

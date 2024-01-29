@@ -25,19 +25,20 @@ def plot(data: np.ndarray, forecast: np.ndarray, ogForecast: np.ndarray, years: 
     Returns:
             plt.Figure: creates matplotlib plot that shows difference between
     """
+    startPlottingAt = 12
     dataWithForecast = np.vstack((data, forecast))
     ogDataWithForecast = np.vstack((data, ogForecast))
-    yearsWithForecast = np.append(years, [f"{i+1}" for i in range(forecast.shape[0])])
+    yearsWithForecast = np.append(years, [f"prediction {i+1}" for i in range(forecast.shape[0])])
 
     plt.rcParams.update(bundles.icml2022(column="half", nrows=1, ncols=1, usetex=False))
     fig, ax1 = plt.subplots()
     plt.title('Enrolled students with altered salary')
     plt.xticks(rotation=30)
 
-    ax1.set_ylim([0, 10000])
+    ax1.set_ylim([0, 12000])
     ax1.set_ylabel('Total students', color=COL_STUDENT)
     # Plot main data
-    ax1.bar(yearsWithForecast[:-len(forecast)], dataWithForecast[:-len(forecast), 0], color=COL_STUDENT, label='Enrolled students')
+    ax1.bar(yearsWithForecast[startPlottingAt:-len(forecast)], dataWithForecast[startPlottingAt:-len(forecast), 0], color=COL_STUDENT)
 
     # Plot forecast with a different color
     ax1.bar(yearsWithForecast[-len(forecast):], dataWithForecast[-len(forecast):, 0],
@@ -51,11 +52,11 @@ def plot(data: np.ndarray, forecast: np.ndarray, ogForecast: np.ndarray, years: 
     ax2.set_ylabel('Salary', color=COL_SALARY)
 
     # Plot main data
-    ax2.plot(yearsWithForecast[:-len(forecast)], dataWithForecast[:-len(forecast), 1], color=COL_SALARY, label='Average gross salary')
+    ax2.plot(yearsWithForecast[startPlottingAt:-len(forecast)], dataWithForecast[startPlottingAt:-len(forecast), 1], color=COL_SALARY, label='Average gross salary')
 
     # Plot forecast with a different color
     ax2.plot(yearsWithForecast[-len(forecast) - 1:], dataWithForecast[-len(forecast) - 1:, 1],
-             color=COL_SALARY_PRED, label='Average gross salary  forecast')
+             color=COL_SALARY_PRED, label='Average gross salary forecast')
 
     # Create one legend for both subplots
     lines, labels = ax1.get_legend_handles_labels()
