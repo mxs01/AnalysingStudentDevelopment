@@ -1,3 +1,4 @@
+"""This is a small test file to check if the data is parsed correctly"""
 import unittest
 from constants import STUDENTS_PATH, SEMESTERS
 import pandas as pd

@@ -1,3 +1,4 @@
+"""This module parses the data from the csv files and saves as it as an excel sheet"""
 import os
 import re
 import pandas as pd

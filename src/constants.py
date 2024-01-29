@@ -1,4 +1,4 @@
-# Description: Constants used in the code
+"""Project constants"""
 import os
 import re
 from tueplots.constants.color import rgb
@@ -81,16 +81,24 @@ YEARS = [
     "WiSe 2023/2024",
 ]
 
-COURSES = ['"Biologie"', '"Chemie"', '"Geowissenschaften"', '"Informatik"', '"Mathematik"', '"Pharmazie"', '"Biochemie"', '"Physik"', '"Psychologie"']
+COURSES = [
+    '"Biologie"',
+    '"Chemie"',
+    '"Geowissenschaften"',
+    '"Informatik"',
+    '"Mathematik"',
+    '"Pharmazie"',
+    '"Biochemie"',
+    '"Physik"',
+    '"Psychologie"']
 
 SECTORS = ['Herstellung von pharmazeutischen Erzeugnissen',
-    'Herstellung von chemischen Erzeugnissen',
-    'Forschung und Entwicklung',
-    'Gewinnung von Steinen und Erden, sonstiger Bergbau',
-    'Dienstleistungen der Informationstechnologie',
-    'H.v. DV-Geräten, elektron. u. opt. Erzeugnissen',
-    'Wirtschaftsprüfung und Steuerberatung, Buchführung',
-    'H.v. Bestrahlungs- u.a. elektromed. Geräten',
-    'Gesundheitswesen',
-]
-
+           'Herstellung von chemischen Erzeugnissen',
+           'Forschung und Entwicklung',
+           'Gewinnung von Steinen und Erden, sonstiger Bergbau',
+           'Dienstleistungen der Informationstechnologie',
+           'H.v. DV-Geräten, elektron. u. opt. Erzeugnissen',
+           'Wirtschaftsprüfung und Steuerberatung, Buchführung',
+           'H.v. Bestrahlungs- u.a. elektromed. Geräten',
+           'Gesundheitswesen',
+           ]
