@@ -72,16 +72,26 @@ If you want to delete the added conda environment from your system, you can run 
 - Exp 2 - Analyses: Look into the properties of the computed model
 - Exp 3 - Modifying data: What happens when there is a sudden change in salary expectations
 - Exp 4 - Visualisation: Visualise computed parameters of the model
+- Exp 5 - Mapping: Create a mapping from university courses to salary sectors
 
 
 ## The Paper
 This project uses GitHub-Actions to compile the latest `paper.tex` file into a PDF.
+
 ### Big versions
 If the commit message contains `[PDF]` the PDF gets compiled and added to the Project in a new commit. Look out for a commit message `Add PDF [skip-ci]`. If this is the latest commit, the PDF is up to date.
 Otherwise read through the next section.
 
 ### Small increments
-To see the PDF for the current commit navigate to the `Actions` tab. Select the `Create figures and create PDF` workflow. Click on the workflow run at the top, under `Artefacts` there is the PDF ready download.
+To see the PDF for the current commit navigate to the `Actions` tab. Select the `Create figures and create PDF` workflow. Click on the workflow run at the top, under `Artefacts` you can download the PDF.
 
 ### Figures
-All figures that are used in the paper can be created by running the experiment notebooks in `exp/`. The generated PDFs are not part of the repository and have to be created. To do so you can run the notebooks individually, or you can execute the `run_notebooks.py` file to run them all with a push of a button.
+All figures that are used in the paper can be created by running the experiment notebooks in `exp/`. The generated PDFs are not part of the repository and have to be created. To do so you can run the notebooks individually, or you can execute the `run_notebooks.py` file to run them all at once.
+
+
+## Mapping
+A mapping has been used to be able to create a relationship between students enrolled in courses at university and salary expectations in a future career.
+This is what we used:
+![STEM to salary sector mapping](fig/STEMFieldsToSectorHeatMap.png)
+
+
