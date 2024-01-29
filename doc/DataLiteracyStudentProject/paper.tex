@@ -159,7 +159,8 @@ The University of Tübingen makes a good candidate to discover potential structu
 of enrollments because STEM programs are strongly represented here. % TODO: I think mentioning the potential risk of BIAS could be in the Discussion-part
 To quantify the salary expectations, a dataset from the \href{https://www-genesis.destatis.de/genesis//online?operation=table&code=62321-0001&bypass=true&levelindex=0&levelid=1702307320529#abreadcrumb}{Deutsches Statistisches Bundesamt} is used.
 It contains the salary trend for all major industrial sectors in Germany. This dataset does not adjust for inflation,
-therefore an additional \href{https://www-genesis.destatis.de/genesis//online?operation=table&code=61121-0001&bypass=true&levelindex=0&levelid=1706446467491#abreadcrumb}{dataset} from the Deutsches Statistisches Bundesamt is used to account for that. It contains the inflation rate in Germany for each year.
+therefore an additional \href{https://www-genesis.destatis.de/genesis//online?operation=table&code=61121-0001&bypass=true&levelindex=0&levelid=1706446467491#abreadcrumb}{dataset}
+from the Deutsches Statistisches Bundesamt is used to account for that (\Cref{sec:methods:processing}). It contains the inflation rate in Germany for each year.
 The number of students is also limited by a further parameter. Namely the number of people eligible for an academic career.
 The \href{https://www.statistik-bw.de/BildungKultur/SchulenAllgem/LRt0302.jsp}{Statistisches Landesamt Baden-Württemberg} provides
 data about high school graduates in Baden-Württemberg for every year. We will not take other states into account, under
@@ -168,10 +169,10 @@ the assumption that the number of students leaving Baden-Württemberg, to study 
 Our central contribution is a Vector autoregressive model (VAR) discussed in \Cref{sec:methods:var} that is built using just mentioned data. Combined with a
 partial autocorrelation function (PACF) the optimal value for the lag
 is determined, see \Cref{sec:methods:lag}, to ensure that relevant structure in the data is captured by the model.
-After verifying that the VAR model functions as expected and testing the model on a test set, \Cref{fig:accuracy model} \textcolor{red}{subsection}, we
+After verifying that the VAR model functions as expected and testing the model on a test set, \Cref{fig:accuracy model}, we
 can predict all three input time series. As we are only interested in the number of students enrolled and the development of the salary, our research is 
 focused on these two instances.
-This allows us to conclude that salary has a significant impact on the amount of STEM students. Further, we can model different salary development scenarios, 
+This allows us to conclude in \Cref{sec:methods:causality} that salary has a significant impact on the amount of STEM students. Further, we can model different salary development scenarios, 
 and see how the students would likely react (\Cref{sec:results}).
 
 
@@ -191,7 +192,7 @@ and see how the students would likely react (\Cref{sec:results}).
 
 \begin{figure*}
     \includegraphics{fig/prediction_5.pdf}
-    \caption{VAR model Prediction with optimal lag value of $5$ on the test data set.}
+    \caption{VAR model Prediction with optimal lag value of $5$ on the test data set. Standard error with confidence interval value $\alpha = 0.05$.}
     \label{fig:accuracy model}
 \end{figure*}
 
