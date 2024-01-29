@@ -374,26 +374,27 @@ in predicting the salary variable are not related to the errors in predicting th
 It is not possible to find a lag value that gives the best results for all three time series.
 However one can set the optimal lag value such that it suits forecasting students best (\Cref{sec:methods:lag}).
 With the obtained insights into the relation between the number of enrolled students, salary expectations, and number of graduates,
-it is now possible to make predictions on different scenarios.
+we are able to predict the upcoming four semesters, see \Cref{fig:predict}.
 
-The training of the model stays set, and the whole dataset available is used. It is now possible to 
-generate a new data set with a 10\% increase in salary expectations and set it as the new model input, \Cref{fig:altered salary}.
+\begin{figure}[H]
+    \includegraphics{fig/predictingStudents.pdf}
+    \caption{Predict the number of students enrolled in STEM courses.}
+    \label{fig:predict}
+\end{figure}
+
+It is also possible to construct different future scenarios.
+We generate a new data set with a 10\% increase in salary expectations, \Cref{fig:altered salary}.
+This will be used as a basis to predict from, while
+the unchanged data set is used for training.
 The observed change in the prediction supports the obtained results in \Cref{sec:methods:fit}. There is a significant
 dependence between salary expectations and the number of students enrolled in STEM courses. As soon as the salary
 increases, there is also an upward trend visible in student numbers. The observed change is not massive which can be explained
 by the fact that the mass of students are students in higher semesters. The only direct major influence on
 the total number of enrolled students is made by people deciding to start this year. There won't be a lot of people changing subjects
 halfway through their academic careers.
-
 This also explains the huge spike in predicting the average gross salary. In the first few semesters,
 the amount of new students is not high enough, to capture the need for new people. Therefore the model suggests raising the
-salary even higher, to accommodate for that.
-
-\begin{figure}
-    \includegraphics{fig/predictingStudents.pdf}
-    \caption{Predict the number of students enrolled in STEM courses.}
-    \label{fig:predict}
-\end{figure}
+salary even higher.
 
 
 \begin{figure}
@@ -412,14 +413,13 @@ possible capacity,
 but there are strict limitations that can not be overcome. Vector autoregressive models are only capable of detecting linear patterns in the data.
 This occurs, because we only have linear combinations, based on values $S_{i,j}$ and coefficients to scale those values. If we wanted to improve
 our prediction we had to replace our model with other machine learning applications.
-A promising approach for this could be to implement a Random Forest algorithm.\\
+A promising approach for this could be to implement a Random Forest algorithm.
 Our model on the other hand compensates for any potential lag in accuracy by being easily interpretable. Each parameter of the model influences exactly
 one part of the predictions and is therefore transparent in its process.
 Also worth mentioning is that our predictions are only based on three different inputs. There are certainly other 
 variables impacting the number of students enrolled in courses at a university. Especially ones, that are not easily quantifiable and are subject to
 personal preferences. However, we are confident that our selected set of data captures the main aspects, as our model performs great on the provided test set.
 
-A repository containing the complete analyses and results can be found on \href{https://github.com/mxs01/AnalysingStudentDevelopment}{GitHub}.
 
 
 \section*{Contribution Statement}
@@ -428,6 +428,8 @@ Lisa-Maria Fritsch was responsible for data pre-processing.
 Paul Kaifler fitted the model to the data and created visualizations.
 Maximilian Schnitt parsed the university data and analyzed optimal parameter lag.
 All authors jointly did the analyses of the data and wrote the text of the report.
+A repository containing the complete analyses and results can be found on \href{https://github.com/mxs01/AnalysingStudentDevelopment}{GitHub}.
+
 % Max Mustermann collected and prepared data. Gabi Musterfrau and John Doe performed the data analysis. Jane Doe produced visualizations. All authors will jointly wrote the text of the report. Note that you, as a group, a collectively responsible for the report. Your contributions should be roughly equal in amount and difficulty.
 
 
@@ -435,7 +437,7 @@ All authors jointly did the analyses of the data and wrote the text of the repor
 
 % Your entire report has a \textbf{hard page limit of 4 pages} excluding references. (I.e. any pages beyond page 4 must only contain references). Appendices are \emph{not} possible. But you can put additional material, like interactive visualizations or videos, on a githunb repo (use \href{https://github.com/pnkraemer/tueplots}{links} in your pdf to refer to them). Each report has to contain \textbf{at least three plots or visualizations}, and \textbf{cite at least two references}. More details about how to prepare the report, inclucing how to produce plots, cite correctly, and how to ideally structure your github repo, will be discussed in the lecture, where a rubric for the evaluation will also be provided.
 
-% References
+% \newpage
 
 
 \bibliography{bibliography}

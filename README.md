@@ -73,6 +73,7 @@ If you want to delete the added conda environment from your system, you can run 
 - Exp 3 - Modifying data: What happens when there is a sudden change in salary expectations
 - Exp 4 - Visualisation: Visualise computed parameters of the model
 - Exp 5 - Mapping: Create a mapping from university courses to salary sectors
+- Exp 6 - Optimizing Hyperparameters: Find the optimal configuration for the VAR model
 
 
 ## The Paper
