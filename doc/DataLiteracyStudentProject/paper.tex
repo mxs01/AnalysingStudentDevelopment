@@ -191,7 +191,7 @@ and see how the students would likely react (\Cref{sec:results}).
 
 \begin{figure*}
     \includegraphics{fig/prediction_5.pdf}
-    \caption{VAR model Prediction with optimal lag value of 5 on the test data set.}
+    \caption{VAR model Prediction with optimal lag value of $5$ on the test data set.}
 \end{figure*}
 
 \subsection{Data Processing}\label{sec:methods:processing}
@@ -284,11 +284,11 @@ The optimal lag based on AIC is 6, while for BIC it is 1, which is consistent wi
         \hline
         Prediciton 2 & 1.346\% & 0.306\% & 0.939\%
     \end{tabular}
-    \caption{Percentage difference between the true value and predicted value for students, salary, and graduates. Lag set to 5.}
+    \caption{Percentage difference between the true value and predicted value for students, salary, and graduates. Lag set to $5$.}
 \end{table}
 
 The percentage errors show that there is a significant improvement in the prediction of student numbers compared to the lag order of 1.
-Setting lag to 5 results in even better errors for the domains of our interest, predicting students.
+Setting lag to $5$ results in even better errors for the domains of our interest, predicting students.
 
 \subsection{Test for causality}\label{sec:methods:causality}
 To ensure that the model does not try to find structure in the data, where there is none, we applied the Granger causality test.
@@ -310,16 +310,11 @@ tests return statistical significance, then we showed that $S_i$ could be expres
 \end{figure}
 
 
-
-% I am currently here
-% Here the explanation for the correlation matrix
-% Here teh the explanation for the visualisation of coefficients
-
 With the correct lag chosen, the model fits the data by minimizing the mean square error.
 The returned coefficients describe the impact of a specific lagged value from one time series
 on predicting the next value. \ref{fig:student coefficients} visualizes all coefficients
 relevant for predicting the number of students in the next semester. 
-Notably, salary is the most relevant information for the prediction. All 5
+Notably, salary is the most relevant information for the prediction. All five
 coefficient values for each time step are non-zero, indicating a strong correlation.
 Graduates, on the other hand, are not as relevant, recognizable by values close to zero.
 
@@ -346,7 +341,7 @@ in predicting the salary variable are not related to the errors in predicting th
         \hline
         graduates & 0.111 & -0.902 &  1.000\\
     \end{tabular}
-    \caption{Correlation matrix of residuals using 5 lags.}
+    \caption{Correlation matrix of residuals using $5$ lags.}
     \label{table:correlation matrix}
 \end{table}
 
