@@ -8,7 +8,11 @@ DEBUG = False
 
 
 def getStudents() -> pd.DataFrame:
-    """Load student data from excel file into a pandas DataFrame."""
+    """Load student data from excel file into a pandas DataFrame.
+
+    Returns:
+        pandas.DataFrame: students data as pandas.DataFrame
+    """
 
     students = pd.read_excel(STUDENTS_PATH,
                              sheet_name='Sheet1',
@@ -19,7 +23,11 @@ def getStudents() -> pd.DataFrame:
 
 
 def getGraduates() -> pd.DataFrame:
-    """Load graduates data from csv file into a pandas DataFrame."""
+    """Load graduates data from csv file into a pandas DataFrame.
+
+    Returns:
+        pandas.DataFrame: students data as pandas.DataFrame
+    """
 
     graduatesInBW = pd.read_csv(GRADUATES_PATH,
                                 sep=";",
@@ -41,7 +49,11 @@ def getGraduates() -> pd.DataFrame:
 
 
 def getSalaries() -> pd.DataFrame:
-    """Load salary data from csv file into a pandas DataFrame."""
+    """Load salary data from csv file into a pandas DataFrame.
+
+    Returns:
+        pandas.DataFrame: salary data as pandas.DataFrame
+    """
 
     salaries = pd.read_csv(
         SALARY_PATH,
@@ -57,7 +69,11 @@ def getSalaries() -> pd.DataFrame:
 
 
 def getInflation() -> pd.DataFrame:
-    """Load inflation data from csv file into a pandas DataFrame."""
+    """Load inflation data from csv file into a pandas DataFrame.
+
+    Returns:
+        pandas.DataFrame: inflation data as pandas.DataFrame
+    """
 
     inflation = pd.read_csv(
         INFLATION_PATH,
@@ -74,12 +90,26 @@ def getInflation() -> pd.DataFrame:
 
 def getAllCourses() -> list:
     """Get all courses from student data."""
+    """Get all courses in the STEM sector
+
+    Returns:
+        List: all stem subjects
+    """
 
     students = getStudents()
     return students.index.levels[0].tolist()
 
 
 def getTotalStudentsFor(courses: list, years: list[str]) -> np.array:
+    """get total students for a list of courses and specified years.
+
+    Args:
+        courses (list): List of specified courses.
+        years (list[str]): List of desired years.
+
+    Returns:
+        np.array: total amount of students per year.
+    """
     students = getStudents()
 
     studentsInCourseHF = np.empty((len(courses), 0))
@@ -99,7 +129,15 @@ def getTotalStudentsFor(courses: list, years: list[str]) -> np.array:
     return studentsInCourseHF.sum(axis=0) + studentsInCourseNF.sum(axis=0)
 
 
-def getGrossSalary(sector) -> np.array:
+def getGrossSalary(sector: str) -> np.array:
+    """getter for avergae gross salary of specific sector
+
+    Args:
+        sector (str): the stem sector
+
+    Returns:
+        np.array: average gross salary semi-annual
+    """
     salaries = getSalaries()
     SALARY_YEARS = salaries.index.levels[1]
     QUARTALS = ['1. Quartal', '2. Quartal', '3. Quartal', '4. Quartal']
@@ -111,17 +149,38 @@ def getGrossSalary(sector) -> np.array:
 
 
 def getGraduatesInBwFor(years: list) -> np.array:
+    """ get all high school graduates for specific years.
+
+    Args:
+        years (list): List of desired years.
+
+    Returns:
+        np.array: high school graduates for specific years.
+    """
     graduates = getGraduates()
     graduatesInBW = graduates.loc[years, ('Abiturienten insg', 'Anzahl')].to_numpy()
     return graduatesInBW.astype(float)
 
 
 def getAllGraduatesYears() -> list[str]:
+    """ get high school graduates for all years
+
+    Returns:
+        list[str]: _description_
+    """
     graduates = getGraduates()
     return graduates.index.tolist()
 
 
 def getInflationAdjustedGrossSalary(sector) -> np.array:
+    """compute real average gross salary for one sector
+
+    Args:
+        sector (str): STEM sector
+
+    Returns:
+        np.array: real average gross salary for one sector
+    """
     inflation = getInflation()
     inflation = inflation.loc[:, ('Veränderungsrate zum Vorjahr', 'Prozent')].to_numpy(dtype=float)
 
@@ -140,6 +199,14 @@ def getInflationAdjustedGrossSalary(sector) -> np.array:
 
 
 def getInflationAdjustedGrossSalaries(sectors: list) -> np.array:
+    """ compute real average gross salary for all sectors
+
+    Args:
+        sectors (list): all STEM sectors
+
+    Returns:
+        np.array: real average gross salary for all sectors
+    """
     inflation = getInflation()
     inflation = inflation.loc[:, ('Veränderungsrate zum Vorjahr', 'Prozent')].to_numpy(dtype=float)
 
