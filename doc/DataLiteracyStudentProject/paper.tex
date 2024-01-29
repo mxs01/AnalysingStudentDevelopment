@@ -244,14 +244,9 @@ that $S_{i,j}$ is also influenced by $S_{k,l}$ $i,k \in \{1,\dots, m\}: i\neq k$
 A VAR model has one major advantage, over other possible approaches, which is its simplicity. Therefore its results remain interpretable.
 This model only uses one hyperparameter which describes the amount of past data that is used to make a prediction. This parameter is called the lag.
 The vector autoregressive model heavily depends on the stationarity assumption which ensures that the stochastical process stays the same over time. 
-In this context, this is assured by the following three axioms:
-\begin{samepage}
-\begin{enumerate}[label=\Roman*]
-    \item The mean $\mu$ is constant
-    \item The standard deviation is constant
-    \item There is no seasonality in the data
-\end{enumerate}    
-\end{samepage}
+In this context, this is assured by the following three axioms: The mean $\mu$ is constant, the standard deviation is constant
+and there is no seasonality in the data.
+
 Since we are only interested in predicting two time steps into the future, which is equivalent to one year,
 we can safely assume that our data is stationary.
 
