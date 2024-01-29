@@ -47,7 +47,7 @@ def plot(data: np.ndarray, forecast: np.ndarray, ogForecast: np.ndarray, years: 
                 color='silver', label='Original prediction', alpha=0.5)
 
         ax2 = ax1.twinx()  # instantiate a second axes that shares the same x-axis
-        ax2.set_ylabel('Sallary', color=COL_SALARY)
+        ax2.set_ylabel('Salary', color=COL_SALARY)
 
         # Plot main data
         ax2.plot(yearsWithForecast[:-len(forecast)], dataWithForecast[:-len(forecast), 1], color=COL_SALARY, label='Average gross salary')
