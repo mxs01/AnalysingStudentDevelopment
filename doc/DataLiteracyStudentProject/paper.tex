@@ -151,7 +151,7 @@ Science, technology, engineering, and mathematics, known as STEM, make up a larg
 this academic career is known for being one of the most demanding.
 This paper aims to explore the potential influence of financial incentives.
 
-The analysis relies on three underlying datasets.
+The analysis is built on three underlying datasets.
 The first dataset captures the historical enrollment figures of students at the University of Tübingen. 
 It contains the total number of students for each semester, for all study programs. This dataset is maintained and published by the
 \href{https://uni-tuebingen.de/einrichtungen/verwaltung/iv-studierende/studierendenabteilung/statistiken/}{Statistics Bureau of the University of Tübingen}.
@@ -166,9 +166,9 @@ data about high school graduates in Baden-Württemberg for every year. We will n
 the assumption that the number of students leaving Baden-Württemberg, to study elsewhere, cancels out with others moving to the University of Tübingen.
 
 Our central contribution is a Vector autoregressive model (VAR) discussed in \Cref{sec:methods:var} that is built using just mentioned data. Combined with a
-Partial autocorrelation function (PACF) the optimal value for the lag
+partial autocorrelation function (PACF) the optimal value for the lag
 is determined, see \Cref{sec:methods:lag}, to ensure that relevant structure in the data is captured by the model.
-After verifying that the VAR model functions as expected and testing the model on a test set, \Cref{sec:methods} \textcolor{red}{subsection}, we
+After verifying that the VAR model functions as expected and testing the model on a test set, \Cref{fig:accuracy model} \textcolor{red}{subsection}, we
 can predict all three input time series. As we are only interested in the number of students enrolled and the development of the salary, our research is 
 focused on these two instances.
 This allows us to conclude that salary has a significant impact on the amount of STEM students. Further, we can model different salary development scenarios, 
@@ -192,6 +192,7 @@ and see how the students would likely react (\Cref{sec:results}).
 \begin{figure*}
     \includegraphics{fig/prediction_5.pdf}
     \caption{VAR model Prediction with optimal lag value of $5$ on the test data set.}
+    \label{fig:accuracy model}
 \end{figure*}
 
 \subsection{Data Processing}\label{sec:methods:processing}
@@ -266,7 +267,7 @@ We choose $\alpha = 5\%$ and get get a 95\% Confidence Interval
         \hline
         Prediciton 2 & 4.843\% & 0.119\% & 1.722\%
     \end{tabular}
-    \caption{Difference in percent between the true value and predicted value for students, salary, and graduates. Lag set to 1.}
+    \caption{Difference in percent between the true value and predicted value for students, salary, and graduates. Lag set to $1$.}
 \end{table}
 The percentage differences between the true values especially for the students are quite high. To get better results
 the AIC and BIC are used to find a better lag for the hyperparameter $p$ \textcolor{red}{is $p$ = lag?}. The abbreviation AIC
@@ -284,7 +285,7 @@ The optimal lag based on AIC is 6, while for BIC it is 1, which is consistent wi
         \hline
         Prediciton 2 & 1.346\% & 0.306\% & 0.939\%
     \end{tabular}
-    \caption{Percentage difference between the true value and predicted value for students, salary, and graduates. Lag set to $5$.}
+    \caption{Difference in percent between the true value and predicted value for students, salary, and graduates. Lag set to $5$.}
 \end{table}
 
 The percentage errors show that there is a significant improvement in the prediction of student numbers compared to the lag order of 1.
@@ -312,7 +313,7 @@ tests return statistical significance, then we showed that $S_i$ could be expres
 
 With the correct lag chosen, the model fits the data by minimizing the mean square error.
 The returned coefficients describe the impact of a specific lagged value from one time series
-on predicting the next value. \ref{fig:student coefficients} visualizes all coefficients
+on predicting the next value. \Cref{fig:student coefficients} visualizes all coefficients
 relevant for predicting the number of students in the next semester. 
 Notably, salary is the most relevant information for the prediction. All five
 coefficient values for each time step are non-zero, indicating a strong correlation.
@@ -323,7 +324,7 @@ The absolute value of the coefficient for predicting students on $t_{-5}$ is the
 a lot of information to the model.
 
 To further understand the data underlying correlations, one can look at the correlation matrix
-of residuals in table \ref{table:correlation matrix}.
+of residuals in \Cref{table:correlation matrix}.
 This matrix describes the degree to which the model's errors, called residuals, are related to each other.
 High correlations between errors can indicate a not fully captured underlying structure.
 Values close to zero, like $-0.115$ between salary and graduates, indicate that the errors
@@ -369,7 +370,7 @@ With the obtained insights into the relation between the number of enrolled stud
 it is now possible to make predictions on different scenarios.
 
 The training of the model stays set, and the whole dataset available is used. It is now possible to 
-generate a new data set with a 10\% increase in salary expectations and set it as the new model input, figure \ref{fig:altered salary}.
+generate a new data set with a 10\% increase in salary expectations and set it as the new model input, \Cref{fig:altered salary}.
 The observed change in the prediction supports the obtained results in \Cref{sec:methods:fit}. There is a significant
 dependence between salary expectations and the number of students enrolled in STEM courses. As soon as the salary
 increases, there is also an upward trend visible in student numbers. The observed change is not massive which can be explained

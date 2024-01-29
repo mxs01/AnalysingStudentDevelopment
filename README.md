@@ -79,7 +79,7 @@ If you want to delete the added conda environment from your system, you can run 
 This project uses GitHub-Actions to compile the latest `paper.tex` file into a PDF.
 
 ### Big versions
-If the commit message contains `[PDF]` the PDF gets compiled and added to the Project in a new commit. Look out for a commit message `Add PDF [skip-ci]`. If this is the latest commit, the PDF is up to date.
+If the commit message contains `[PDF]` the PDF gets compiled and added to the Project in a new commit. Look out for a commit message `Update PDF`. If this is the latest commit, the PDF is up to date.
 Otherwise read through the next section.
 
 ### Small increments
