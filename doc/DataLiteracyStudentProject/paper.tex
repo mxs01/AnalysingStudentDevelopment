@@ -166,14 +166,14 @@ The \href{https://www.statistik-bw.de/BildungKultur/SchulenAllgem/LRt0302.jsp}{S
 data about high school graduates in Baden-Württemberg for every year. We will not take other states into account, under
 the assumption that the number of students leaving Baden-Württemberg, to study elsewhere, cancels out with others moving to the University of Tübingen.
 
-Our central contribution is a Vector autoregressive model (VAR) discussed in \Cref{sec:methods:var} that is built using just mentioned data. Combined with a
-partial autocorrelation function (PACF) the optimal value for the lag
-is determined, see \Cref{sec:methods:lag}, to ensure that relevant structure in the data is captured by the model.
+Our central contribution is a Vector autoregressive model (VAR) discussed in \Cref{sec:methods:var} that is built using just mentioned data.
+After processing (\Cref{sec:methods:processing}) the data, the model is optimized by different methods, see \Cref{sec:methods:lag}.
+This ensures that the relevant structure in the data is captured by the model.
 After verifying that the VAR model functions as expected and testing the model on a test set, \Cref{fig:accuracy model}, we
 can predict all three input time series. As we are only interested in the number of students enrolled and the development of the salary, our research is 
 focused on these two instances.
-This allows us to conclude in \Cref{sec:methods:causality} that salary has a significant impact on the amount of STEM students. Further, we can model different salary development scenarios, 
-and see how the students would likely react (\Cref{sec:results}).
+This allows us to conclude in \Cref{sec:methods:causality} that salary expectations have a significant impact on the amount of STEM students.
+Further, we can model different salary development scenarios, and see how the students would likely react (\Cref{sec:results}).
 
 
 % In this section, describe \emph{what you did}. Roughly speaking, 
@@ -257,7 +257,7 @@ we can safely assume that our data is stationary.
 
 
 \subsection{Choosing lag}\label{sec:methods:lag}
-To find the optimal hyperparameter we used two well-established methods, the PACF and information-based criteria as descriped in \citep{pacf}. Particularly the AIC and 
+To find the optimal hyperparameter we used two established methods, the PACF and information-based criteria as described in \citep{pacf}. Particularly the AIC and 
 BIC. The PACF only considers the impact of the previous data point $S_{n-1}$ on $S_{n}$ to build a $(1-\alpha)$ confidence interval.
 We choose $\alpha = 5\%$ and get a 95\% Confidence Interval. The optimal value according to PACF is $3$.
 \begin{table}[H]
@@ -408,7 +408,8 @@ salary even higher, to accommodate for that.
 % but also make clear statements where they are possible and supported by the analysis. 
 \section{Discussion \& Conclusion}\label{sec:conclusion}
 In our research, we used a vector autoregressive model to predict the amount of students in the next semester. 
-We used the salary data from the past 15 years and data about high school graduates in Baden-Würrtemberg as a prior. We optimized our Model to the best possible capacity,
+We used the salary data from the past 15 years and data about high school graduates in Baden-Würrtemberg as a prior. We optimized our Model to the best
+possible capacity,
 but there are strict limitations that can not be overcome. Vector autoregressive models are only capable of detecting linear patterns in the data.
 This occurs, because we only have linear combinations, based on values $S_{i,j}$ and coefficients to scale those values. If we wanted to improve
 our prediction we had to replace our model with other machine learning applications.
