@@ -82,3 +82,6 @@ Otherwise read through the next section.
 
 ### Small increments
 To see the PDF for the current commit navigate to the `Actions` tab. Select the `Create figures and create PDF` workflow. Click on the workflow run at the top, under `Artefacts` there is the PDF ready download.
+
+### Figures
+All figures that are used in the paper can be created by running the experiment notebooks in `exp/`. The generated PDFs are not part of the repository and have to be created. To do so you can run the notebooks individually, or you can execute the `run_notebooks.py` file to run them all with a push of a button.
