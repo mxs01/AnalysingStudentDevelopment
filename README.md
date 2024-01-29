@@ -93,5 +93,3 @@ All figures that are used in the paper can be created by running the experiment 
 A mapping has been used to be able to create a relationship between students enrolled in courses at university and salary expectations in a future career.
 This is what we used:
 ![STEM to salary sector mapping](fig/STEMFieldsToSectorHeatMap.png)
-
-
