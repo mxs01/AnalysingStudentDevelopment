@@ -8,8 +8,9 @@ from src.constants import COL_STUDENT, COL_STUDENT_PRED, COL_SALARY, COL_SALARY_
 from tueplots import bundles
 
 
-def plot(data, forecast, years, name, lags) -> plt.Figure:
+def plot(data, forecast, ogForecast, years, name, lags) -> plt.Figure:
     dataWithForecast = np.vstack((data, forecast))
+    ogDataWithForecast = np.vstack((data, ogForecast))
     yearsWithForecast = np.append(years, [f"{i+1}" for i in range(forecast.shape[0])])
 
     plt.rcParams.update(bundles.icml2022(column="half", nrows=1, ncols=1, usetex=False))
@@ -26,15 +27,19 @@ def plot(data, forecast, years, name, lags) -> plt.Figure:
     ax1.bar(yearsWithForecast[-len(forecast):], dataWithForecast[-len(forecast):, 0],
             color=COL_STUDENT_PRED, label='Enrolled students forecast')
 
+    # Plot original forecast with a different color
+    ax1.bar(yearsWithForecast[-len(forecast):], ogDataWithForecast[-len(forecast):, 0],
+            color='silver', label='Original prediction', alpha=0.5)
+
     ax2 = ax1.twinx()  # instantiate a second axes that shares the same x-axis
     ax2.set_ylabel('Sallary', color=COL_SALARY)
 
     # Plot main data
-    ax2.plot(yearsWithForecast[:-len(forecast)], dataWithForecast[:-len(forecast), 1], color=COL_SALARY, label='Average salary gross')
+    ax2.plot(yearsWithForecast[:-len(forecast)], dataWithForecast[:-len(forecast), 1], color=COL_SALARY, label='Average gross salary')
 
     # Plot forecast with a different color
     ax2.plot(yearsWithForecast[-len(forecast) - 1:], dataWithForecast[-len(forecast) - 1:, 1],
-             color=COL_SALARY_PRED, label='Average salary gross forecast')
+             color=COL_SALARY_PRED, label='Average gross salary  forecast')
 
     # Create one legend for both subplots
     lines, labels = ax1.get_legend_handles_labels()
