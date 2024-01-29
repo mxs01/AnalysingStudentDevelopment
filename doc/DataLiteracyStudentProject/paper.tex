@@ -40,7 +40,6 @@
 
 % Attempt to make hyperref and algorithmic work together better:
 \newcommand{\theHalgorithm}{\arabic{algorithm}}
-\newcommand{\figref}[1]{Fig.~\ref{#1}}
 
 \usepackage[accepted]{icml2023}
 
@@ -189,9 +188,6 @@ and see how the students would likely react (\Cref{sec:results}).
 
 
 \section{Data and Methods}\label{sec:methods}
-% Mabe focus here on what we did with the data
-% I.e. inflation adjustment
-% flattening G8 G9 conflict
 
 \begin{figure*}
     \includegraphics{fig/prediction_5.pdf}
@@ -308,30 +304,51 @@ tests return statistical significance, then we showed that $S_i$ could be expres
 \begin{figure}
     \includegraphics{fig/params_Students.pdf}
     \caption{Coefficients of VAR model to predict students time-series
-    for $t$. $t_1$ to $t_5$ are the values of each time series respectively at the lagged time step.
-    $t_1$ is the most recent value.}
+    for $t_0$. $t_{-1}$ to $t_{-5}$ are the values of each time series respectively at the lagged time step.
+    $t_{-1}$ is the most recent value.}
+    \label{fig:student coefficients}
 \end{figure}
+
+
+
+% I am currently here
+% Here the explanation for the correlation matrix
+% Here teh the explanation for the visualisation of coefficients
+
+With the correct lag chosen, the model fits the data by minimizing the mean square error.
+The returned coefficients describe the impact of a specific lagged value from one time series
+on predicting the next value. \ref{fig:student coefficients} visualizes all coefficients
+relevant for predicting the number of students in the next semester. 
+Notably, salary is the most relevant information for the prediction. All 5
+coefficient values for each time step are non-zero, indicating a strong correlation.
+Graduates, on the other hand, are not as relevant, recognizable by values close to zero.
+
+The suggested lag value of $5$, earlier obtained in \Cref{sec:methods:lag} is retrievable as well.
+The absolute value of the coefficient for predicting students on $t_{-5}$ is the third largest, adding
+a lot of information to the model.
+
+To further understand the data underlying correlations, one can look at the correlation matrix
+of residuals in table \ref{table:correlation matrix}.
+This matrix describes the degree to which the model's errors, called residuals, are related to each other.
+High correlations between errors can indicate a not fully captured underlying structure.
+Values close to zero, like $-0.115$ between salary and graduates, indicate that the errors
+in predicting the salary variable are not related to the errors in predicting the graduates variable.
+
 
 \begin{table}[H]
     \centering
     \begin{tabular}{c|c|c|c}
         & students & salary & graduates\\
         \hline
-        students & 1.000000 & -0.115442 &  0.111069\\
+        students & 1.000 & -0.115 &  0.111\\
         \hline
-        salary & -0.115442 & 1.000000 & -0.902321\\
+        salary & -0.115 & 1.000000 & -0.902\\
         \hline
-        graduates & 0.111069 & -0.902321 &  1.000000\\
+        graduates & 0.111 & -0.902 &  1.000\\
     \end{tabular}
-    \caption{Correlation Matrix of residuals using 5 lags.}
+    \caption{Correlation matrix of residuals using 5 lags.}
+    \label{table:correlation matrix}
 \end{table}
-
-% I am currently here
-% Here the explanation for the correlation matrix
-% Here teh the explanation for the visualisation of coefficients
-
-
-
 
 % This is the template for a figure from the original ICML submission pack. In lecture 10 we will discuss plotting in detail.
 % Refer to this lecture on how to include figures in this text.
@@ -357,7 +374,7 @@ With the obtained insights into the relation between the number of enrolled stud
 it is now possible to make predictions on different scenarios.
 
 The training of the model stays set, and the whole dataset available is used. It is now possible to 
-generate a new data set with a 10\% increase in salary expectations and set it as the new model input, \figref{fig:altered salary}.
+generate a new data set with a 10\% increase in salary expectations and set it as the new model input, figure \ref{fig:altered salary}.
 The observed change in the prediction supports the obtained results in \Cref{sec:methods:fit}. There is a significant
 dependence between salary expectations and the number of students enrolled in STEM courses. As soon as the salary
 increases, there is also an upward trend visible in student numbers. The observed change is not massive which can be explained
