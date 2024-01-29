@@ -130,11 +130,15 @@
 
 %Put your abstract here. Abstracts typically start with a sentence motivating why the subject is interesting. Then mention the data, methodology, or methods you are working with, and describe the results. 
 \begin{abstract}
-This paper investigates the role of expected salary in influencing the choice of academic majors among
-students in the STEM field at the University of Tübingen.
-The study focuses on the interplay among three key parameters: the enrollment of students, the expected salary, and the number of graduates.
-Employing a Vector Autoregressive model, we can confidently predict the number of students for the upcoming semesters
-and show that the expected salary plays a key role in making that prediction.
+
+Our research focus is to provide valuable insights
+into how future salaries affect the decision-making of students when it comes to selecting
+their major at the University of Tubingen. For this
+purpose we explore the dynamic relationship between student enrollment, expected salaries, and
+graduation rates. We are exploiting the Vector
+Autoregressive model to demonstrate a reliable
+forecasts for future STEM student numbers, underscoring the significant influence of projected
+income on these predictions.
 Furthermore, by manipulating the salary variable in our analysis, we observe a corresponding increase or decrease in the number of students.
 This implies a sensitivity in enrollment trends to changes in expected salary, highlighting the potential impact of financial considerations on academic choices.
 
@@ -247,7 +251,7 @@ The vector autoregressive model heavily depends on the stationarity assumption w
 In this context, this is assured by the following three axioms: The mean $\mu$ is constant, the standard deviation is constant
 and there is no seasonality in the data.
 
-Since we are only interested in predicting two time steps into the future, which is equivalent to one year,
+Since we are only interested in predicting two timesteps into the future, which is equivalent to one year,
 we can safely assume that our data is stationary.
 
 
@@ -313,7 +317,7 @@ operation.
 \subsection{Fitted model}\label{sec:methods:fit}
 \begin{figure}[t]
     \includegraphics{fig/params_Students.pdf}
-    \caption{Coefficients of VAR model to predict students time-series
+    \caption{Coefficients of VAR model to predict students time series
     for $t_0$. $t_{-1}$ to $t_{-5}$ are the values of each time series respectively at the lagged time step, which is equal to one semester.
     $t_{-1}$ is the most recent value.}
     \label{fig:student coefficients}
@@ -363,7 +367,7 @@ in predicting the salary variable are not related to the errors in predicting th
 % \caption{Historical locations and number of accepted papers for International
 % Machine Learning Conferences (ICML 1993 -- ICML 2008) and International
 % Workshops on Machine Learning (ML 1988 -- ML 1992). At the time this figure was
-% produced, the number of accepted papers for ICML 2008 was unknown and instead
+% produced, the number of accepted papers for ICML 2008 was unknown, and instead
 % estimated.}
 % \label{icml-historical}
 % \end{center}
@@ -430,15 +434,14 @@ Maximilian Schnitt parsed the university data and analyzed optimal parameter lag
 All authors jointly did the analyses of the data and wrote the text of the report.
 A repository containing the complete analyses and results can be found on \href{https://github.com/mxs01/AnalysingStudentDevelopment}{GitHub}.
 
-% Max Mustermann collected and prepared data. Gabi Musterfrau and John Doe performed the data analysis. Jane Doe produced visualizations. All authors will jointly wrote the text of the report. Note that you, as a group, a collectively responsible for the report. Your contributions should be roughly equal in amount and difficulty.
 
-
-% \section*{Notes} 
-
-% Your entire report has a \textbf{hard page limit of 4 pages} excluding references. (I.e. any pages beyond page 4 must only contain references). Appendices are \emph{not} possible. But you can put additional material, like interactive visualizations or videos, on a githunb repo (use \href{https://github.com/pnkraemer/tueplots}{links} in your pdf to refer to them). Each report has to contain \textbf{at least three plots or visualizations}, and \textbf{cite at least two references}. More details about how to prepare the report, inclucing how to produce plots, cite correctly, and how to ideally structure your github repo, will be discussed in the lecture, where a rubric for the evaluation will also be provided.
-
-% \newpage
-
+% Your entire report has a \textbf{hard page limit of 4 pages} excluding references.
+% (I.e. any pages beyond page 4 must only contain references). Appendices are \emph{not} possible.
+% But you can put additional material, like interactive visualizations or videos, on a githunb repo
+% (use \href{https://github.com/pnkraemer/tueplots}{links} in your pdf to refer to them).
+% Each report has to contain \textbf{at least three plots or visualizations}, and \textbf{cite at least two references}.
+% More details about how to prepare the report, inclucing how to produce plots, cite correctly, and how to ideally structure your github
+% repo, will be discussed in the lecture, where a rubric for the evaluation will also be provided.
 
 \bibliography{bibliography}
 \bibliographystyle{icml2023}
