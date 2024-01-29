@@ -79,7 +79,7 @@
 \begin{document}
 
 \twocolumn[
-\icmltitle{All just Greedy for Money? - A prediction and Analysis of the interplay between Graduate Statistics and Salary Prospects in the STEM Field}
+\icmltitle{A prediction and Analysis of the interplay between Graduate Statistics and Salary Prospects in the STEM Field}
 
 % It is OKAY to include author information, even for blind
 % submissions: the style file will automatically remove it for you
@@ -106,7 +106,7 @@
 % fill in your matrikelnummer, email address, degree, for each group member
 \icmlaffiliation{first}{Matrikelnummer 5977981, abdallah.abdul-latif@student.uni-tuebingen.de, MSc Computer Science}
 \icmlaffiliation{second}{Matrikelnummer 4189024, lisa-maria.fritsch@student.uni-tuebingen.de, MSc Computer Science}
-\icmlaffiliation{third}{Matrikelnummer 12345678, first.last@student.uni-tuebingen.de, MSc Media Informatics}
+\icmlaffiliation{third}{Matrikelnummer 5993286, paul.kaifler@student.uni-tuebingen.de, Bsc Computer Science}
 \icmlaffiliation{fourth}{Matrikelnummer 6040570, maximilian.schnitt@student.uni-tuebingen.de, BSc Computer Science}
 
 % You may provide any keywords that you
@@ -176,6 +176,8 @@ This allows us to conclude in \Cref{sec:methods:causality} that salary has a sig
 and see how the students would likely react (\Cref{sec:results}).
 
 
+A repository containing the complete analyses and results can be found \href{https://github.com/mxs01/AnalysingStudentDevelopment}{here}.
+
 
 % In this section, describe \emph{what you did}. Roughly speaking, 
 % explain what data you worked with, how or from where it was collected, its structure, and size.
@@ -241,7 +243,7 @@ The model creates a linear combination for each prediction which can be expresse
     }
 \end{equation*}
 The $\epsilon$ vector approximates an error, which is induced by the model. One main benefit of the VAR model is that it also assumes
-that $S_{i,j}$ is also influenced by $S_{k,l}$ $i,k \in \{1,\dots, m\}: i\neq k$ and $j,l \in \{1,\dots, n-1\}: j\neq l$.
+that $S_{i,j}$ is also influenced by $S_{k,l}$ $i,k \in \{1,\dots, m\}: i\neq k$ and $j,l \in \{1,\dots, n-1\}: j\neq l$. As mentioned in \citep{kot}
 A VAR model has one major advantage, over other possible approaches, which is its simplicity. Therefore its results remain interpretable.
 This model only uses one hyperparameter which describes the amount of past data that is used to make a prediction. This parameter is called the lag.
 The vector autoregressive model heavily depends on the stationarity assumption which ensures that the stochastical process stays the same over time. 
@@ -258,25 +260,28 @@ we can safely assume that our data is stationary.
 \subsection{Choosing lag}\label{sec:methods:lag}
 To find the optimal hyperparameter we used two well-established methods, the PACF and information-based criteria. Particularly the AIC and 
 BIC. The PACF only considers the impact of the previous data point $S_{n-1}$ on $S_{n}$ to build a $(1-\alpha)$ confidence interval.
-We choose $\alpha = 5\%$ and get get a 95\% Confidence Interval 
+We choose $\alpha = 5\%$ and get a 95\% Confidence Interval. The optimal value according to PACF is $3$.
 \begin{table}[H]
     \centering
     \begin{tabular}{c|c|c|c}
         & students & salary & graduates \\
         \hline
-        Prediciton 1 & 1.257\% & 1.271\% & 3.944\% \\
+        Prediciton 1 & 0.704\% & 0.871\% & 2.658\% \\
         \hline
-        Prediciton 2 & 4.843\% & 0.119\% & 1.722\%
+        Prediciton 2 & 2.786\% & 0.301\% & 0.286\%
     \end{tabular}
-    \caption{Difference in percent between the true value and predicted value for students, salary, and graduates. Lag set to $1$.}
+    \caption{Difference in percent between the true value and predicted value for students, salary, and graduates. Lag set to $3$.}
+    \label{tab:resid1}
 \end{table}
-The percentage differences between the true values especially for the students are quite high. To get better results
-the AIC and BIC are used to find a better lag for the hyperparameter $p$ \textcolor{red}{is $p$ = lag?}. The abbreviation AIC
+The percentage differences between the true values and the predicted ones, especially for the students, are quite high, see \Cref{tab:resid1}.
+To get better results
+the AIC and BIC are used to find a better lag for the hyperparameter $p$, which is the lag. The abbreviation AIC
 stands for Akaike Information Criterion and tries to find an optimum between the complexity of the model and fitting the data.
 This should prevent overfitting. 
 BIC is short for Bayesian Information Criterion and penalizes more complex models.
 Therefore BIC leads to less complicated models than the ones from AIC, which sets the two apart.
-The optimal lag based on AIC is 6, while for BIC it is 1, which is consistent with the PACF.
+Both BIC and AIC return $6$ as an optimal lag value for our data set. Since we are focusing on predicting students, low errors in that domain
+are more important to us. Minimizing these errors within the range from $3$ to $6$ leads to an optimal lag value of $5$.
 \begin{table}[H]
     \centering
     \begin{tabular}{c|c|c|c}
@@ -287,10 +292,11 @@ The optimal lag based on AIC is 6, while for BIC it is 1, which is consistent wi
         Prediciton 2 & 1.346\% & 0.306\% & 0.939\%
     \end{tabular}
     \caption{Difference in percent between the true value and predicted value for students, salary, and graduates. Lag set to $5$.}
+    \label{tab:resid2}
 \end{table}
 
-The percentage errors show that there is a significant improvement in the prediction of student numbers compared to the lag order of 1.
-Setting lag to $5$ results in even better errors for the domains of our interest, predicting students.
+The percentage errors in \Cref{tab:resid2} show that there is a significant improvement in the prediction of student numbers
+compared to the lag order of $3$ from \Cref{tab:resid1}.
 
 \subsection{Test for causality}\label{sec:methods:causality}
 To ensure that the model does not try to find structure in the data, where there is none, we applied the Granger causality test.
@@ -299,14 +305,15 @@ In this case, we try to find out if e.g. the salary time series is just a shifte
 The test does verifies this by using series $S_i$ and trying to insert data points from $S_j$ or $S_k$ $i \neq j\neq k$
 to predict the outcome of the model. After inserting the data points a t-test and a F-test are performed. If both
 tests return statistical significance, then we showed that $S_i$ could be expressed by a shifted input time series $S_j$ with $j\neq i$.
-\textcolor{red}{OK, and did we show that?}
+% tbd notebook 2
+\textcolor{red}{TBD}
 
 
 \subsection{Fitted model}\label{sec:methods:fit}
 \begin{figure}
     \includegraphics{fig/params_Students.pdf}
     \caption{Coefficients of VAR model to predict students time-series
-    for $t_0$. $t_{-1}$ to $t_{-5}$ are the values of each time series respectively at the lagged time step.
+    for $t_0$. $t_{-1}$ to $t_{-5}$ are the values of each time series respectively at the lagged time step, which is equal to one semester.
     $t_{-1}$ is the most recent value.}
     \label{fig:student coefficients}
 \end{figure}
@@ -325,7 +332,7 @@ The absolute value of the coefficient for predicting students on $t_{-5}$ is the
 a lot of information to the model.
 
 To further understand the data underlying correlations, one can look at the correlation matrix
-of residuals in \Cref{table:correlation matrix}.
+of residuals in \Cref{tab:correlation matrix}.
 This matrix describes the degree to which the model's errors, called residuals, are related to each other.
 High correlations between errors can indicate a not fully captured underlying structure.
 Values close to zero, like $-0.115$ between salary and graduates, indicate that the errors
@@ -344,7 +351,7 @@ in predicting the salary variable are not related to the errors in predicting th
         graduates & 0.111 & -0.902 &  1.000\\
     \end{tabular}
     \caption{Correlation matrix of residuals using $5$ lags.}
-    \label{table:correlation matrix}
+    \label{tab:correlation matrix}
 \end{table}
 
 % This is the template for a figure from the original ICML submission pack. In lecture 10 we will discuss plotting in detail.
@@ -412,11 +419,10 @@ personal preferences. However, we are confident that our selected set of data ca
 
 
 \section*{Contribution Statement}
-\textcolor{red}{TODO}
 Abdallah Abdul-Latif analyzed the optimal parameter lag and mapped courses to salary sectors.
-Lisa-Maria Fritsch
-Paul Kaifler 
-Maximilian Schnitt parsed university data and analyzed optimal parameter lag.
+Lisa-Maria Fritsch was responsible for data pre-processing.
+Paul Kaifler fitted the model to the data and created visualizations.
+Maximilian Schnitt parsed the university data and analyzed optimal parameter lag.
 All authors jointly did the analyses of the data and wrote the text of the report.
 % Max Mustermann collected and prepared data. Gabi Musterfrau and John Doe performed the data analysis. Jane Doe produced visualizations. All authors will jointly wrote the text of the report. Note that you, as a group, a collectively responsible for the report. Your contributions should be roughly equal in amount and difficulty.
 
@@ -424,6 +430,8 @@ All authors jointly did the analyses of the data and wrote the text of the repor
 % \section*{Notes} 
 
 % Your entire report has a \textbf{hard page limit of 4 pages} excluding references. (I.e. any pages beyond page 4 must only contain references). Appendices are \emph{not} possible. But you can put additional material, like interactive visualizations or videos, on a githunb repo (use \href{https://github.com/pnkraemer/tueplots}{links} in your pdf to refer to them). Each report has to contain \textbf{at least three plots or visualizations}, and \textbf{cite at least two references}. More details about how to prepare the report, inclucing how to produce plots, cite correctly, and how to ideally structure your github repo, will be discussed in the lecture, where a rubric for the evaluation will also be provided.
+
+% References
 
 
 \bibliography{bibliography}
