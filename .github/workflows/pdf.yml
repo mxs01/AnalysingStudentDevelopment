@@ -39,7 +39,7 @@ jobs:
       if: contains(github.event.head_commit.message, '[PDF]')
       uses: stefanzweifel/git-auto-commit-action@v5.0.0
       with:
-        commit_message: "Add PDF [skip-ci]"
+        commit_message: "Update PDF"
         file_pattern: doc/DataLiteracyStudentProject/paper.pdf
         commit_user_name: PDF GitHub Actions Bot
         commit_user_email: actions@github.com

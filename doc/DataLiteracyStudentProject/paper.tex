@@ -245,7 +245,7 @@ The model creates a linear combination for each prediction which can be expresse
 \end{equation*}
 The $\epsilon$ vector approximates an error, which is induced by the model. One main benefit of the VAR model is that it also assumes
 that $S_{i,j}$ is also influenced by $S_{k,l}$ $i,k \in \{1,\dots, m\}: i\neq k$ and $j,l \in \{1,\dots, n-1\}: j\neq l$. As mentioned in \citep{var}
-A VAR model has one major advantage, over other possible approaches, which is its simplicity. Therefore its results remain interpretable.
+a VAR model has one major advantage, over other possible approaches, which is its simplicity. Therefore its results remain interpretable.
 This model only uses one hyperparameter which describes the amount of past data that is used to make a prediction. This parameter is called the lag.
 The vector autoregressive model heavily depends on the stationarity assumption which ensures that the stochastical process stays the same over time. 
 In this context, this is assured by the following three axioms: The mean $\mu$ is constant, the standard deviation is constant
@@ -256,7 +256,7 @@ we can safely assume that our data is stationary.
 
 
 \subsection{Choosing lag}\label{sec:methods:lag}
-To find the optimal hyperparameter we used two established methods, the PACF and information-based criteria as described in \citep{pacf}. Particularly the AIC and 
+To find the optimal hyperparameter we used two established methods, the partial autocorrelation function and information-based criteria as described in \citep{pacf}. Particularly the AIC and 
 BIC. The PACF only considers the impact of the previous data point $S_{n-1}$ on $S_{n}$ to build a $(1-\alpha)$ confidence interval.
 We choose $\alpha = 5\%$ and get a 95\% Confidence Interval. The optimal value according to PACF is $3$.
 \begin{table}[H]
@@ -273,7 +273,7 @@ We choose $\alpha = 5\%$ and get a 95\% Confidence Interval. The optimal value a
 \end{table}
 The percentage differences between the true values and the predicted ones, especially for the students, are quite high, see \Cref{tab:resid1}.
 To get better results
-the AIC and BIC are used to find a better lag for the hyperparameter $p$, which is the lag. The abbreviation AIC
+the AIC and BIC are used to find a better lag for the hyperparameter $p$. The abbreviation AIC
 stands for Akaike Information Criterion and it tries to find an optimum between the complexity of the model and fitting the data.
 This should prevent overfitting. 
 BIC is short for Bayesian Information Criterion and penalizes more complex models.
